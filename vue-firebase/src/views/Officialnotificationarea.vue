@@ -48,16 +48,13 @@
   border: 2px solid black;
   padding: 10px;
 }
-
 ul.custom-list {
   list-style-type: none;
 }
-
 ul.custom-list li p.left-align {
   text-indent: -40px;
   /* 调整您希望的负值 */
 }
-
 .custom-link {
   font-size: 25px;
 }
@@ -88,7 +85,6 @@ export default {
       this.data = data; // Store the data in the component's data property
     });
   },
-
   methods: {
     submitPost() {
       const timestamp = Date.now();
@@ -99,10 +95,16 @@ export default {
       const officialRef1 = firebaseRef(db, `official/${uniqueCode}/title/test`);
       const officialRef2 = firebaseRef(db, `official/${uniqueCode}/subject/test`);
       const officialRef3 = firebaseRef(db, `official/${uniqueCode}/content/test`);
+      const officialRef4 = firebaseRef(db, `official/${uniqueCode}/like/test`);
+      const officialRef5 = firebaseRef(db, `official/${uniqueCode}/downvote/test`);
+      const officialRef6 = firebaseRef(db, `official/${uniqueCode}/message/test`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
       set(officialRef3, this.newPost.content);
+      set(officialRef4, 0);
+      set(officialRef5, 0);
+      set(officialRef6, '');
 
       this.newPost.title = '';
       this.newPost.subject = '';
