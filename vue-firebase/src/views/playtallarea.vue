@@ -88,7 +88,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, 'official/');
+    const dataRef = firebaseRef(db, 'plattalk/');
 
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
@@ -104,9 +104,9 @@ export default {
       const uniqueCode = `${timestamp}-${randomCode}`;
       // Access the Firebase Realtime Database
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `official/${uniqueCode}/title/test`);
-      const officialRef2 = firebaseRef(db, `official/${uniqueCode}/subject/test`);
-      const officialRef3 = firebaseRef(db, `official/${uniqueCode}/content/test`);
+      const officialRef1 = firebaseRef(db, `plattalk/${uniqueCode}/title/test`);
+      const officialRef2 = firebaseRef(db, `plattalk/${uniqueCode}/subject/test`);
+      const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content/test`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
