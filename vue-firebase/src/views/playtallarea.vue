@@ -1,6 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <div class="Officialnotificationarea">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
@@ -42,9 +43,11 @@
                   <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.content }}</p>
-                  <button type="submit">讚</button>
-                  <button type="submit">倒讚</button>
-                  <button type="submit">留言</button>
+                  <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                      class="fas fa-thumbs-up"></i></button>
+                  <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                      class="fas fa-thumbs-down"></i></button>
+                  <button type="submit"><i class="fas fa-comment"></i></button>
                 </div>
               </li>
             </ul>
@@ -55,6 +58,14 @@
   </div>
 </template>
 <style scoped>
+button.liked {
+  background-color: blue;
+  color: black;
+}
+button.unliked {
+  background-color: red;
+  color: black;
+}
 .post-container {
   border-top: 2px solid black;
   border-left: 2px solid black;
@@ -87,6 +98,8 @@ import { firebaseApp } from '@/main';
 export default {
   data() {
     return {
+      likedPosts: {},
+      unlikedPosts: {},
       data: [],
       newPost: {
         title: '',
@@ -108,6 +121,12 @@ export default {
     });
   },
   methods: {
+    toggleLike(index) {
+      this.likedPosts[index] = !this.likedPosts[index];
+    },
+    toggleUnLike(index) {
+      this.unlikedPosts[index] = !this.unlikedPosts[index];
+    },
     isLastItem(index) {
       return index === this.dataLength - 1;
     },
@@ -122,7 +141,7 @@ export default {
       const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content`);
       const officialRef4 = firebaseRef(db, `plattalk/${uniqueCode}/like`);
       const officialRef5 = firebaseRef(db, `plattalk/${uniqueCode}/downvote`);
-      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/tatle`);
+      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/total`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
