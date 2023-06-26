@@ -37,11 +37,11 @@
           </div>
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
-              <li v-for="(item, key) in data" :key="key">
-                <div class="post-container">
-                  <p class="left-align" style="font-size:40px;">{{ item.title.test }}</p>
-                  <p class="left-align" style="font-size:40px;">{{ item.subject.test }}</p>
-                  <p class="left-align" style="font-size:40px;">{{ item.content.test }}</p>
+              <li v-for="(item, index) in data" :key="index">
+                <div class="post-container" :class="{ 'border-bottom': isLastItem(index) }">
+                  <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
+                  <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
+                  <p class="left-align" style="font-size:40px;">{{ item.content }}</p>
                   <button type="submit">讚</button>
                   <button type="submit">倒讚</button>
                   <button type="submit">留言</button>
@@ -56,16 +56,27 @@
 </template>
 <style scoped>
 .post-container {
-  border: 2px solid black;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
   padding: 10px;
 }
+
+.border-bottom {
+  border-bottom-width: 2px !important;
+  border-bottom-style: solid;
+  border-bottom-color: black !important;
+}
+
 ul.custom-list {
   list-style-type: none;
 }
+
 ul.custom-list li p.left-align {
   text-indent: -40px;
   /* 调整您希望的负值 */
 }
+
 .custom-link {
   font-size: 25px;
 }
@@ -76,7 +87,7 @@ import { firebaseApp } from '@/main';
 export default {
   data() {
     return {
-      data: {},
+      data: [],
       newPost: {
         title: '',
         subject: '',
@@ -92,22 +103,26 @@ export default {
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      this.data = data; // Store the data in the component's data property
+      this.data = Object.values(data); // Convert object to array
+      this.dataLength = this.data.length; // Store the length
     });
   },
   methods: {
+    isLastItem(index) {
+      return index === this.dataLength - 1;
+    },
     submitPost() {
       const timestamp = Date.now();
       const randomCode = Math.random().toString(36).substring(2, 8);
       const uniqueCode = `${timestamp}-${randomCode}`;
-      
+
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `plattalk/${uniqueCode}/title/test`);
-      const officialRef2 = firebaseRef(db, `plattalk/${uniqueCode}/subject/test`);
-      const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content/test`);
-      const officialRef4 = firebaseRef(db, `plattalk/${uniqueCode}/like/test`);
-      const officialRef5 = firebaseRef(db, `plattalk/${uniqueCode}/downvote/test`);
-      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/test`);
+      const officialRef1 = firebaseRef(db, `plattalk/${uniqueCode}/title`);
+      const officialRef2 = firebaseRef(db, `plattalk/${uniqueCode}/subject`);
+      const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content`);
+      const officialRef4 = firebaseRef(db, `plattalk/${uniqueCode}/like`);
+      const officialRef5 = firebaseRef(db, `plattalk/${uniqueCode}/downvote`);
+      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/tatle`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
