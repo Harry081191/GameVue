@@ -79,10 +79,9 @@ export default {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'official/');
 
-    // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      this.data = data; // Store the data in the component's data property
+      this.data = data;
     });
   },
   methods: {
@@ -90,7 +89,7 @@ export default {
       const timestamp = Date.now();
       const randomCode = Math.random().toString(36).substring(2, 8);
       const uniqueCode = `${timestamp}-${randomCode}`;
-      // Access the Firebase Realtime Database
+      
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `official/${uniqueCode}/title/test`);
       const officialRef2 = firebaseRef(db, `official/${uniqueCode}/subject/test`);
