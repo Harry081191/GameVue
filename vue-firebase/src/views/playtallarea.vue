@@ -21,22 +21,51 @@
       <router-link :to="{ name: 'Login', params: { userId: $route.params.userId } }"
         class="custom-link">我的首頁</router-link>
     </nav>
-    <div>
-      <h2>討論區</h2>
-      <li v-for="(item, key) in data" :key="key">
-        {{ key }}: {{ item }}
-        <p v-if="data && data.content">{{ data.content.test }}</p>
-      </li>
-      <form @submit.prevent="submitPost">
-        <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
-        <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
-        <button type="submit">提交</button>
-      </form>
-    </div>
+    <div class="container">
+      <div class="p-3 wrapper" style="margin-bottom: -1px;">
+        <div class="row justify-content-center">
+          <div class="col-8" style="text-align: center">
+            <h2>討論區</h2>
+          </div>
+          <div class="col-10" style="text-align: right">
+            <form @submit.prevent="submitPost">
+              <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
+              <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+              <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
+              <button type="submit">提交</button>
+            </form>
+          </div>
+          <div class="col-10 bg-white text-dark" style="text-align: center;">
+            <ul class="custom-list">
+              <li v-for="(item, key) in data" :key="key">
 
+                <div class="post-container">
+                  <p class="left-align" style="font-size:40px;">{{ item.title.test }}</p>
+                  <p class="left-align" style="font-size:40px;">{{ item.subject.test }}</p>
+                  <p class="left-align" style="font-size:40px;">{{ item.content.test }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
+.post-container {
+  border: 2px solid black;
+  padding: 10px;
+}
+ul.custom-list {
+  list-style-type: none;
+}
+
+ul.custom-list li p.left-align {
+  text-indent: -40px;
+  /* 调整您希望的负值 */
+}
+
 .custom-link {
   font-size: 25px;
 }
@@ -51,6 +80,7 @@ export default {
       data: {},
       newPost: {
         title: '',
+        subject: '',
         content: ''
       }
     };
@@ -69,17 +99,21 @@ export default {
 
   methods: {
     submitPost() {
+      const timestamp = Date.now();
+      const randomCode = Math.random().toString(36).substring(2, 8);
+      const uniqueCode = `${timestamp}-${randomCode}`;
       // Access the Firebase Realtime Database
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, 'official/title/test');
-      const officialRef2 = firebaseRef(db, 'official/subject/test');
-      const officialRef3 = firebaseRef(db, 'official/content/test');
+      const officialRef1 = firebaseRef(db, `official/${uniqueCode}/title/test`);
+      const officialRef2 = firebaseRef(db, `official/${uniqueCode}/subject/test`);
+      const officialRef3 = firebaseRef(db, `official/${uniqueCode}/content/test`);
 
       set(officialRef1, this.newPost.title);
-      set(officialRef2, '維護');
+      set(officialRef2, this.newPost.subject);
       set(officialRef3, this.newPost.content);
 
       this.newPost.title = '';
+      this.newPost.subject = '';
       this.newPost.content = '';
     }
   },

@@ -19,8 +19,7 @@
       </from>
       <a class="custom-link">
       </a>
-      <router-link :to="{ name: 'home'}"
-        class="custom-link">登出</router-link>
+      <router-link :to="{ name: 'home' }" class="custom-link">登出</router-link>
     </nav>
     <div class="container">
       <div class="p-3 wrapper">
