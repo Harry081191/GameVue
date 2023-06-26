@@ -38,11 +38,13 @@
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
               <li v-for="(item, key) in data" :key="key">
-
                 <div class="post-container">
                   <p class="left-align" style="font-size:40px;">{{ item.title.test }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject.test }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.content.test }}</p>
+                  <button type="submit">讚</button>
+                  <button type="submit">倒讚</button>
+                  <button type="submit">留言</button>
                 </div>
               </li>
             </ul>
@@ -60,12 +62,10 @@
 ul.custom-list {
   list-style-type: none;
 }
-
 ul.custom-list li p.left-align {
   text-indent: -40px;
   /* 调整您希望的负值 */
 }
-
 .custom-link {
   font-size: 25px;
 }
@@ -73,7 +73,6 @@ ul.custom-list li p.left-align {
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
-
 export default {
   data() {
     return {
@@ -96,21 +95,26 @@ export default {
       this.data = data; // Store the data in the component's data property
     });
   },
-
   methods: {
     submitPost() {
       const timestamp = Date.now();
       const randomCode = Math.random().toString(36).substring(2, 8);
       const uniqueCode = `${timestamp}-${randomCode}`;
-      // Access the Firebase Realtime Database
+      
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `plattalk/${uniqueCode}/title/test`);
       const officialRef2 = firebaseRef(db, `plattalk/${uniqueCode}/subject/test`);
       const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content/test`);
+      const officialRef4 = firebaseRef(db, `plattalk/${uniqueCode}/like/test`);
+      const officialRef5 = firebaseRef(db, `plattalk/${uniqueCode}/downvote/test`);
+      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/test`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
       set(officialRef3, this.newPost.content);
+      set(officialRef4, 0);
+      set(officialRef5, 0);
+      set(officialRef6, '');
 
       this.newPost.title = '';
       this.newPost.subject = '';

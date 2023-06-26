@@ -38,7 +38,7 @@
                 </select>
               </div>
             </div>
-            <p style="font-size:20px;">名稱：{{ data.Username }}</p>
+            <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <p style="font-size:80px;">角色圖片{{ selectedOption }}</p>
           </div>
           <div class="col-10 bg-dark text-white" style="text-align: center;">
