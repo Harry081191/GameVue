@@ -52,6 +52,9 @@
               </li>
             </ul>
           </div>
+          <li v-for="(item, key) in data1" :key="key">
+          {{ key }}: {{ item }}
+          </li>
         </div>
       </div>
     </div>
@@ -62,10 +65,12 @@ button.liked {
   background-color: blue;
   color: black;
 }
+
 button.unliked {
   background-color: red;
   color: black;
 }
+
 .post-container {
   border-top: 2px solid black;
   border-left: 2px solid black;
@@ -93,7 +98,7 @@ ul.custom-list li p.left-align {
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
+import { getDatabase, ref as firebaseRef, onValue, set, get } from 'firebase/database';
 import { firebaseApp } from '@/main';
 export default {
   data() {
@@ -101,6 +106,7 @@ export default {
       likedPosts: {},
       unlikedPosts: {},
       data: [],
+      data1: {},
       newPost: {
         title: '',
         subject: '',
@@ -118,11 +124,22 @@ export default {
       const data = snapshot.val();
       this.data = Object.values(data); // Convert object to array
       this.dataLength = this.data.length; // Store the length
+      this.data1 = data;
     });
   },
   methods: {
     toggleLike(index) {
       this.likedPosts[index] = !this.likedPosts[index];
+
+      const postKeys = Object.keys(this.data); // 获取所有帖子的键（key）
+      const postId = postKeys[index]; // 获取指定索引位置的帖子键（key）
+      const db = getDatabase(firebaseApp);
+      const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
+
+      get(officialRef4).then((snapshot) => {
+        const currentLikes = snapshot.val() || 0;
+        set(officialRef4, currentLikes + 1);
+      });
     },
     toggleUnLike(index) {
       this.unlikedPosts[index] = !this.unlikedPosts[index];

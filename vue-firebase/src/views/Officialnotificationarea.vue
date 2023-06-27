@@ -30,6 +30,7 @@
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
               <li v-for="(item, key) in data" :key="key">
+          {{ key }}: {{ item }}
                 <div class="post-container">
                   <p class="left-align" style="font-size:40px;">{{ item.title.test }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject.test }}</p>
