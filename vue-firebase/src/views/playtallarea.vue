@@ -39,6 +39,8 @@
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
               <li v-for="(item, index) in data" :key="index">
+
+                {{ index }}: {{ item }}
                 <div class="post-container" :class="{ 'border-bottom': isLastItem(index) }">
                   <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
@@ -53,7 +55,7 @@
             </ul>
           </div>
           <li v-for="(item, key) in data1" :key="key">
-          {{ key }}: {{ item }}
+            {{ key }}: {{ item }}
           </li>
         </div>
       </div>
@@ -129,20 +131,58 @@ export default {
   },
   methods: {
     toggleLike(index) {
-      this.likedPosts[index] = !this.likedPosts[index];
+      if (this.likedPosts[index]) {
+        this.likedPosts[index] = false;
 
-      const postKeys = Object.keys(this.data); // 获取所有帖子的键（key）
-      const postId = postKeys[index]; // 获取指定索引位置的帖子键（key）
-      const db = getDatabase(firebaseApp);
-      const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
+        const postKeys = Object.keys(this.data1);
+        const postId = postKeys[index];
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
 
-      get(officialRef4).then((snapshot) => {
-        const currentLikes = snapshot.val() || 0;
-        set(officialRef4, currentLikes + 1);
-      });
+        get(officialRef4).then((snapshot) => {
+          const currentLikes = snapshot.val() || 0;
+          set(officialRef4, currentLikes - 1);
+        });
+      } else {
+        this.likedPosts[index] = true;
+
+        const postKeys = Object.keys(this.data1);
+        const postId = postKeys[index];
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
+
+        get(officialRef4).then((snapshot) => {
+          const currentLikes = snapshot.val() || 0;
+          set(officialRef4, currentLikes + 1);
+        });
+      }
     },
     toggleUnLike(index) {
-      this.unlikedPosts[index] = !this.unlikedPosts[index];
+      if (this.unlikedPosts[index]) {
+        this.unlikedPosts[index] = false;
+
+        const postKeys = Object.keys(this.data1);
+        const postId = postKeys[index];
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `plattalk/${postId}/downvote`);
+
+        get(officialRef4).then((snapshot) => {
+          const currentLikes = snapshot.val() || 0;
+          set(officialRef4, currentLikes - 1);
+        });
+      } else {
+        this.unlikedPosts[index] = true;
+
+        const postKeys = Object.keys(this.data1);
+        const postId = postKeys[index];
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `plattalk/${postId}/downvote`);
+
+        get(officialRef4).then((snapshot) => {
+          const currentLikes = snapshot.val() || 0;
+          set(officialRef4, currentLikes + 1);
+        });
+      }
     },
     isLastItem(index) {
       return index === this.dataLength - 1;
