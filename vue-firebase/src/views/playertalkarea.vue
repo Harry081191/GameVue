@@ -39,30 +39,39 @@
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
               <li v-for="(item, index) in data" :key="index">
-
-                {{ index }}: {{ item }}
                 <div class="post-container" :class="{ 'border-bottom': isLastItem(index) }">
                   <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.content }}</p>
-                  <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
-                      class="fas fa-thumbs-up"></i></button>
-                  <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                      class="fas fa-thumbs-down"></i></button>
-                  <button type="submit"><i class="fas fa-comment"></i></button>
+                  <div class="button-content">
+                    <div class="button-content1">
+                      <button type="submit"><i class="fas fa-comment"></i></button>
+                    <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                        class="fas fa-thumbs-up"></i></button>
+                    <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                        class="fas fa-thumbs-down"></i></button>
+                    </div>
+                  </div>
                 </div>
               </li>
             </ul>
           </div>
-          <li v-for="(item, key) in data1" :key="key">
-            {{ key }}: {{ item }}
-          </li>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.button-content {
+  display: flex;
+  align-items: center;
+}
+.button-content button+button {
+  margin-left: 40px;
+}
+.button-content1 {
+  margin-left: auto;
+}
 button.liked {
   background-color: blue;
   color: black;
