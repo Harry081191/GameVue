@@ -119,7 +119,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, 'plattalk/');
+    const dataRef = firebaseRef(db, 'playertalk/');
 
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
@@ -137,7 +137,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/like`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -149,7 +149,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `plattalk/${postId}/like`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/like`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -164,7 +164,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `plattalk/${postId}/downvote`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -176,7 +176,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `plattalk/${postId}/downvote`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -193,12 +193,12 @@ export default {
       const uniqueCode = `${timestamp}-${randomCode}`;
 
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `plattalk/${uniqueCode}/title`);
-      const officialRef2 = firebaseRef(db, `plattalk/${uniqueCode}/subject`);
-      const officialRef3 = firebaseRef(db, `plattalk/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(db, `plattalk/${uniqueCode}/like`);
-      const officialRef5 = firebaseRef(db, `plattalk/${uniqueCode}/downvote`);
-      const officialRef6 = firebaseRef(db, `plattalk/${uniqueCode}/message/total`);
+      const officialRef1 = firebaseRef(db, `playertalk/${uniqueCode}/title`);
+      const officialRef2 = firebaseRef(db, `playertalk/${uniqueCode}/subject`);
+      const officialRef3 = firebaseRef(db, `playertalk/${uniqueCode}/content`);
+      const officialRef4 = firebaseRef(db, `playertalk/${uniqueCode}/like`);
+      const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/downvote`);
+      const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
