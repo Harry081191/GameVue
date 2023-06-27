@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
-            <router-link :to="{ name: 'playtallarea', params: { userId: $route.params.userId } }"
+            <router-link :to="{ name: 'playertalkarea', params: { userId: $route.params.userId } }"
               class="custom-link">玩家討論版</router-link>
             <a class="custom-link">
               |
