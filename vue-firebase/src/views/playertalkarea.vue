@@ -46,10 +46,11 @@
                   <div class="button-content">
                     <div class="button-content1">
                       <button type="submit"><i class="fas fa-comment"></i></button>
-                    <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
-                        class="fas fa-thumbs-up"></i></button>
-                    <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                        class="fas fa-thumbs-down"></i></button>
+                      <a class="like-count">{{ item.like }}</a>
+                      <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                          class="fas fa-thumbs-up"></i></button>
+                      <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                          class="fas fa-thumbs-down"></i></button>
                     </div>
                   </div>
                 </div>
@@ -66,12 +67,20 @@
   display: flex;
   align-items: center;
 }
-.button-content button+button {
-  margin-left: 40px;
-}
+
 .button-content1 {
   margin-left: auto;
 }
+
+.button-content1 .like-count {
+  margin-right: 17.5px;
+  margin-left: 17.5px;
+}
+
+.button-content button+button {
+  margin-left: 10px;
+}
+
 button.liked {
   background-color: blue;
   color: black;
