@@ -46,7 +46,7 @@
                   <div class="button-content">
                     <div class="button-content1">
                       <button type="submit"><i class="fas fa-comment"></i></button>
-                      <a class="like-count">{{ item.like }}</a>
+                      <a class="like-count">{{ item.likepeople.total }}</a>
                       <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                           class="fas fa-thumbs-up"></i></button>
                       <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
@@ -168,11 +168,13 @@ export default {
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople`); //要用User1
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
           set(officialRef4, currentLikes + 1);
         });
+        set(officialRef5, );
       }
     },
     toggleUnLike(index) {
