@@ -64,6 +64,10 @@
         </div>
       </div>
     </div>
+
+    <li v-for="(item, key) in data" :key="key">
+      {{ key }}: {{ item }}
+    </li>
   </div>
 </template>
 <style scoped>
@@ -88,7 +92,7 @@ export default {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
     const userId = this.$route.params.userId; // 從路由參數中獲取使用者名稱
-    const dataRef = firebaseRef(db, `Users/${userId}/`);
+    const dataRef = firebaseRef(db, `Users/${userId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();

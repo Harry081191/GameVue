@@ -110,7 +110,6 @@ ul.custom-list {
 
 ul.custom-list li p.left-align {
   text-indent: -40px;
-  /* 调整您希望的负值 */
 }
 
 .custom-link {
@@ -118,7 +117,7 @@ ul.custom-list li p.left-align {
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue, set, get } from 'firebase/database';
+import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
 import { firebaseApp } from '@/main';
 export default {
   data() {
@@ -131,10 +130,13 @@ export default {
         title: '',
         subject: '',
         content: ''
-      }
+      },
+      userId: null
     };
   },
   mounted() {
+    this.userId = this.$route.params.userId;
+
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'playertalk/');
@@ -156,11 +158,13 @@ export default {
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
           set(officialRef4, currentLikes - 1);
         });
+        remove(officialRef5);
       } else {
         this.likedPosts[index] = true;
 
@@ -168,13 +172,13 @@ export default {
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople${userId}`); //要用User1
+        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
           set(officialRef4, currentLikes + 1);
         });
-        set(officialRef5, userId.name);
+        set(officialRef5, this.userId);
       }
     },
     toggleUnLike(index) {
