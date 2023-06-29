@@ -215,15 +215,19 @@ export default {
       const officialRef2 = firebaseRef(db, `playertalk/${uniqueCode}/subject`);
       const officialRef3 = firebaseRef(db, `playertalk/${uniqueCode}/content`);
       const officialRef4 = firebaseRef(db, `playertalk/${uniqueCode}/like`);
-      const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/downvote`);
-      const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
+      const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/likepeople/total`);
+      const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/downvote`);
+      const officialRef7 = firebaseRef(db, `playertalk/${uniqueCode}/downvotepeople/total`);
+      const officialRef8 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
       set(officialRef3, this.newPost.content);
       set(officialRef4, 0);
       set(officialRef5, 0);
-      set(officialRef6, '');
+      set(officialRef6, 0);
+      set(officialRef7, 0);
+      set(officialRef8, 0);
 
       this.newPost.title = '';
       this.newPost.subject = '';
