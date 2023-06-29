@@ -155,7 +155,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/like`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -167,7 +167,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/like`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -182,7 +182,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -194,7 +194,7 @@ export default {
         const postKeys = Object.keys(this.data1);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
