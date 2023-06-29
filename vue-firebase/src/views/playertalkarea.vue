@@ -168,13 +168,13 @@ export default {
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople`); //要用User1
+        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople${userId}`); //要用User1
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
           set(officialRef4, currentLikes + 1);
         });
-        set(officialRef5, );
+        set(officialRef5, userId.name);
       }
     },
     toggleUnLike(index) {
