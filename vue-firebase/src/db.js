@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
-
-
 export default {
     apiKey: "AIzaSyD1wfBa3TTGdR4xqXg9kU3HaKpkkyQQpE8",
     authDomain: "game-ab172.firebaseapp.com",
