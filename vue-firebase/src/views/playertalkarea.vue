@@ -38,7 +38,7 @@
           </div>
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
-              <li v-for="(item, index) in data" :key="index">
+              <li v-for="(item, index) in dataindex" :key="index">
                 <div class="post-container" :class="{ 'border-bottom': isLastItem(index) }">
                   <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
                   <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
@@ -124,8 +124,8 @@ export default {
     return {
       likedPosts: {},
       unlikedPosts: {},
-      data: [],
-      data1: {},
+      dataindex: [],
+      data: {},
       newPost: {
         title: '',
         subject: '',
@@ -144,21 +144,20 @@ export default {
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      this.data = Object.values(data); // Convert object to array
-      this.dataLength = this.data.length; // Store the length
-      this.data1 = data;
+      this.dataindex = Object.values(data); // Convert object to array
+      this.dataLength = this.dataindex.length; // Store the length
+      this.data = data;
     });
   },
   methods: {
     toggleLike(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+      const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
-
-        const postKeys = Object.keys(this.data1);
-        const postId = postKeys[index];
-        const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -167,12 +166,6 @@ export default {
         remove(officialRef5);
       } else {
         this.likedPosts[index] = true;
-
-        const postKeys = Object.keys(this.data1);
-        const postId = postKeys[index];
-        const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
 
         get(officialRef4).then((snapshot) => {
           const currentLikes = snapshot.val() || 0;
@@ -185,7 +178,7 @@ export default {
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
 
-        const postKeys = Object.keys(this.data1);
+        const postKeys = Object.keys(this.data);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
@@ -197,7 +190,7 @@ export default {
       } else {
         this.unlikedPosts[index] = true;
 
-        const postKeys = Object.keys(this.data1);
+        const postKeys = Object.keys(this.data);
         const postId = postKeys[index];
         const db = getDatabase(firebaseApp);
         const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
