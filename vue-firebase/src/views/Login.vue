@@ -64,7 +64,6 @@
         </div>
       </div>
     </div>
-
     <li v-for="(item, key) in data" :key="key">
       {{ key }}: {{ item }}
     </li>
@@ -75,7 +74,6 @@
   font-size: 25px;
 }
 </style>
-
 <script>
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
