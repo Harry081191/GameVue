@@ -134,15 +134,16 @@ export default {
         subject: '',
         content: ''
       },
-      userId: null
+      userId: null,
+      username: ''
     };
   },
   mounted() {
-    this.userId = this.$route.params.userId;
-
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'playertalk/');
+    this.userId = this.$route.params.userId;
+    this.username = firebaseRef(db, `Users/${this.userId}/name`);
 
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
@@ -173,6 +174,9 @@ export default {
         set(officialRef4, likePeopleCount);
       }
     });
+    get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
+      this.username = snapshot.val();
+    });
   },
   methods: {
     toggleLike(index) {
@@ -187,7 +191,7 @@ export default {
       } else {
         this.likedPosts[index] = true;
 
-        set(officialRef4, this.userId);
+        set(officialRef4, this.username);
       }
     },
     toggleUnLike(index) {
@@ -202,7 +206,7 @@ export default {
       } else {
         this.unlikedPosts[index] = true;
 
-        set(officialRef5, this.userId);
+        set(officialRef5, this.username);
       }
     },
     isLastItem(index) {
@@ -239,8 +243,8 @@ export default {
       set(officialRef5, 0);
       set(officialRef6, 0);
       set(officialRef7, currentDateTime);
-      set(officialRef8, this.userId);
-      
+      set(officialRef8, this.username);
+
       this.newPost.title = '';
       this.newPost.subject = '';
       this.newPost.content = '';
