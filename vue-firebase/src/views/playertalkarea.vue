@@ -158,9 +158,18 @@ export default {
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
 
-        const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        set(officialRef4, likePeopleCount);
+        const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+        const officialRef1 = firebaseRef(db, `playertalk/${postId}/likepeople`);
+
+        get(officialRef1).then((snapshot) => {
+          const likePeople = snapshot.val();
+          if (likePeople && likePeople[this.userId]) {
+            this.likedPosts[i] = true;
+          } else {
+            this.likedPosts[i] = false;
+          }
+        });
+        set(officialRef2, likePeopleCount);
       }
 
       for (let i = 0; i < this.dataLength; i++) {
@@ -170,8 +179,9 @@ export default {
         const likePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
 
         const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
-        set(officialRef4, likePeopleCount);
+        const officialRef1 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
+        const officialRef2 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
+        set(officialRef2, likePeopleCount);
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
