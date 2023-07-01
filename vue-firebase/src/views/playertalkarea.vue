@@ -60,6 +60,9 @@
         </div>
       </div>
     </div>
+    <li v-for="(item, key) in data" :key="key">
+      {{ key }}: {{ item }}
+    </li>
   </div>
 </template>
 <style scoped>
@@ -147,6 +150,28 @@ export default {
       this.dataindex = Object.values(data); // Convert object to array
       this.dataLength = this.dataindex.length; // Store the length
       this.data = data;
+
+      for (let i = 0; i < this.dataLength; i++) {
+        const post = this.dataindex[i];
+        const postId = Object.keys(this.data)[i];
+
+        const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+        set(officialRef4, likePeopleCount);
+      }
+
+      for (let i = 0; i < this.dataLength; i++) {
+        const post = this.dataindex[i];
+        const postId = Object.keys(this.data)[i];
+
+        const likePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+
+        const db = getDatabase(firebaseApp);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
+        set(officialRef4, likePeopleCount);
+      }
     });
   },
   methods: {
@@ -154,51 +179,30 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-      const officialRef5 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
+      const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
 
-        get(officialRef4).then((snapshot) => {
-          const currentLikes = snapshot.val() || 0;
-          set(officialRef4, currentLikes - 1);
-        });
-        remove(officialRef5);
+        remove(officialRef4);
       } else {
         this.likedPosts[index] = true;
 
-        get(officialRef4).then((snapshot) => {
-          const currentLikes = snapshot.val() || 0;
-          set(officialRef4, currentLikes + 1);
-        });
-        set(officialRef5, this.userId);
+        set(officialRef4, this.userId);
       }
     },
     toggleUnLike(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef5 = firebaseRef(db, `playertalk/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
 
-        const postKeys = Object.keys(this.data);
-        const postId = postKeys[index];
-        const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
-
-        get(officialRef4).then((snapshot) => {
-          const currentLikes = snapshot.val() || 0;
-          set(officialRef4, currentLikes - 1);
-        });
+        remove(officialRef5);
       } else {
         this.unlikedPosts[index] = true;
 
-        const postKeys = Object.keys(this.data);
-        const postId = postKeys[index];
-        const db = getDatabase(firebaseApp);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvote/total`);
-
-        get(officialRef4).then((snapshot) => {
-          const currentLikes = snapshot.val() || 0;
-          set(officialRef4, currentLikes + 1);
-        });
+        set(officialRef5, this.userId);
       }
     },
     isLastItem(index) {
@@ -208,6 +212,15 @@ export default {
       const timestamp = Date.now();
       const randomCode = Math.random().toString(36).substring(2, 8);
       const uniqueCode = `${timestamp}-${randomCode}`;
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `playertalk/${uniqueCode}/title`);
@@ -216,6 +229,8 @@ export default {
       const officialRef4 = firebaseRef(db, `playertalk/${uniqueCode}/likepeople/total`);
       const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/downvotepeople/total`);
       const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
+      const officialRef7 = firebaseRef(db, `playertalk/${uniqueCode}/createtime`);
+      const officialRef8 = firebaseRef(db, `playertalk/${uniqueCode}/createname`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
@@ -223,7 +238,9 @@ export default {
       set(officialRef4, 0);
       set(officialRef5, 0);
       set(officialRef6, 0);
-
+      set(officialRef7, currentDateTime);
+      set(officialRef8, this.userId);
+      
       this.newPost.title = '';
       this.newPost.subject = '';
       this.newPost.content = '';
