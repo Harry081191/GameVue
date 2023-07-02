@@ -94,6 +94,10 @@ button.unliked {
   color: black;
 }
 
+button.unliked+button.liked {
+  pointer-events: none;
+}
+
 .post-container {
   border-top: 2px solid black;
   border-left: 2px solid black;
@@ -169,6 +173,7 @@ export default {
             this.likedPosts[i] = false;
           }
         });
+
         set(officialRef2, likePeopleCount);
       }
 
@@ -181,6 +186,17 @@ export default {
         const db = getDatabase(firebaseApp);
         const officialRef1 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
         const officialRef2 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
+
+        get(officialRef1).then((snapshot) => {
+          const unlikePeople = snapshot.val();
+          if (unlikePeople && unlikePeople[this.userId]) {
+            this.unlikedPosts[i] = true;
+          } else {
+            this.unlikedPosts[i] = false;
+          }
+
+        });
+
         set(officialRef2, likePeopleCount);
       }
     });
@@ -202,6 +218,9 @@ export default {
         this.likedPosts[index] = true;
 
         set(officialRef4, this.username);
+        if (this.unlikedPosts[index]) {
+          this.toggleUnLike(index);
+        }
       }
     },
     toggleUnLike(index) {
@@ -217,6 +236,9 @@ export default {
         this.unlikedPosts[index] = true;
 
         set(officialRef5, this.username);
+        if (this.likedPosts[index]) {
+          this.toggleLike(index);
+        }
       }
     },
     isLastItem(index) {
