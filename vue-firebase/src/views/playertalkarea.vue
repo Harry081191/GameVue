@@ -14,6 +14,7 @@
             <a class="custom-link">
               |
             </a>
+            <!-- :class="{ 'border-bottom': isLastItem(index) }"-->
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
               class="custom-link">官方通知區</router-link>
           </li>
@@ -39,10 +40,10 @@
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
               <li v-for="(item, index) in dataindex" :key="index">
-                <div class="post-container" :class="{ 'border-bottom': isLastItem(index) }">
-                  <p class="left-align" style="font-size:40px;">{{ item.title }}</p>
-                  <p class="left-align" style="font-size:40px;">{{ item.subject }}</p>
-                  <p class="left-align" style="font-size:40px;">{{ item.content }}</p>
+                <div class="post-container">
+                  <p class="middle-align" style="font-size:40px;">{{ item.title }}</p>
+                  <p class="middle-align" style="font-size:40px;">{{ item.subject }}</p>
+                  <p class="middle-align" style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
                     <div class="button-content1">
                       <button type="submit"><i class="fas fa-comment"></i></button>
@@ -53,6 +54,10 @@
                           class="fas fa-thumbs-down"></i></button>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <a class="left-align" style="font-size:20px;">{{ item.createtime }}</a>
+                  <a class="left-align" style="font-size:20px;">{{ item.createname }}</a>
                 </div>
               </li>
             </ul>
@@ -94,31 +99,31 @@ button.unliked {
   color: black;
 }
 
-button.unliked+button.liked {
-  pointer-events: none;
-}
-
 .post-container {
   border-top: 2px solid black;
   border-left: 2px solid black;
   border-right: 2px solid black;
+  border-bottom: 2px solid black;
   padding: 10px;
 }
 
+/*
 .border-bottom {
   border-bottom-width: 2px !important;
   border-bottom-style: solid;
   border-bottom-color: black !important;
 }
-
+*/
 ul.custom-list {
   list-style-type: none;
 }
 
-ul.custom-list li p.left-align {
+ul.custom-list li p.middle-align {
   text-indent: -40px;
 }
-
+ul.custom-list li a.left-align {
+  text-indent: -40px !important;
+}
 .custom-link {
   font-size: 25px;
 }
