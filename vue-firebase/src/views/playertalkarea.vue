@@ -43,8 +43,8 @@
                 <div class="post-container">
                   <div class="button-content">
                     <div class="button-content1">
-                      <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)">
-                        <i class="fas fa-times"></i></button>
+                      <button type="submit" :class="{ delete: deletePosts[index] }" @click="toggleDelete (index)"><i
+                          class="fas fa-times"></i></button>
                     </div>
                   </div>
                   <p style="font-size:40px;">{{ item.title }}</p>
@@ -102,6 +102,11 @@ button.unliked {
   color: black;
 }
 
+button.delete {
+  background-color: red;
+  color: black;
+}
+
 .post-container {
   border-top: 2px solid black;
   border-left: 2px solid black;
@@ -137,6 +142,7 @@ export default {
     return {
       likedPosts: {},
       unlikedPosts: {},
+      deletePosts: {},
       dataindex: [],
       data: {},
       newPost: {
@@ -230,6 +236,24 @@ export default {
       }
     },
     toggleUnLike(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef5 = firebaseRef(db, `playertalk/${postId}/downvotepeople/${this.userId}`);
+      if (this.unlikedPosts[index]) {
+        this.unlikedPosts[index] = false;
+
+        remove(officialRef5);
+      } else {
+        this.unlikedPosts[index] = true;
+
+        set(officialRef5, this.username);
+        if (this.likedPosts[index]) {
+          this.toggleLike(index);
+        }
+      }
+    },
+    toggleDelete(index) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);

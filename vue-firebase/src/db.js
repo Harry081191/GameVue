@@ -12,8 +12,6 @@ export default {
     measurementId: "G-KG736KE2VM"
 };
 
-const database = getDatabase();
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
