@@ -41,6 +41,12 @@
             <ul class="custom-list">
               <li v-for="(item, index) in dataindex" :key="index">
                 <div class="post-container">
+                  <div class="button-content">
+                    <div class="button-content1">
+                      <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)">
+                        <i class="fas fa-times"></i></button>
+                    </div>
+                  </div>
                   <p style="font-size:40px;">{{ item.title }}</p>
                   <p style="font-size:40px;">{{ item.subject }}</p>
                   <p style="font-size:40px;">{{ item.content }}</p>
