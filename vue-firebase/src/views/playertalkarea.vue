@@ -41,9 +41,9 @@
             <ul class="custom-list">
               <li v-for="(item, index) in dataindex" :key="index">
                 <div class="post-container">
-                  <p class="middle-align" style="font-size:40px;">{{ item.title }}</p>
-                  <p class="middle-align" style="font-size:40px;">{{ item.subject }}</p>
-                  <p class="middle-align" style="font-size:40px;">{{ item.content }}</p>
+                  <p style="font-size:40px;">{{ item.title }}</p>
+                  <p style="font-size:40px;">{{ item.subject }}</p>
+                  <p style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
                     <div class="button-content1">
                       <button type="submit"><i class="fas fa-comment"></i></button>
@@ -55,9 +55,9 @@
                     </div>
                   </div>
                 </div>
-                <div>
-                  <a class="left-align" style="font-size:20px;">{{ item.createtime }}</a>
-                  <a class="left-align" style="font-size:20px;">{{ item.createname }}</a>
+                <div style="text-align: right;">
+                  <span style="font-size: 20px; margin-right:30px;">創建時間：{{ item.createtime }}</span>
+                  <span style="font-size: 20px;">創建人：{{ item.createname }}</span>
                 </div>
               </li>
             </ul>
@@ -80,7 +80,7 @@
   margin-left: auto;
 }
 
-.button-content1 .like-count {
+.like-count {
   margin-right: 17.5px;
   margin-left: 17.5px;
 }
@@ -114,16 +114,14 @@ button.unliked {
   border-bottom-color: black !important;
 }
 */
-ul.custom-list {
+.custom-list {
   list-style-type: none;
 }
 
-ul.custom-list li p.middle-align {
-  text-indent: -40px;
+.left-align {
+  text-align: left !important;
 }
-ul.custom-list li a.left-align {
-  text-indent: -40px !important;
-}
+
 .custom-link {
   font-size: 25px;
 }
