@@ -14,7 +14,6 @@
             <a class="custom-link">
               |
             </a>
-            <!-- :class="{ 'border-bottom': isLastItem(index) }"-->
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
               class="custom-link">官方通知區</router-link>
           </li>
@@ -43,7 +42,7 @@
                 <div class="post-container">
                   <div class="button-content">
                     <div class="button-content1">
-                      <button type="submit" :class="{ delete: deletePosts[index] }" @click="toggleDelete (index)"><i
+                      <button type="submit" :class="{ delete: deletePosts[index] }" @click="toggleDelete(index)"><i
                           class="fas fa-times"></i></button>
                     </div>
                   </div>
@@ -62,7 +61,7 @@
                   </div>
                 </div>
                 <div style="text-align: right;">
-                  <span style="font-size: 20px; margin-right:30px;">創建時間：{{ item.createtime }}</span>
+                  <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
                   <span style="font-size: 20px;">創建人：{{ item.createname }}</span>
                 </div>
               </li>
@@ -115,19 +114,8 @@ button.delete {
   padding: 10px;
 }
 
-/*
-.border-bottom {
-  border-bottom-width: 2px !important;
-  border-bottom-style: solid;
-  border-bottom-color: black !important;
-}
-*/
 .custom-list {
   list-style-type: none;
-}
-
-.left-align {
-  text-align: left !important;
 }
 
 .custom-link {
@@ -257,19 +245,12 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef5 = firebaseRef(db, `playertalk/${postId}/downvotepeople/${this.userId}`);
-      if (this.unlikedPosts[index]) {
-        this.unlikedPosts[index] = false;
-
-        remove(officialRef5);
-      } else {
-        this.unlikedPosts[index] = true;
-
-        set(officialRef5, this.username);
-        if (this.likedPosts[index]) {
-          this.toggleLike(index);
-        }
-      }
+      const officialRef1 = firebaseRef(db, `playertalk/${postId}`);
+      const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople`);
+      const officialRef3 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
+      remove(officialRef1);
+      remove(officialRef2);
+      remove(officialRef3);
     },
     isLastItem(index) {
       return index === this.dataLength - 1;
