@@ -65,9 +65,6 @@
         </div>
       </div>
     </div>
-    <li v-for="(item, key) in data" :key="key">
-      {{ key }}: {{ item }}
-    </li>
   </div>
 </template>
 <style scoped>
