@@ -116,6 +116,8 @@ button.delete {
 
 .custom-list {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .custom-link {
