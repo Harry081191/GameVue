@@ -42,7 +42,7 @@
                 <div class="post-container">
                   <div class="button-content">
                     <div class="button-content1">
-                      <button type="submit" :class="{ delete: deletePosts[index] }" @click="toggleDelete(index)"><i
+                      <button type="submit" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
                           class="fas fa-times"></i></button>
                     </div>
                   </div>
@@ -101,7 +101,7 @@ button.unliked {
   color: black;
 }
 
-button.delete {
+button.deleted {
   background-color: red;
   color: black;
 }
