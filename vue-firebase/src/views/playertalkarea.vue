@@ -62,7 +62,7 @@
                 </div>
                 <div style="text-align: right;">
                   <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                  <span style="font-size: 20px;">創建人：{{ item.createname }}</span>
+                  <span style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
                 </div>
               </li>
             </ul>
@@ -102,8 +102,7 @@ button.unliked {
 }
 
 button.deleted {
-  background-color: red;
-  color: black;
+  visibility: hidden;
 }
 
 .post-container {
@@ -164,8 +163,8 @@ export default {
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
 
-        const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
         const officialRef1 = firebaseRef(db, `playertalk/${postId}/likepeople`);
+        const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
 
         get(officialRef1).then((snapshot) => {
           const likePeople = snapshot.val();
@@ -183,7 +182,7 @@ export default {
         const post = this.dataindex[i];
         const postId = Object.keys(this.data)[i];
 
-        const likePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+        const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
 
         const db = getDatabase(firebaseApp);
         const officialRef1 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
@@ -199,7 +198,23 @@ export default {
 
         });
 
-        set(officialRef2, likePeopleCount);
+        set(officialRef2, unlikePeopleCount);
+      }
+
+      for (let i = 0; i < this.dataLength; i++) {
+        const postId = Object.keys(this.data)[i];
+
+        const officialRef1 = firebaseRef(db, `playertalk/${postId}/createname`);
+        
+        get(officialRef1).then((snapshot) => {
+          const deleted = snapshot.val();
+          if (deleted && deleted[this.userId]) {
+            this.deletePosts[i] = false;
+          } else {
+            this.deletePosts[i] = true;
+          }
+
+        });
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
@@ -279,7 +294,7 @@ export default {
       const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/downvotepeople/total`);
       const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
       const officialRef7 = firebaseRef(db, `playertalk/${uniqueCode}/createtime`);
-      const officialRef8 = firebaseRef(db, `playertalk/${uniqueCode}/createname`);
+      const officialRef8 = firebaseRef(db, `playertalk/${uniqueCode}/createname/${this.userId}`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
