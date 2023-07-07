@@ -29,12 +29,15 @@
             <h2>討論區</h2>
           </div>
           <div class="col-10" style="text-align: right">
-            <form @submit.prevent="submitPost">
-              <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
-              <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
-              <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
-              <button type="submit">提交</button>
-            </form>
+            <button @click="toggleForm">開啟表單</button>
+            <div v-if="showForm" class="form-container">
+              <form @submit.prevent="submitPost">
+                <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
+                <button type="submit">提交</button>
+              </form>
+            </div>
           </div>
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
@@ -122,6 +125,15 @@ button.deleted {
 .custom-link {
   font-size: 25px;
 }
+.form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(112, 231, 120);
+  padding: 20px;
+  z-index: 9999;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
@@ -140,7 +152,8 @@ export default {
         content: ''
       },
       userId: null,
-      username: ''
+      username: '',
+      showForm: false
     };
   },
   mounted() {
@@ -205,7 +218,7 @@ export default {
         const postId = Object.keys(this.data)[i];
 
         const officialRef1 = firebaseRef(db, `playertalk/${postId}/createname`);
-        
+
         get(officialRef1).then((snapshot) => {
           const deleted = snapshot.val();
           if (deleted && deleted[this.userId]) {
@@ -269,8 +282,8 @@ export default {
       remove(officialRef2);
       remove(officialRef3);
     },
-    isLastItem(index) {
-      return index === this.dataLength - 1;
+    toggleForm() {
+      this.showForm = !this.showForm;
     },
     submitPost() {
       const timestamp = Date.now();
@@ -305,9 +318,7 @@ export default {
       set(officialRef7, currentDateTime);
       set(officialRef8, this.username);
 
-      this.newPost.title = '';
-      this.newPost.subject = '';
-      this.newPost.content = '';
+      this.showForm = !this.showForm;
     }
   },
 }
