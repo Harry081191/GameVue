@@ -54,7 +54,7 @@
                   <p style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
                     <div class="button-content1">
-                      <button type="submit"><i class="fas fa-comment"></i></button>
+                      <button type="submit" @click="toggleMessage"><i class="fas fa-comment"></i></button>
                       <a class="like-count">{{ item.likepeople.total }}</a>
                       <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                           class="fas fa-thumbs-up"></i></button>
@@ -125,6 +125,7 @@ button.deleted {
 .custom-link {
   font-size: 25px;
 }
+
 .form-container {
   position: fixed;
   top: 50%;
@@ -153,7 +154,8 @@ export default {
       },
       userId: null,
       username: '',
-      showForm: false
+      showForm: false,
+      showMessage: false
     };
   },
   mounted() {
@@ -284,6 +286,10 @@ export default {
     },
     toggleForm() {
       this.showForm = !this.showForm;
+    },
+    toggleMessage() {
+      this.showMessage = !this.showMessage;
+      //寫入留言方法
     },
     submitPost() {
       const timestamp = Date.now();
