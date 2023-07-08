@@ -54,7 +54,13 @@
                   <p style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
                     <div class="button-content1">
-                      <button type="submit" @click="toggleMessage"><i class="fas fa-comment"></i></button>
+                      <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
+                      <div v-if="showMessage" class="message-container">
+                        <form @submit.prevent="submitMessage">
+                          <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                          <button type="submit">提交</button>
+                        </form>
+                      </div>
                       <a class="like-count">{{ item.likepeople.total }}</a>
                       <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                           class="fas fa-thumbs-up"></i></button>
@@ -135,6 +141,16 @@ button.deleted {
   padding: 20px;
   z-index: 9999;
 }
+
+.message-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(112, 231, 120);
+  padding: 20px;
+  z-index: 9999;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
@@ -150,6 +166,9 @@ export default {
       newPost: {
         title: '',
         subject: '',
+        content: ''
+      },
+      newMessage:{
         content: ''
       },
       userId: null,
@@ -287,9 +306,17 @@ export default {
     toggleForm() {
       this.showForm = !this.showForm;
     },
-    toggleMessage() {
+    toggleMessage(index) {
+      this.indexMessage = index;
       this.showMessage = !this.showMessage;
-      //寫入留言方法
+    },
+    submitMessage() {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[this.indexMessage];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${this.userId}`);
+
+      set(officialRef1, this.newMessage.content);
     },
     submitPost() {
       const timestamp = Date.now();
