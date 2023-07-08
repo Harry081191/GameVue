@@ -317,6 +317,8 @@ export default {
       const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${this.userId}`);
 
       set(officialRef1, this.newMessage.content);
+      
+      this.newMessage.content = '';
     },
     submitPost() {
       const timestamp = Date.now();
