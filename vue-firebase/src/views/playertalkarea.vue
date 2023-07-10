@@ -28,21 +28,25 @@
           <div class="col-8" style="text-align: center">
             <h2>討論區</h2>
           </div>
-          <div class="col-10" style="text-align: right">
-            <button @click="toggleForm">開啟表單</button>
+          <div class="col-10">
+            <div style="text-align: right">
+              <button @click="toggleForm">開啟表單</button>
+            </div>
             <Transition>
               <div v-if="showForm" class="form-container">
                 <form @submit.prevent="submitPost">
                   <div>
-                    <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                    <input style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
                   </div>
                   <div>
-                    <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                    <textarea style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
                   </div>
                   <div>
-                    <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
+                    <textarea style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
                   </div>
-                  <button type="submit">提交</button>
+                  <div style="text-align: right">
+                    <button type="submit">提交</button>
+                  </div>
                 </form>
               </div>
             </Transition>
