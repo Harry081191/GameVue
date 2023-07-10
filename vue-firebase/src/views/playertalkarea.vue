@@ -30,14 +30,22 @@
           </div>
           <div class="col-10" style="text-align: right">
             <button @click="toggleForm">開啟表單</button>
-            <div v-if="showForm" class="form-container">
-              <form @submit.prevent="submitPost">
-                <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
-                <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
-                <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
-                <button type="submit">提交</button>
-              </form>
-            </div>
+            <Transition>
+              <div v-if="showForm" class="form-container">
+                <form @submit.prevent="submitPost">
+                  <div>
+                    <input v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                  </div>
+                  <div>
+                    <textarea v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                  </div>
+                  <div>
+                    <textarea v-model="newPost.content" placeholder="帖子內容" required></textarea>
+                  </div>
+                  <button type="submit">提交</button>
+                </form>
+              </div>
+            </Transition>
           </div>
           <div class="col-10 bg-white text-dark" style="text-align: center;">
             <ul class="custom-list">
@@ -54,11 +62,12 @@
                   <p style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
                     <div class="button-content1">
+                      <a class="like-count">{{ item.message.total }}</a>
                       <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
                       <div v-if="showMessage" class="message-container">
                         <form @submit.prevent="submitMessage">
                           <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
-                          <button type="submit">提交</button>
+                          <button type="submit">提交回復</button>
                         </form>
                       </div>
                       <a class="like-count">{{ item.likepeople.total }}</a>
@@ -151,6 +160,20 @@ button.deleted {
   padding: 20px;
   z-index: 9999;
 }
+
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
@@ -168,7 +191,7 @@ export default {
         subject: '',
         content: ''
       },
-      newMessage:{
+      newMessage: {
         content: ''
       },
       userId: null,
@@ -250,6 +273,17 @@ export default {
 
         });
       }
+
+      for (let i = 0; i < this.dataLength; i++) {
+        const post = this.dataindex[i];
+        const postId = Object.keys(this.data)[i];
+
+        const unlikePeopleCount = (Object.keys(post.message || {}).length) - 1;
+
+        const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/total`);
+
+        set(officialRef1, unlikePeopleCount);
+      }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
@@ -305,6 +339,10 @@ export default {
     },
     toggleForm() {
       this.showForm = !this.showForm;
+
+      this.newPost.title = '';
+      this.newPost.subject = '';
+      this.newPost.content = '';
     },
     toggleMessage(index) {
       this.indexMessage = index;
@@ -317,8 +355,9 @@ export default {
       const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${this.userId}`);
 
       set(officialRef1, this.newMessage.content);
-      
+
       this.newMessage.content = '';
+      this.showMessage = !this.showMessage;
     },
     submitPost() {
       const timestamp = Date.now();
