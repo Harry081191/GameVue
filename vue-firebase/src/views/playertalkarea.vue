@@ -34,7 +34,12 @@
             </div>
             <Transition>
               <div v-if="showForm" class="form-container">
-                <form @submit.prevent="submitPost">
+                <form>
+                  <div class="button-content">
+                    <div class="button-content1">
+                      <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
+                    </div>
+                  </div>
                   <div>
                     <input style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
                   </div>
@@ -45,7 +50,7 @@
                     <textarea style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
                   </div>
                   <div style="text-align: right">
-                    <button type="submit">提交</button>
+                    <button type="submit" @submit.prevent="submitPost">提交</button>
                   </div>
                 </form>
               </div>
@@ -68,12 +73,21 @@
                     <div class="button-content1">
                       <a class="like-count">{{ item.message.total }}</a>
                       <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
-                      <div v-if="showMessage" class="message-container">
-                        <form @submit.prevent="submitMessage">
-                          <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
-                          <button type="submit">提交回復</button>
-                        </form>
-                      </div>
+                      <Transition>
+                        <div v-if="showMessage" class="message-container">
+                          <form>
+                            <div class="button-content">
+                              <div class="button-content1">
+                                <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
+                              </div>
+                            </div>
+                            <div>
+                              <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                            </div>
+                            <button type="submit" @submit.prevent="submitMessage">提交回復</button>
+                          </form>
+                        </div>
+                      </Transition>
                       <a class="like-count">{{ item.likepeople.total }}</a>
                       <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                           class="fas fa-thumbs-up"></i></button>
@@ -170,7 +184,7 @@ button.deleted {
 }
 
 .v-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .v-enter-from,
@@ -342,26 +356,45 @@ export default {
       remove(officialRef3);
     },
     toggleForm() {
-      this.showForm = !this.showForm;
+      if (!this.showForm) {
+        this.showForm = !this.showForm;
+      }
 
       this.newPost.title = '';
       this.newPost.subject = '';
       this.newPost.content = '';
     },
+    toggleFormClone() {
+      this.showForm = !this.showForm;
+    },
     toggleMessage(index) {
       this.indexMessage = index;
+      if (!this.showMessage) {
+        this.showMessage = !this.showMessage;
+      }
+    },
+    toggleMessageClone() {
       this.showMessage = !this.showMessage;
     },
     submitMessage() {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[this.indexMessage];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${this.userId}`);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
+
+      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTime}/${this.username}`);
 
       set(officialRef1, this.newMessage.content);
 
       this.newMessage.content = '';
-      this.showMessage = !this.showMessage;
     },
     submitPost() {
       const timestamp = Date.now();

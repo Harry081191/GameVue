@@ -15,7 +15,7 @@
                 <h1>登入</h1>
                 <strong>帳號</strong>
                 <input v-model="username" type="text" class="form-control" id="Username" name="Username"
-                  placeholder="請輸入帳號或電子郵件">
+                  placeholder="請輸入帳號">
                 <strong>密碼</strong>
                 <input v-model="password" type="password" class="form-control" id="Password" name="Password"
                   placeholder="請輸入密碼">
