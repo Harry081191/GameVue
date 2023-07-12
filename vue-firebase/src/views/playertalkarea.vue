@@ -36,7 +36,7 @@
               <div v-if="showForm" class="form-container">
                 <form>
                   <div class="button-content">
-                    <div class="button-content1">
+                    <div class="button-content-left">
                       <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
                     </div>
                   </div>
@@ -61,7 +61,7 @@
               <li v-for="(item, index) in dataindex" :key="index">
                 <div class="post-container">
                   <div class="button-content">
-                    <div class="button-content1">
+                    <div class="button-content-left">
                       <button type="submit" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
                           class="fas fa-times"></i></button>
                     </div>
@@ -70,21 +70,26 @@
                   <p style="font-size:40px;">{{ item.subject }}</p>
                   <p style="font-size:40px;">{{ item.content }}</p>
                   <div class="button-content">
-                    <div class="button-content1">
+                    <div class="button-content-left">
                       <a class="like-count">{{ item.message.total }}</a>
                       <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
                       <Transition>
-                        <div v-if="showMessage" class="message-container">
-                          <form>
+                        <div v-if="showMessage && index === openFormIndex" class="message-container">
+                          <form @submit.prevent="submitMessage">
                             <div class="button-content">
-                              <div class="button-content1">
+                              <div class="button-content-left">
                                 <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
                               </div>
                             </div>
                             <div>
                               <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
                             </div>
-                            <button type="submit" @submit.prevent="submitMessage">提交回復</button>
+                            <div class="button-content">
+                              <div class="button-content-left">
+                                <button type="submit">提交回復</button>
+                              </div>
+                            </div>
+                            <p style="font-size:20px;">{{ item.message }}</p>
                           </form>
                         </div>
                       </Transition>
@@ -114,7 +119,7 @@
   align-items: center;
 }
 
-.button-content1 {
+.button-content-left {
   margin-left: auto;
 }
 
@@ -215,7 +220,8 @@ export default {
       userId: null,
       username: '',
       showForm: false,
-      showMessage: false
+      showMessage: false,
+      openFormIndex: null,
     };
   },
   mounted() {
@@ -296,11 +302,12 @@ export default {
         const post = this.dataindex[i];
         const postId = Object.keys(this.data)[i];
 
-        const unlikePeopleCount = (Object.keys(post.message || {}).length) - 1;
+        const messageCount = (Object.keys(post.message || {}).length) - 1;
 
-        const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/total`);
+        const officialRef1 = firebaseRef(db, `playertalk/${postId}/message`);
+        const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/total`);
 
-        set(officialRef1, unlikePeopleCount);
+          set(officialRef2, messageCount);
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
@@ -369,6 +376,7 @@ export default {
     },
     toggleMessage(index) {
       this.indexMessage = index;
+      this.openFormIndex = index;
       if (!this.showMessage) {
         this.showMessage = !this.showMessage;
       }

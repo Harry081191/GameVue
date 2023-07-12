@@ -15,10 +15,8 @@
       </div>
       <from class="from-inline" style="text-align: right;">
         <input type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
-        <button type="submit" class="btn btn-dark">Serch</button>
+        <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
       </from>
-      <a class="custom-link">
-      </a>
       <router-link :to="{ name: 'home' }" class="custom-link">登出</router-link>
     </nav>
     <div class="container">
