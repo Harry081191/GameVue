@@ -30,7 +30,7 @@
           </div>
           <div class="col-10">
             <div style="text-align: right">
-              <button @click="toggleForm">開啟表單</button>
+              <button @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
             </div>
             <Transition>
               <div v-if="showForm" class="form-container">
@@ -88,11 +88,11 @@
                               </div>
                               <div class="button-content">
                                 <div class="button-content-left">
-                                  <button type="submit">提交回復</button>
+                                  <button type="submit" style="margin-bottom: 10px">提交回復</button>
                                 </div>
                               </div>
                               <div class="post-container">
-                                <p style="font-size:20px;">{{ filteredMessage(item.message) }}</p>
+                                <pre style="font-size:20px;">{{ filteredMessage(item.message) }}</pre>
                               </div>
                             </form>
                           </div>
@@ -108,8 +108,9 @@
                 </div>
                 <div style="text-align: right;">
                   <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                  <span style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
+                  <span style="font-size: 20px; ">創建人：{{ Object.values(item.createname)[0] }}</span>
                 </div>
+                <p style="margin-bottom:20px"></p>
               </li>
             </ul>
           </div>
@@ -187,6 +188,7 @@ button.deleted {
   background-color: rgb(112, 231, 120);
   padding: 20px;
   z-index: 9999;
+  width: 600px;
 }
 
 .v-enter-active {
@@ -398,12 +400,11 @@ export default {
       const filtered = { ...message };
       delete filtered.total;
 
-      const messagesArray = Object.values(filtered).map((message, index) => {
-        return { [index]: message };
+      const messagesArray = Object.values(filtered).map((message) => {
+        return message.creattime;
       });
-      const filteredMessages = Object.assign({}, ...messagesArray);
 
-      return filteredMessages;
+      return messagesArray.join('\n');;
     },
     submitMessage() {
       const postKeys = Object.keys(this.data);
@@ -418,7 +419,7 @@ export default {
       const seconds = now.getSeconds();
 
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
-      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}`;
 
       const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/${this.username}`);
       const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/creattime`);
