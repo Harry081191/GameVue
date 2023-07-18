@@ -1,7 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+
   <nav>
     <router-link to="/">遊戲名</router-link>
   </nav>
@@ -19,20 +19,18 @@
                 <strong>密碼</strong>
                 <input v-model="password" type="password" class="form-control" id="Password" name="Password"
                   placeholder="請輸入密碼">
-                <div class="d-grid gap-2 col-6 mx-auto">
-                  <div class="d-grid gap-2 d-md-flex justify-content-center"
-                  style="margin-top: 10px; margin-bottom: 10px;">
-                    <button type="submit" class="btn btn-outline-danger">
-                      登入
-                    </button>
-                  </div>
-                  <a class="d-grid gap-2 d-md-flex justify-content-center a1"
-                    style="margin-top: 10px; margin-bottom: 10px;">
-                    <router-link to="/ForgetPassword">Forget Password?</router-link>
-                  </a>
-                  <a class="d-grid gap-2 d-md-flex justify-content-center a2" style="margin-top: 10px;">
-                    <router-link to="/CreateAccount">Create Account?</router-link>
-                  </a>
+                <div class = "remember">
+                  <label><input type="checkbox">Remember me</label>
+                  <router-link to="/ForgetPassword">Forget Password?</router-link>
+                </div>
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                  <button type="submit" class="btn btn-outline-danger">
+                    登入
+                  </button>
+                </div>
+                <div>
+                  <a class = "from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
+                  <router-link to="/CreateAccount">Register</router-link>
                 </div>
               </form>
             </div>
@@ -50,7 +48,12 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
-
+<style scoped>
+.remember{
+  display: flex;
+  justify-content: space-between;
+}
+</style>
 <script>
 import HelloWorld from '@/components/HelloWorld.vue';
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';

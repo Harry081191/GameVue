@@ -75,22 +75,27 @@
                       <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
                       <Transition>
                         <div v-if="showMessage && index === openFormIndex" class="message-container">
-                          <form @submit.prevent="submitMessage">
-                            <div class="button-content">
-                              <div class="button-content-left">
-                                <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
+                          <div class="form-scroll">
+                            <form @submit.prevent="submitMessage">
+                              <div class="button-content">
+                                <div class="button-content-left">
+                                  <button type="button" @click="toggleMessageClone()"><i
+                                      class="fas fa-times"></i></button>
+                                </div>
                               </div>
-                            </div>
-                            <div>
-                              <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
-                            </div>
-                            <div class="button-content">
-                              <div class="button-content-left">
-                                <button type="submit">提交回復</button>
+                              <div>
+                                <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
                               </div>
-                            </div>
-                            <p style="font-size:20px;">{{ item.message }}</p>
-                          </form>
+                              <div class="button-content">
+                                <div class="button-content-left">
+                                  <button type="submit">提交回復</button>
+                                </div>
+                              </div>
+                              <div class="post-container">
+                                <p style="font-size:20px;">{{ filteredMessage(item.message) }}</p>
+                              </div>
+                            </form>
+                          </div>
                         </div>
                       </Transition>
                       <a class="like-count">{{ item.likepeople.total }}</a>
@@ -197,6 +202,11 @@ button.deleted {
   transform: translateX(20px);
   opacity: 0;
 }
+
+.form-scroll {
+  max-height: 650px;
+  overflow-y: auto;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
@@ -208,6 +218,7 @@ export default {
       unlikedPosts: {},
       deletePosts: {},
       dataindex: [],
+      Messagedataindex: [],
       data: {},
       newPost: {
         title: '',
@@ -304,10 +315,9 @@ export default {
 
         const messageCount = (Object.keys(post.message || {}).length) - 1;
 
-        const officialRef1 = firebaseRef(db, `playertalk/${postId}/message`);
         const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/total`);
 
-          set(officialRef2, messageCount);
+        set(officialRef2, messageCount);
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
@@ -384,6 +394,17 @@ export default {
     toggleMessageClone() {
       this.showMessage = !this.showMessage;
     },
+    filteredMessage(message) {
+      const filtered = { ...message };
+      delete filtered.total;
+
+      const messagesArray = Object.values(filtered).map((message, index) => {
+        return { [index]: message };
+      });
+      const filteredMessages = Object.assign({}, ...messagesArray);
+
+      return filteredMessages;
+    },
     submitMessage() {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[this.indexMessage];
@@ -396,11 +417,18 @@ export default {
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
 
-      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
+      const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTime}/${this.username}`);
+      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/${this.username}`);
+      const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/creattime`);
+      const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/likepeople/total`);
+      const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/downvotepeople/total`);
 
       set(officialRef1, this.newMessage.content);
+      set(officialRef2, currentDateTime);
+      set(officialRef3, 0);
+      set(officialRef4, 0);
 
       this.newMessage.content = '';
     },
