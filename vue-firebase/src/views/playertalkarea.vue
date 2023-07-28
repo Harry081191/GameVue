@@ -22,98 +22,97 @@
       <router-link :to="{ name: 'Login', params: { userId: $route.params.userId } }"
         class="custom-link">我的首頁</router-link>
     </nav>
-    <div class="container">
-      <div class="p-3 wrapper" style="margin-bottom: -1px;">
-        <div class="row justify-content-center">
-          <div class="col-8" style="text-align: center">
-            <h2>討論區</h2>
+  </div>
+  <div class="container">
+    <div class="p-3 wrapper" style="margin-bottom: -1px;">
+      <div class="row justify-content-center">
+        <div class="col-8" style="text-align: center">
+          <h2>討論區</h2>
+        </div>
+        <div class="col-10">
+          <div style="text-align: right">
+            <button @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
           </div>
-          <div class="col-10">
-            <div style="text-align: right">
-              <button @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
+          <Transition>
+            <div v-if="showForm" class="form-container">
+              <form @submit.prevent="submitPost">
+                <div class="button-content">
+                  <div class="button-content-left">
+                    <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div>
+                  <input style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                </div>
+                <div>
+                  <textarea style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                </div>
+                <div>
+                  <textarea style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
+                </div>
+                <div style="text-align: right">
+                  <button type="submit">提交</button>
+                </div>
+              </form>
             </div>
-            <Transition>
-              <div v-if="showForm" class="form-container">
-                <form>
-                  <div class="button-content">
-                    <div class="button-content-left">
-                      <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
-                    </div>
+          </Transition>
+          <div v-if="showForm" class="overlay" @click="toggleFormClone"></div>
+        </div>
+        <div class="col-10 bg-white text-dark" style="text-align: center;">
+          <ul class="custom-list">
+            <li v-for="(item, index) in dataindex" :key="index">
+              <div class="post-container">
+                <div class="button-content">
+                  <div class="button-content-left">
+                    <button type="submit" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                        class="fas fa-times"></i></button>
                   </div>
-                  <div>
-                    <input style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
-                  </div>
-                  <div>
-                    <textarea style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
-                  </div>
-                  <div>
-                    <textarea style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
-                  </div>
-                  <div style="text-align: right">
-                    <button type="submit" @submit.prevent="submitPost">提交</button>
-                  </div>
-                </form>
-              </div>
-            </Transition>
-          </div>
-          <div class="col-10 bg-white text-dark" style="text-align: center;">
-            <ul class="custom-list">
-              <li v-for="(item, index) in dataindex" :key="index">
-                <div class="post-container">
-                  <div class="button-content">
-                    <div class="button-content-left">
-                      <button type="submit" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
-                          class="fas fa-times"></i></button>
-                    </div>
-                  </div>
-                  <p style="font-size:40px;">{{ item.title }}</p>
-                  <p style="font-size:40px;">{{ item.subject }}</p>
-                  <p style="font-size:40px;">{{ item.content }}</p>
-                  <div class="button-content">
-                    <div class="button-content-left">
-                      <a class="like-count">{{ item.message.total }}</a>
-                      <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
-                      <Transition>
-                        <div v-if="showMessage && index === openFormIndex" class="message-container">
-                          <div class="form-scroll">
-                            <form @submit.prevent="submitMessage">
-                              <div class="button-content">
-                                <div class="button-content-left">
-                                  <button type="button" @click="toggleMessageClone()"><i
-                                      class="fas fa-times"></i></button>
-                                </div>
+                </div>
+                <p style="font-size:40px;">{{ item.title }}</p>
+                <p style="font-size:40px;">{{ item.subject }}</p>
+                <p style="font-size:40px;">{{ item.content }}</p>
+                <div class="button-content">
+                  <div class="button-content-left">
+                    <a class="like-count">{{ item.message.total }}</a>
+                    <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
+                    <Transition>
+                      <div v-if="showMessage && index === openFormIndex" class="message-container">
+                        <div class="form-scroll">
+                          <form @submit.prevent="submitMessage(index)">
+                            <div class="button-content">
+                              <div class="button-content-left">
+                                <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
                               </div>
-                              <div>
-                                <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                            </div>
+                            <div>
+                              <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                            </div>
+                            <div class="button-content">
+                              <div class="button-content-left">
+                                <button type="submit" style="margin-bottom: 10px">提交回復</button>
                               </div>
-                              <div class="button-content">
-                                <div class="button-content-left">
-                                  <button type="submit" style="margin-bottom: 10px">提交回復</button>
-                                </div>
-                              </div>
-                              <div class="post-container">
-                                <pre style="font-size:20px;">{{ filteredMessage(item.message) }}</pre>
-                              </div>
-                            </form>
-                          </div>
+                            </div>
+                            <pre style="font-size:15px; text-align: left;">{{ filteredMessage(item.message) }}</pre>
+                          </form>
                         </div>
-                      </Transition>
-                      <a class="like-count">{{ item.likepeople.total }}</a>
-                      <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
-                          class="fas fa-thumbs-up"></i></button>
-                      <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                          class="fas fa-thumbs-down"></i></button>
-                    </div>
+                      </div>
+                    </Transition>
+                    <a class="like-count">{{ item.likepeople.total }}</a>
+                    <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                        class="fas fa-thumbs-up"></i></button>
+                    <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                        class="fas fa-thumbs-down"></i></button>
                   </div>
                 </div>
-                <div style="text-align: right;">
-                  <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                  <span style="font-size: 20px; ">創建人：{{ Object.values(item.createname)[0] }}</span>
-                </div>
-                <p style="margin-bottom:20px"></p>
-              </li>
-            </ul>
-          </div>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
+                <span style="font-size: 20px; ">創建人：{{ Object.values(item.createname)[0] }}</span>
+              </div>
+              <p style="margin-bottom:20px"></p>
+            </li>
+          </ul>
+          <div v-if="showMessage" class="overlay" @click="toggleMessageClone"></div>
         </div>
       </div>
     </div>
@@ -205,6 +204,16 @@ button.deleted {
   opacity: 0;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .form-scroll {
   max-height: 650px;
   overflow-y: auto;
@@ -221,6 +230,7 @@ export default {
       deletePosts: {},
       dataindex: [],
       Messagedataindex: [],
+      openFormIndex: {},
       data: {},
       newPost: {
         title: '',
@@ -375,9 +385,7 @@ export default {
       remove(officialRef3);
     },
     toggleForm() {
-      if (!this.showForm) {
-        this.showForm = !this.showForm;
-      }
+      this.showForm = !this.showForm;
 
       this.newPost.title = '';
       this.newPost.subject = '';
@@ -387,11 +395,8 @@ export default {
       this.showForm = !this.showForm;
     },
     toggleMessage(index) {
-      this.indexMessage = index;
       this.openFormIndex = index;
-      if (!this.showMessage) {
-        this.showMessage = !this.showMessage;
-      }
+      this.showMessage = !this.showMessage;
     },
     toggleMessageClone() {
       this.showMessage = !this.showMessage;
@@ -399,16 +404,33 @@ export default {
     filteredMessage(message) {
       const filtered = { ...message };
       delete filtered.total;
+      const currentTime = new Date();
 
-      const messagesArray = Object.values(filtered).map((message) => {
-        return message.creattime;
+      const messagesArray = Object.values(filtered).map((message, index) => {
+        const messageTime = new Date(message.messagetime);
+        const timeDifferenceInSeconds = Math.floor((currentTime - messageTime) / 1000); // 計算時間差，轉換為秒
+
+        let timeDifferenceText;
+        if (timeDifferenceInSeconds < 60) {
+          timeDifferenceText = `${timeDifferenceInSeconds}秒前`;
+        } else if (timeDifferenceInSeconds < 3600) {
+          const minutes = Math.floor(timeDifferenceInSeconds / 60);
+          timeDifferenceText = `${minutes}分鐘前`;
+        } else if (timeDifferenceInSeconds < 86400) {
+          const hours = Math.floor(timeDifferenceInSeconds / 3600);
+          timeDifferenceText = `${hours}小時前`;
+        } else {
+          const days = Math.floor(timeDifferenceInSeconds / 86400);
+          timeDifferenceText = `${days}天前`;
+        }
+        return message.messagename + ' ' + timeDifferenceText + '\n' + message.messagecontent + '\n' + message.messagelike.total + '  ' + '\n' ;
       });
 
       return messagesArray.join('\n');;
     },
-    submitMessage() {
+    submitMessage(index) {
       const postKeys = Object.keys(this.data);
-      const postId = postKeys[this.indexMessage];
+      const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const now = new Date();
       const year = now.getFullYear();
@@ -421,15 +443,17 @@ export default {
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}`;
 
-      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/${this.username}`);
-      const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/creattime`);
-      const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/likepeople/total`);
-      const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/downvotepeople/total`);
+      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagename`);
+      const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagecontent`);
+      const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagetime`);
+      const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagelike/total`);
+      const officialRef5 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
 
-      set(officialRef1, this.newMessage.content);
-      set(officialRef2, currentDateTime);
-      set(officialRef3, 0);
+      set(officialRef1, this.username);
+      set(officialRef2, this.newMessage.content);
+      set(officialRef3, currentDateTime);
       set(officialRef4, 0);
+      set(officialRef5, 0);
 
       this.newMessage.content = '';
     },
