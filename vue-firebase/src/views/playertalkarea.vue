@@ -266,9 +266,15 @@ export default {
         const postId = Object.keys(this.data)[i];
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+        const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+        const messageCount = (Object.keys(post.message || {}).length) - 1;
 
         const officialRef1 = firebaseRef(db, `playertalk/${postId}/likepeople`);
         const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
+        const officialRef3 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
+        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
+        const officialRef5 = firebaseRef(db, `playertalk/${postId}/createname`);
+        const officialRef6 = firebaseRef(db, `playertalk/${postId}/message/total`);
 
         get(officialRef1).then((snapshot) => {
           const likePeople = snapshot.val();
@@ -279,57 +285,27 @@ export default {
           }
         });
 
-        set(officialRef2, likePeopleCount);
-      }
-
-      for (let i = 0; i < this.dataLength; i++) {
-        const post = this.dataindex[i];
-        const postId = Object.keys(this.data)[i];
-
-        const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
-
-        const db = getDatabase(firebaseApp);
-        const officialRef1 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
-        const officialRef2 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
-
-        get(officialRef1).then((snapshot) => {
+        get(officialRef3).then((snapshot) => {
           const unlikePeople = snapshot.val();
           if (unlikePeople && unlikePeople[this.userId]) {
             this.unlikedPosts[i] = true;
           } else {
             this.unlikedPosts[i] = false;
           }
-
         });
 
-        set(officialRef2, unlikePeopleCount);
-      }
-
-      for (let i = 0; i < this.dataLength; i++) {
-        const postId = Object.keys(this.data)[i];
-
-        const officialRef1 = firebaseRef(db, `playertalk/${postId}/createname`);
-
-        get(officialRef1).then((snapshot) => {
+        get(officialRef5).then((snapshot) => {
           const deleted = snapshot.val();
           if (deleted && deleted[this.userId]) {
             this.deletePosts[i] = false;
           } else {
             this.deletePosts[i] = true;
           }
-
         });
-      }
 
-      for (let i = 0; i < this.dataLength; i++) {
-        const post = this.dataindex[i];
-        const postId = Object.keys(this.data)[i];
-
-        const messageCount = (Object.keys(post.message || {}).length) - 1;
-
-        const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/total`);
-
-        set(officialRef2, messageCount);
+        set(officialRef2, likePeopleCount);
+        set(officialRef4, unlikePeopleCount);
+        set(officialRef6, messageCount);
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
