@@ -267,36 +267,35 @@ export default {
         const postId = Object.keys(this.data)[i];
         const MessageeRef = firebaseRef(db, `playertalk/${postId}/message`);
 
-        
-          const messageSnapshot = await get(MessageeRef);
-          const message = messageSnapshot.val();
-          this.message = message;
+        const messageSnapshot = await get(MessageeRef);
+        const message = messageSnapshot.val();
+        this.message = message;
 
-          if (message) {
-            const messageKeys = Object.keys(message);
-            this.messageLength = messageKeys.length;
+        if (message) {
+          const messageKeys = Object.keys(message);
+          this.messageLength = messageKeys.length;
 
-            for (let j = 0; j < this.messageLength; j++) {
-              const mpostId = messageKeys[j];
-              if (mpostId === 'total') continue;
-              const mpost = message[mpostId];
+          for (let j = 0; j < this.messageLength; j++) {
+            const mpostId = messageKeys[j];
+            if (mpostId === 'total') continue;
+            const mpost = message[mpostId];
 
-              if (!mpost) {
-                continue; // Skip the current loop iteration
-              }
-
-              const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
-              const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
-
-              const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike`);
-              const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike/total`);
-              const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote`);
-              const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
-
-              set(officialRef2, mlikePeopleCount);
-              set(officialRef4, munlikePeopleCount);
+            if (!mpost) {
+              continue; // Skip the current loop iteration
             }
+
+            const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
+            const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+
+            const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike`);
+            const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike/total`);
+            const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote`);
+            const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
+
+            set(officialRef2, mlikePeopleCount);
+            set(officialRef4, munlikePeopleCount);
           }
+        }
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
         const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
