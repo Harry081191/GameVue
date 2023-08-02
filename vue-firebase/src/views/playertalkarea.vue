@@ -228,6 +228,8 @@ export default {
     return {
       likedPosts: {},
       unlikedPosts: {},
+      mlikedPosts: {},
+      munlikedPosts: {},
       deletePosts: {},
       dataindex: [],
       openFormIndex: {},
@@ -291,7 +293,25 @@ export default {
             const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike/total`);
             const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote`);
             const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
+/*
+            get(officialRef1).then((snapshot) => {
+              const messagelike = snapshot.val();
+              if (messagelike && messagelike[this.userId]) {
+                this.mlikedPosts[i] = true;
+              } else {
+                this.mlikedPosts[i] = false;
+              }
+            });
 
+            get(officialRef3).then((snapshot) => {
+              const messageunlike = snapshot.val();
+              if (messageunlike && messageunlike[this.userId]) {
+                this.munlikedPosts[i] = true;
+              } else {
+                this.munlikedPosts[i] = false;
+              }
+            });
+*/
             set(officialRef2, mlikePeopleCount);
             set(officialRef4, munlikePeopleCount);
           }
