@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <div class="Officialnotificationarea">
+  <div class="playertalkarea">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
         aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
@@ -61,6 +61,7 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
+              {{ index }}: {{ item }}
               <div class="post-container">
                 <div class="button-content">
                   <div class="button-content-left">
@@ -92,7 +93,7 @@
                                 <button type="submit" style="margin-bottom: 10px">提交回復</button>
                               </div>
                             </div>
-                            <pre style="font-size:15px; text-align: left;">{{ filteredMessage(item.message) }}</pre>
+                            <pre style="font-size:15px; text-align: left;" v-html="filteredMessage(item.message)"></pre>
                           </form>
                         </div>
                       </div>
@@ -229,9 +230,9 @@ export default {
       unlikedPosts: {},
       deletePosts: {},
       dataindex: [],
-      Messagedataindex: [],
       openFormIndex: {},
       data: {},
+      message: {},
       newPost: {
         title: '',
         subject: '',
@@ -255,7 +256,7 @@ export default {
     this.username = firebaseRef(db, `Users/${this.userId}/name`);
 
     // Listen for changes in the 'data' node
-    onValue(dataRef, (snapshot) => {
+    onValue(dataRef, async (snapshot) => {
       const data = snapshot.val();
       this.dataindex = Object.values(data); // Convert object to array
       this.dataLength = this.dataindex.length; // Store the length
@@ -264,6 +265,38 @@ export default {
       for (let i = 0; i < this.dataLength; i++) {
         const post = this.dataindex[i];
         const postId = Object.keys(this.data)[i];
+        const MessageeRef = firebaseRef(db, `playertalk/${postId}/message`);
+
+        
+          const messageSnapshot = await get(MessageeRef);
+          const message = messageSnapshot.val();
+          this.message = message;
+
+          if (message) {
+            const messageKeys = Object.keys(message);
+            this.messageLength = messageKeys.length;
+
+            for (let j = 0; j < this.messageLength; j++) {
+              const mpostId = messageKeys[j];
+              if (mpostId === 'total') continue;
+              const mpost = message[mpostId];
+
+              if (!mpost) {
+                continue; // Skip the current loop iteration
+              }
+
+              const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
+              const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+
+              const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike`);
+              const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike/total`);
+              const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote`);
+              const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
+
+              set(officialRef2, mlikePeopleCount);
+              set(officialRef4, munlikePeopleCount);
+            }
+          }
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
         const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
@@ -399,10 +432,15 @@ export default {
           const days = Math.floor(timeDifferenceInSeconds / 86400);
           timeDifferenceText = `${days}天前`;
         }
-        return message.messagename + ' ' + timeDifferenceText + '\n' + message.messagecontent + '\n' + message.messagelike.total + '  ' + '\n' ;
+
+        const likeIcon = '<button type="button"><i class="far fa-thumbs-up"></i></button>';
+        const unlikeIcon = '<button type="button"><i class="far fa-thumbs-down"></i></button>';
+        const likes = `${likeIcon} ${message.messagelike.total} ${unlikeIcon}`;
+
+        return message.messagename + ' ' + timeDifferenceText + '\n' + message.messagecontent + '\n' + likes + '  ' + '\n';
       });
 
-      return messagesArray.join('\n');;
+      return messagesArray.join('\n');
     },
     submitMessage(index) {
       const postKeys = Object.keys(this.data);
