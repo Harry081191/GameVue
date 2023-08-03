@@ -75,7 +75,7 @@
                 <div class="button-content">
                   <div class="button-content-left">
                     <a class="like-count">{{ item.message.total }}</a>
-                    <button @click="toggleMessage(index)"><i class="fas fa-comment"></i></button>
+                    <button @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
                     <Transition>
                       <div v-if="showMessage && index === openFormIndex" class="message-container">
                         <div class="form-scroll">
@@ -99,10 +99,10 @@
                       </div>
                     </Transition>
                     <a class="like-count">{{ item.likepeople.total }}</a>
-                    <button type="submit" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
-                        class="fas fa-thumbs-up"></i></button>
-                    <button type="submit" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                        class="fas fa-thumbs-down"></i></button>
+                    <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                        class="far fa-thumbs-up"></i></button>
+                    <button type="button" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                        class="far fa-thumbs-down"></i></button>
                   </div>
                 </div>
               </div>
@@ -452,8 +452,8 @@ export default {
           timeDifferenceText = `${days}天前`;
         }
 
-        const likeIcon = '<button type="button"><i class="far fa-thumbs-up"></i></button>';
-        const unlikeIcon = '<button type="button"><i class="far fa-thumbs-down"></i></button>';
+        const likeIcon = '<button type="button"><i class="fas fa-thumbs-up"></i></button>';
+        const unlikeIcon = '<button type="button"><i class="fas fa-thumbs-down"></i></button>';
         const likes = `${likeIcon} ${message.messagelike.total} ${unlikeIcon}`;
 
         return message.messagename + ' ' + timeDifferenceText + '\n' + message.messagecontent + '\n' + likes + '  ' + '\n';
