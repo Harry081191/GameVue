@@ -28,11 +28,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/playertalkarea/:userId?',
-    name: 'playertalkarea',
+    path: '/Playertalkarea/:userId?',
+    name: 'Playertalkarea',
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/playertalkarea.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Playertalkarea.vue')
   }
 ]
 

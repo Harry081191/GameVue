@@ -65,26 +65,24 @@ export default {
       this.$nextTick(() => {
         const username = this.username;
         const password = this.password;
-        const userMap = {
-          "123": "User1",
-          "456": "User2"
-        };
         // Access the Firebase Realtime Database
         const db = getDatabase(firebaseApp);
         const usersRef = firebaseRef(db, 'Users/');
 
-        let user = null; // 清除上一次驗證的結果
+        let userId = null; // 清除上一次驗證的結果
 
         // 監聽 'users' 路徑下的數據
         onValue(usersRef, (snapshot) => {
           const users = snapshot.val();
 
           // 驗證用戶名稱和密碼是否匹配
-          user = Object.values(users).find((user) => user.Username === username && user.Password === password);
+          const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username && user.Password === password);
 
+          if (matchedUser) {
+            userId = matchedUser[0]; // 取得匹配的userId
+          }
         });
-        if (user) {
-          const userId = userMap[user.Username];
+        if (userId) {
           this.$router.push({
             name: 'Login',
             params: {
@@ -92,7 +90,6 @@ export default {
             }
           });
         } else {
-          // 登入失敗，顯示錯誤訊息
           this.errorMessage = 'Invalid username or password';
 
           // 使用懸浮視窗顯示錯誤訊息
@@ -100,7 +97,6 @@ export default {
             position: 'top',
             duration: 3000,
             dismissible: true,
-            // 其他選項...
           });
         }
       });

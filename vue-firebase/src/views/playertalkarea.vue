@@ -2,14 +2,14 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <div class="playertalkarea">
+  <div class="Playertalkarea">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
         aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
-            <router-link :to="{ name: 'playertalkarea', params: { userId: $route.params.userId } }"
+            <router-link :to="{ name: 'Playertalkarea', params: { userId: $route.params.userId } }"
               class="custom-link">玩家討論版</router-link>
             <a class="custom-link">
               |
@@ -65,7 +65,7 @@
               <div class="post-container">
                 <div class="button-content">
                   <div class="button-content-left">
-                    <button type="submit" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                    <button type="button" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
                         class="fas fa-times"></i></button>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="button-content">
                   <div class="button-content-left">
                     <a class="like-count">{{ item.message.total }}</a>
-                    <button @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
+                    <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
                     <Transition>
                       <div v-if="showMessage && index === openFormIndex" class="message-container">
                         <div class="form-scroll">
