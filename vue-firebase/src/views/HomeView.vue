@@ -19,7 +19,7 @@
                 <strong>密碼</strong>
                 <input v-model="password" type="password" class="form-control" id="Password" name="Password"
                   placeholder="請輸入密碼">
-                <div class = "remember">
+                <div class="remember">
                   <label><input type="checkbox">Remember me</label>
                   <router-link to="/ForgetPassword">Forget Password?</router-link>
                 </div>
@@ -29,7 +29,7 @@
                   </button>
                 </div>
                 <div>
-                  <a class = "from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
+                  <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
                   <router-link to="/CreateAccount">Register</router-link>
                 </div>
               </form>
@@ -49,7 +49,7 @@
   </div>
 </template>
 <style scoped>
-.remember{
+.remember {
   display: flex;
   justify-content: space-between;
 }
@@ -76,29 +76,42 @@ export default {
           const users = snapshot.val();
 
           // 驗證用戶名稱和密碼是否匹配
-          const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username && user.Password === password);
+          const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
 
           if (matchedUser) {
-            userId = matchedUser[0]; // 取得匹配的userId
+            const [, userData] = matchedUser;
+
+            if (userData.Password === password) {
+              const userId = matchedUser[0];
+              this.$router.push({
+                name: 'Login',
+                params: {
+                  userId: userId
+                }
+              });
+            } else {
+              this.errorMessage = 'Invalid password';
+
+              this.$toast.error(this.errorMessage, {
+                position: 'top',
+                duration: 3000,
+                dismissible: true,
+              });
+
+              this.errorMessage = '';
+            }
+          } else {
+            this.errorMessage = 'Invalid username';
+
+            this.$toast.error(this.errorMessage, {
+              position: 'top',
+              duration: 3000,
+              dismissible: true,
+            });
+
+            this.errorMessage = '';
           }
         });
-        if (userId) {
-          this.$router.push({
-            name: 'Login',
-            params: {
-              userId: userId
-            }
-          });
-        } else {
-          this.errorMessage = 'Invalid username or password';
-
-          // 使用懸浮視窗顯示錯誤訊息
-          this.$toast.error(this.errorMessage, {
-            position: 'top',
-            duration: 3000,
-            dismissible: true,
-          });
-        }
       });
     }
   },
@@ -108,7 +121,8 @@ export default {
   },
   data() {
     return {
-      data: {}
+      data: {},
+      errorMessage: null
     };
   },
   mounted() {

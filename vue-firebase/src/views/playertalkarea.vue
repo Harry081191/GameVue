@@ -65,8 +65,18 @@
               <div class="post-container">
                 <div class="button-content">
                   <div class="button-content-left">
-                    <button type="button" :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
-                        class="fas fa-times"></i></button>
+                    <div id="menu">
+                      <ul>
+                        <li> <a>MENU</a>
+                          <ul>
+                            <button type="button" :class="{ deleted: deletePosts[index] }"
+                              @click="toggleDelete(index)"><i class="far fa-trash-alt"></i> 刪除</button>
+                            <button type="button" :class="{ deleted: deletePosts[index] }"
+                              @click="toggleEdit(index)"><i class="far fa-edit"></i> 編輯</button>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <p style="font-size:40px;">{{ item.title }}</p>
@@ -89,9 +99,7 @@
                               <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
                             </div>
                             <div class="button-content">
-                              <div class="button-content-left">
-                                <button type="submit" style="margin-bottom: 10px">提交回復</button>
-                              </div>
+                              <button type="submit" style="margin-bottom: 10px">提交回復</button>
                             </div>
                             <pre style="font-size:15px; text-align: left;" v-html="filteredMessage(item.message)"></pre>
                           </form>
@@ -120,6 +128,134 @@
   </div>
 </template>
 <style scoped>
+#menu {
+  width: 150px;
+  height: 30px;
+}
+
+#menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+* html #menu ul {
+  height: 30px;
+}
+
+* html #menu ul li {
+  display: inline;
+}
+
+#menu ul li a {
+  display: block;
+  float: left;
+  height: 30px;
+  width: 150px;
+  text-align: center;
+}
+
+#menu ul li ul {
+  position: absolute;
+  width: 150px;
+  overflow: visible;
+  clear: left;
+  margin-top: 30px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+*:first-child+html #menu ul li ul {
+  margin-top: 0;
+}
+
+* html #menu ul li ul {
+  margin-top: 0;
+}
+
+#menu ul li ul li {
+  float: none;
+  text-align: center;
+}
+
+#menu ul li ul li a {
+  float: none;
+  width: 100%;
+}
+
+#menu ul li ul li ul {
+  margin-top: -30px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 100px;
+  width: 100%;
+}
+
+*:first-child+html #menu ul li ul li ul {
+  margin-top: -30px;
+}
+
+#menu ul li ul {
+  /* 預先隱藏第二層 */
+  visibility: hidden;
+}
+
+#menu ul li:hover ul {
+  /* 觸動第一層時，顯示第二層 */
+  visibility: visible;
+}
+
+#menu ul li:hover ul li ul {
+  /* 顯示第二層時，隱藏第三層，避免同時彈出 */
+  visibility: hidden;
+}
+
+#menu ul li ul li:hover ul {
+  /* 觸動第二層時，顯示第三層 */
+  visibility: visible;
+}
+
+#menu {
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#menu ul {
+  background: #6f6f6f;
+}
+
+#menu ul li a {
+  color: #FFF;
+  text-decoration: none;
+  line-height: 30px;
+}
+
+#menu ul li ul {
+  background: #efefef;
+}
+
+#menu ul li ul li a {
+  font-size: 12px;
+  color: #333333;
+  text-decoration: none;
+}
+
+#menu ul li:hover,
+#menu ul li a:hover {
+  background: #efefef;
+}
+
+#menu ul li:hover a {
+  color: #333333;
+}
+
+#menu ul li ul li:hover,
+#menu ul li ul li a:hover {
+  background: #dfdfdf;
+}
+
 .button-content {
   display: flex;
   align-items: center;
@@ -149,7 +285,7 @@ button.unliked {
 }
 
 button.deleted {
-  visibility: hidden;
+  display: none;
 }
 
 .post-container {
@@ -178,6 +314,7 @@ button.deleted {
   background-color: rgb(112, 231, 120);
   padding: 20px;
   z-index: 9999;
+  width: 450px;
 }
 
 .message-container {
@@ -188,7 +325,7 @@ button.deleted {
   background-color: rgb(112, 231, 120);
   padding: 20px;
   z-index: 9999;
-  width: 600px;
+  width: 400px;
 }
 
 .v-enter-active {
@@ -199,7 +336,6 @@ button.deleted {
   transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
-.v-enter-from,
 .v-leave-to {
   transform: translateX(20px);
   opacity: 0;
@@ -228,10 +364,12 @@ export default {
     return {
       likedPosts: {},
       unlikedPosts: {},
+      deletePosts: {},
       mlikedPosts: {},
       munlikedPosts: {},
-      deletePosts: {},
+      mdeletePosts: {},
       dataindex: [],
+      mdataindex: [],
       openFormIndex: {},
       data: {},
       message: {},
@@ -253,7 +391,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, 'playertalk/');
+    const dataRef = firebaseRef(db, 'Playertalk/');
     this.userId = this.$route.params.userId;
     this.username = firebaseRef(db, `Users/${this.userId}/name`);
 
@@ -267,10 +405,12 @@ export default {
       for (let i = 0; i < this.dataLength; i++) {
         const post = this.dataindex[i];
         const postId = Object.keys(this.data)[i];
-        const MessageeRef = firebaseRef(db, `playertalk/${postId}/message`);
+        const MessageeRef = firebaseRef(db, `Playertalk/${postId}/message`);
 
         const messageSnapshot = await get(MessageeRef);
         const message = messageSnapshot.val();
+        this.mdataindex = Object.values(message); // Convert object to array
+        this.mdataLength = this.mdataindex.length; // Store the length
         this.message = message;
 
         if (message) {
@@ -289,11 +429,11 @@ export default {
             const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
             const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
 
-            const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike`);
-            const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagelike/total`);
-            const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote`);
-            const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
-/*
+            const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike`);
+            const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike/total`);
+            const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote`);
+            const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
+            /*
             get(officialRef1).then((snapshot) => {
               const messagelike = snapshot.val();
               if (messagelike && messagelike[this.userId]) {
@@ -311,7 +451,7 @@ export default {
                 this.munlikedPosts[i] = false;
               }
             });
-*/
+            */
             set(officialRef2, mlikePeopleCount);
             set(officialRef4, munlikePeopleCount);
           }
@@ -321,12 +461,12 @@ export default {
         const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
         const messageCount = (Object.keys(post.message || {}).length) - 1;
 
-        const officialRef1 = firebaseRef(db, `playertalk/${postId}/likepeople`);
-        const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople/total`);
-        const officialRef3 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
-        const officialRef4 = firebaseRef(db, `playertalk/${postId}/downvotepeople/total`);
-        const officialRef5 = firebaseRef(db, `playertalk/${postId}/createname`);
-        const officialRef6 = firebaseRef(db, `playertalk/${postId}/message/total`);
+        const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
+        const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople/total`);
+        const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
+        const officialRef4 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/total`);
+        const officialRef5 = firebaseRef(db, `Playertalk/${postId}/createname`);
+        const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/total`);
 
         get(officialRef1).then((snapshot) => {
           const likePeople = snapshot.val();
@@ -369,7 +509,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef4 = firebaseRef(db, `playertalk/${postId}/likepeople/${this.userId}`);
+      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
 
@@ -387,7 +527,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef5 = firebaseRef(db, `playertalk/${postId}/downvotepeople/${this.userId}`);
+      const officialRef5 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
 
@@ -405,9 +545,9 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `playertalk/${postId}`);
-      const officialRef2 = firebaseRef(db, `playertalk/${postId}/likepeople`);
-      const officialRef3 = firebaseRef(db, `playertalk/${postId}/downvotepeople`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
       remove(officialRef1);
       remove(officialRef2);
       remove(officialRef3);
@@ -434,7 +574,7 @@ export default {
       delete filtered.total;
       const currentTime = new Date();
 
-      const messagesArray = Object.values(filtered).map((message, index) => {
+      const messagesArray = Object.values(filtered).map((message, innerIndex) => {
         const messageTime = new Date(message.messagetime);
         const timeDifferenceInSeconds = Math.floor((currentTime - messageTime) / 1000); // 計算時間差，轉換為秒
 
@@ -454,12 +594,29 @@ export default {
 
         const likeIcon = '<button type="button"><i class="fas fa-thumbs-up"></i></button>';
         const unlikeIcon = '<button type="button"><i class="fas fa-thumbs-down"></i></button>';
+        const deleteIcon = `<button type="button" style="float: right;" @click="testMethod()"><i class="fas fa-times"></i></button>`;
         const likes = `${likeIcon} ${message.messagelike.total} ${unlikeIcon}`;
 
-        return message.messagename + ' ' + timeDifferenceText + '\n' + message.messagecontent + '\n' + likes + '  ' + '\n';
+        return message.messagename + ' ' + timeDifferenceText + deleteIcon + '\n' + message.messagecontent + '\n' + likes + '  ' + '\n';
       });
 
       return messagesArray.join('\n');
+    },
+    testMethod() {
+      console.log('Test method is triggered.');
+    },
+    MessageDelete(index, innerIndex) {
+      console.log(index);
+      console.log(innerIndex);
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const messageKeys = Object.keys(this.data[postId].message);
+      const messageKeyToDelete = messageKeys[innerIndex]; // Get the message key based on innerIndex
+      const db = getDatabase(firebaseApp);
+
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageKeyToDelete}`);
+
+      remove(officialRef1);
     },
     submitMessage(index) {
       const postKeys = Object.keys(this.data);
@@ -476,11 +633,11 @@ export default {
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}`;
 
-      const officialRef1 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagename`);
-      const officialRef2 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagecontent`);
-      const officialRef3 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagetime`);
-      const officialRef4 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagelike/total`);
-      const officialRef5 = firebaseRef(db, `playertalk/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagename`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagecontent`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagetime`);
+      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagelike/total`);
+      const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
 
       set(officialRef1, this.username);
       set(officialRef2, this.newMessage.content);
@@ -505,14 +662,14 @@ export default {
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `playertalk/${uniqueCode}/title`);
-      const officialRef2 = firebaseRef(db, `playertalk/${uniqueCode}/subject`);
-      const officialRef3 = firebaseRef(db, `playertalk/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(db, `playertalk/${uniqueCode}/likepeople/total`);
-      const officialRef5 = firebaseRef(db, `playertalk/${uniqueCode}/downvotepeople/total`);
-      const officialRef6 = firebaseRef(db, `playertalk/${uniqueCode}/message/total`);
-      const officialRef7 = firebaseRef(db, `playertalk/${uniqueCode}/createtime`);
-      const officialRef8 = firebaseRef(db, `playertalk/${uniqueCode}/createname/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${uniqueCode}/title`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${uniqueCode}/subject`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${uniqueCode}/content`);
+      const officialRef4 = firebaseRef(db, `Playertalk/${uniqueCode}/likepeople/total`);
+      const officialRef5 = firebaseRef(db, `Playertalk/${uniqueCode}/downvotepeople/total`);
+      const officialRef6 = firebaseRef(db, `Playertalk/${uniqueCode}/message/total`);
+      const officialRef7 = firebaseRef(db, `Playertalk/${uniqueCode}/createtime`);
+      const officialRef8 = firebaseRef(db, `Playertalk/${uniqueCode}/createname/${this.userId}`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);

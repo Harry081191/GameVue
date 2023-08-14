@@ -27,14 +27,12 @@
           </div>
           <div class="col-10 bg-dark text-white" style="text-align: center;">
             <div class="dropdown" style="text-align: right;">
-              <div>
-                <select v-model="selectedOption">
-                  <option value="">請選擇</option>
-                  <option v-for="option in options" :value="option.value" :key="option.value">
-                    {{ option.label }}
-                  </option>
-                </select>
-              </div>
+              <select v-model="selectedOption">
+                <option value="">請選擇</option>
+                <option v-for="option in options" :value="option.value" :key="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
             </div>
             <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <p style="font-size:80px;">角色圖片{{ selectedOption }}</p>
