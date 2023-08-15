@@ -69,10 +69,15 @@
                       <ul>
                         <li> <a>MENU</a>
                           <ul>
-                            <button type="button" :class="{ deleted: deletePosts[index] }"
-                              @click="toggleDelete(index)"><i class="far fa-trash-alt"></i> 刪除</button>
-                            <button type="button" :class="{ deleted: deletePosts[index] }"
-                              @click="toggleEdit(index)"><i class="far fa-edit"></i> 編輯</button>
+                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: !deletePosts[index] }"
+                                @click="toggleReport(index)"><i class="fas fa-exclamation-triangle"></i> 舉報</button>
+                            </li>
+                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: deletePosts[index] }"
+                                @click="toggleDelete(index)"><i class="far fa-trash-alt"></i> 刪除</button>
+                            </li>
+                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: deletePosts[index] }"
+                                @click="toggleEdit(index)"><i class="far fa-edit"></i> 編輯</button>
+                            </li>
                           </ul>
                         </li>
                       </ul>
