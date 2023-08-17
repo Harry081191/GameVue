@@ -37,7 +37,7 @@
             <div v-if="showForm" class="form-container">
               <form @submit.prevent="submitPost">
                 <div class="button-content">
-                  <div class="button-content-left">
+                  <div class="button-content-right">
                     <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
                   </div>
                 </div>
@@ -64,19 +64,25 @@
               {{ index }}: {{ item }}
               <div class="post-container">
                 <div class="button-content">
-                  <div class="button-content-left">
+                  <div class="button-content-right">
                     <div id="menu">
                       <ul>
                         <li> <a>MENU</a>
                           <ul>
-                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: !deletePosts[index] }"
-                                @click="toggleReport(index)"><i class="fas fa-exclamation-triangle"></i> 舉報</button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: !deletePosts[index] }" @click="toggleReport(index)"><i
+                                  class="fas fa-exclamation-triangle"></i> 舉報</button>
                             </li>
-                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: deletePosts[index] }"
-                                @click="toggleDelete(index)"><i class="far fa-trash-alt"></i> 刪除</button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                  class="far fa-trash-alt"></i> 刪除</button>
                             </li>
-                            <li><button type="button" style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;" :class="{ deleted: deletePosts[index] }"
-                                @click="toggleEdit(index)"><i class="far fa-edit"></i> 編輯</button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
+                                  class="far fa-edit"></i> 編輯</button>
                             </li>
                           </ul>
                         </li>
@@ -88,7 +94,7 @@
                 <p style="font-size:40px;">{{ item.subject }}</p>
                 <p style="font-size:40px;">{{ item.content }}</p>
                 <div class="button-content">
-                  <div class="button-content-left">
+                  <div class="button-content-right">
                     <a class="like-count">{{ item.message.total }}</a>
                     <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
                     <Transition>
@@ -96,7 +102,7 @@
                         <div class="form-scroll">
                           <form @submit.prevent="submitMessage(index)">
                             <div class="button-content">
-                              <div class="button-content-left">
+                              <div class="button-content-right">
                                 <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
                               </div>
                             </div>
@@ -106,7 +112,25 @@
                             <div class="button-content">
                               <button type="submit" style="margin-bottom: 10px">提交回復</button>
                             </div>
-                            <pre style="font-size:15px; text-align: left;" v-html="filteredMessage(item.message)"></pre>
+                            <ul class="custom-list">
+                              <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
+                                <template v-if="messageIndex !== 'total'">
+                                  {{ index }}: {{ messageIndex }}: {{ messageItem }}
+                                  <p style="font-size:15px; text-align: left;">{{ messageItem.messagename }}　{{
+                                    messageItem.messagetime }}<button type="button" style="float: right;"
+                                      @click="mtoggleDelete(index, messageIndex)"><i class="fas fa-times"></i></button>
+                                  </p>
+                                  <p style="font-size:15px; text-align: left;">{{ messageItem.messagecontent }}</p>
+                                  <div class="button-content">
+                                    <button type="button" style="text-align: left;" @click="mtoggleLike(index, messageIndex)"><i
+                                        class="fas fa-thumbs-up"></i></button>
+                                    <a class="like-count">{{ messageItem.messagelike.total }}</a>
+                                    <button type="button" style="text-align: left;" @click="mtoggleUnLike(index, messageIndex)"><i
+                                        class="fas fa-thumbs-down"></i></button>
+                                  </div>
+                                </template>
+                              </li>
+                            </ul>
                           </form>
                         </div>
                       </div>
@@ -266,7 +290,7 @@
   align-items: center;
 }
 
-.button-content-left {
+.button-content-right {
   margin-left: auto;
 }
 
@@ -374,7 +398,7 @@ export default {
       munlikedPosts: {},
       mdeletePosts: {},
       dataindex: [],
-      mdataindex: [],
+      mdataindex: [], postData: [],
       openFormIndex: {},
       data: {},
       message: {},
@@ -411,7 +435,10 @@ export default {
         const post = this.dataindex[i];
         const postId = Object.keys(this.data)[i];
         const MessageeRef = firebaseRef(db, `Playertalk/${postId}/message`);
-
+        this.postData.push({
+          post: post, // 儲存論壇帖子資料
+          messages: this.mdataindex, // 儲存對應的留言資料
+        });
         const messageSnapshot = await get(MessageeRef);
         const message = messageSnapshot.val();
         this.mdataindex = Object.values(message); // Convert object to array
@@ -514,15 +541,15 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/likepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
 
-        remove(officialRef4);
+        remove(officialRef1);
       } else {
         this.likedPosts[index] = true;
 
-        set(officialRef4, this.username);
+        set(officialRef1, this.username);
         if (this.unlikedPosts[index]) {
           this.toggleUnLike(index);
         }
@@ -532,15 +559,15 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef5 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
 
-        remove(officialRef5);
+        remove(officialRef1);
       } else {
         this.unlikedPosts[index] = true;
 
-        set(officialRef5, this.username);
+        set(officialRef1, this.username);
         if (this.likedPosts[index]) {
           this.toggleLike(index);
         }
@@ -567,61 +594,37 @@ export default {
     toggleFormClone() {
       this.showForm = !this.showForm;
     },
+    mtoggleLike(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
+      set(officialRef1, this.username);
+    },
+    mtoggleUnLike(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`);
+      set(officialRef1, this.username);
+    },
+    mtoggleDelete(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagelike`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagedownvote`);
+      remove(officialRef1);
+      remove(officialRef2);
+      remove(officialRef3);
+    },
     toggleMessage(index) {
       this.openFormIndex = index;
       this.showMessage = !this.showMessage;
     },
     toggleMessageClone() {
       this.showMessage = !this.showMessage;
-    },
-    filteredMessage(message) {
-      const filtered = { ...message };
-      delete filtered.total;
-      const currentTime = new Date();
-
-      const messagesArray = Object.values(filtered).map((message, innerIndex) => {
-        const messageTime = new Date(message.messagetime);
-        const timeDifferenceInSeconds = Math.floor((currentTime - messageTime) / 1000); // 計算時間差，轉換為秒
-
-        let timeDifferenceText;
-        if (timeDifferenceInSeconds < 60) {
-          timeDifferenceText = `${timeDifferenceInSeconds}秒前`;
-        } else if (timeDifferenceInSeconds < 3600) {
-          const minutes = Math.floor(timeDifferenceInSeconds / 60);
-          timeDifferenceText = `${minutes}分鐘前`;
-        } else if (timeDifferenceInSeconds < 86400) {
-          const hours = Math.floor(timeDifferenceInSeconds / 3600);
-          timeDifferenceText = `${hours}小時前`;
-        } else {
-          const days = Math.floor(timeDifferenceInSeconds / 86400);
-          timeDifferenceText = `${days}天前`;
-        }
-
-        const likeIcon = '<button type="button"><i class="fas fa-thumbs-up"></i></button>';
-        const unlikeIcon = '<button type="button"><i class="fas fa-thumbs-down"></i></button>';
-        const deleteIcon = `<button type="button" style="float: right;" @click="testMethod()"><i class="fas fa-times"></i></button>`;
-        const likes = `${likeIcon} ${message.messagelike.total} ${unlikeIcon}`;
-
-        return message.messagename + ' ' + timeDifferenceText + deleteIcon + '\n' + message.messagecontent + '\n' + likes + '  ' + '\n';
-      });
-
-      return messagesArray.join('\n');
-    },
-    testMethod() {
-      console.log('Test method is triggered.');
-    },
-    MessageDelete(index, innerIndex) {
-      console.log(index);
-      console.log(innerIndex);
-      const postKeys = Object.keys(this.data);
-      const postId = postKeys[index];
-      const messageKeys = Object.keys(this.data[postId].message);
-      const messageKeyToDelete = messageKeys[innerIndex]; // Get the message key based on innerIndex
-      const db = getDatabase(firebaseApp);
-
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageKeyToDelete}`);
-
-      remove(officialRef1);
     },
     submitMessage(index) {
       const postKeys = Object.keys(this.data);
