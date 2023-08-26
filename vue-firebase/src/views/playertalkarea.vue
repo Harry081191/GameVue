@@ -71,18 +71,118 @@
                           <ul>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !deletePosts[index] }" @click="toggleReport(index)"><i
+                                :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
                                   class="fas fa-exclamation-triangle"></i> 舉報</button>
-                            </li>
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
-                                  class="far fa-trash-alt"></i> 刪除</button>
+                              <Transition>
+                                <div v-if="reportForm" class="form-container">
+                                  <form @submit.prevent="submitReport(index)">
+                                    <div class="button-content">
+                                      <div class="button-content-right">
+                                        <button type="button" @click="toggleReportClone()"><i
+                                            class="fas fa-times"></i></button>
+                                      </div>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="色情內容" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        色情內容
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="暴力或反感內容" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        暴力或反感內容
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="仇恨或惡意內容" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        仇恨或惡意內容
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="騷擾跟霸凌內容" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        騷擾跟霸凌內容
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="錯誤資訊" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        錯誤資訊
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="宣傳恐怖主義" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        宣傳恐怖主義
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" v-model="reportPost.content" value="垃圾內容或誤導內容" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        垃圾內容或誤導內容
+                                      </label>
+                                    </div>
+                                    <div class="remember" style="text-align: left">
+                                      <label class="remember-label" style="font-size: 18px;">
+                                        <input type="checkbox" class="remember-checkbox">
+                                        <span class="checkbox-custom"></span>
+                                        法律問題
+                                      </label>
+                                    </div>
+                                    <div style="text-align: right">
+                                      <button type="submit">提交</button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </Transition>
+                              <div v-if="reportForm" class="overlay" @click="toggleReportClone"></div>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
                                   class="far fa-edit"></i> 編輯</button>
+                              <Transition>
+                                <div v-if="editForm" class="form-container">
+                                  <form @submit.prevent="submitEdit(index)">
+                                    <div class="button-content">
+                                      <div class="button-content-right">
+                                        <button type="button" @click="toggleEditClone()"><i
+                                            class="fas fa-times"></i></button>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <input style="text-align: center" v-model="editPost.title" type="text"
+                                        placeholder="帖子標題" required>
+                                    </div>
+                                    <div>
+                                      <textarea style="text-align: center" v-model="editPost.subject" placeholder="帖子主旨"
+                                        required></textarea>
+                                    </div>
+                                    <div>
+                                      <textarea style="text-align: center" v-model="editPost.content" placeholder="帖子內容"
+                                        required></textarea>
+                                    </div>
+                                    <div style="text-align: right">
+                                      <button type="submit">提交</button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </Transition>
+                              <div v-if="editForm" class="overlay" @click="toggleEditClone"></div>
+                            </li>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                  class="far fa-trash-alt"></i> 刪除</button>
                             </li>
                           </ul>
                         </li>
@@ -115,17 +215,49 @@
                             <ul class="custom-list">
                               <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
                                 <template v-if="messageIndex !== 'total'">
-                                  {{ index }}: {{ messageIndex }}: {{ messageItem }}
-                                  <p style="font-size:15px; text-align: left;">{{ messageItem.messagename }}　{{
-                                    messageItem.messagetime }}<button type="button" style="float: right;"
-                                      @click="mtoggleDelete(index, messageIndex)"><i class="fas fa-times"></i></button>
+                                  <p style="margin-bottom:0px; font-size:15px; text-align: left;">
+                                  <div class="button-content">{{
+                                    Object.values(messageItem.messagename)[0] }}　{{ messageItem.messagetime }}
+                                    <div class="button-content-right">
+                                      <div id="messagemenu">
+                                        <ul>
+                                          <li> <a><i class="fas fa-list-ul"></i></a>
+                                            <ul>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: !mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleReport(index, messageIndex)"><i
+                                                    class="fas fa-exclamation-triangle"></i></button>
+                                              </li>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleEdit(index, messageIndex)"><i
+                                                    class="far fa-edit"></i></button>
+                                              </li>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleDelete(index, messageIndex)"><i
+                                                    class="far fa-trash-alt"></i></button>
+                                              </li>
+                                            </ul>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
                                   </p>
-                                  <p style="font-size:15px; text-align: left;">{{ messageItem.messagecontent }}</p>
-                                  <div class="button-content">
-                                    <button type="button" style="text-align: left;" @click="mtoggleLike(index, messageIndex)"><i
-                                        class="fas fa-thumbs-up"></i></button>
+                                  <p style="margin-bottom:0px; font-size:15px; text-align: left;">{{
+                                    messageItem.messagecontent }}</p>
+                                  <div style="margin-bottom:30px;" class="button-content">
+                                    <button type="button" style="text-align: left;"
+                                      :class="{ mliked: mlikedPosts[messageIndex] }"
+                                      @click="mtoggleLike(index, messageIndex)"><i class="fas fa-thumbs-up"></i></button>
                                     <a class="like-count">{{ messageItem.messagelike.total }}</a>
-                                    <button type="button" style="text-align: left;" @click="mtoggleUnLike(index, messageIndex)"><i
+                                    <button type="button" style="text-align: left;"
+                                      :class="{ munliked: munlikedPosts[messageIndex] }"
+                                      @click="mtoggleUnLike(index, messageIndex)"><i
                                         class="fas fa-thumbs-down"></i></button>
                                   </div>
                                 </template>
@@ -145,7 +277,7 @@
               </div>
               <div style="text-align: right;">
                 <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                <span style="font-size: 20px; ">創建人：{{ Object.values(item.createname)[0] }}</span>
+                <span style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
               </div>
               <p style="margin-bottom:20px"></p>
             </li>
@@ -285,6 +417,134 @@
   background: #dfdfdf;
 }
 
+#messagemenu {
+  width: 50px;
+  height: 30px;
+}
+
+#messagemenu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+* html #messagemenu ul {
+  height: 30px;
+}
+
+* html #messagemenu ul li {
+  display: inline;
+}
+
+#messagemenu ul li a {
+  display: block;
+  float: left;
+  height: 30px;
+  width: 50px;
+  text-align: center;
+}
+
+#messagemenu ul li ul {
+  position: absolute;
+  width: 50px;
+  overflow: visible;
+  clear: left;
+  margin-top: 30px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+*:first-child+html #messagemenu ul li ul {
+  margin-top: 0;
+}
+
+* html #messagemenu ul li ul {
+  margin-top: 0;
+}
+
+#messagemenu ul li ul li {
+  float: none;
+  text-align: center;
+}
+
+#messagemenu ul li ul li a {
+  float: none;
+  width: 100%;
+}
+
+#messagemenu ul li ul li ul {
+  margin-top: -30px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 100px;
+  width: 100%;
+}
+
+*:first-child+html #messagemenu ul li ul li ul {
+  margin-top: -30px;
+}
+
+#messagemenu ul li ul {
+  /* 預先隱藏第二層 */
+  visibility: hidden;
+}
+
+#messagemenu ul li:hover ul {
+  /* 觸動第一層時，顯示第二層 */
+  visibility: visible;
+}
+
+#messagemenu ul li:hover ul li ul {
+  /* 顯示第二層時，隱藏第三層，避免同時彈出 */
+  visibility: hidden;
+}
+
+#messagemenu ul li ul li:hover ul {
+  /* 觸動第二層時，顯示第三層 */
+  visibility: visible;
+}
+
+#messagemenu {
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#messagemenu ul {
+  background: #6f6f6f;
+}
+
+#messagemenu ul li a {
+  color: #FFF;
+  text-decoration: none;
+  line-height: 30px;
+}
+
+#messagemenu ul li ul {
+  background: #efefef;
+}
+
+#messagemenu ul li ul li a {
+  font-size: 12px;
+  color: #333333;
+  text-decoration: none;
+}
+
+#messagemenu ul li:hover,
+#messagemenu ul li a:hover {
+  background: #efefef;
+}
+
+#messagemenu ul li:hover a {
+  color: #333333;
+}
+
+#messagemenu ul li ul li:hover,
+#messagemenu ul li ul li a:hover {
+  background: #dfdfdf;
+}
+
 .button-content {
   display: flex;
   align-items: center;
@@ -292,6 +552,49 @@
 
 .button-content-right {
   margin-left: auto;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  /* 垂直居中复选框和文本 */
+}
+
+.remember-label {
+  display: flex;
+  align-items: center;
+  /* 垂直居中复选框和文本 */
+  cursor: pointer;
+}
+
+.remember-checkbox {
+  /* 隐藏默认的复选框 */
+  display: none;
+}
+
+.checkbox-custom {
+  display: inline-block;
+  width: 20px;
+  /* 设置复选框的宽度 */
+  height: 20px;
+  /* 设置复选框的高度 */
+  border: 2px solid #e50808;
+  border-radius: 4px;
+  margin-right: 10px;
+  /* 为复选框和文本之间留出间距 */
+}
+
+/* 当复选框被选中时，修改样式 */
+.remember-checkbox:checked+.checkbox-custom {
+  background-color: #007bff;
+  /* 选中时的背景颜色 */
+  border-color: #007bff;
+  /* 选中时的边框颜色 */
+}
+
+.remember-label:hover .checkbox-custom {
+  border-color: #999;
+  /* 鼠标悬停时的边框颜色 */
 }
 
 .like-count {
@@ -313,7 +616,21 @@ button.unliked {
   color: black;
 }
 
+button.mliked {
+  background-color: blue;
+  color: black;
+}
+
+button.munliked {
+  background-color: red;
+  color: black;
+}
+
 button.deleted {
+  display: none;
+}
+
+button.mdeleted {
   display: none;
 }
 
@@ -398,7 +715,8 @@ export default {
       munlikedPosts: {},
       mdeletePosts: {},
       dataindex: [],
-      mdataindex: [], postData: [],
+      mdataindex: [],
+      postData: [],
       openFormIndex: {},
       data: {},
       message: {},
@@ -407,12 +725,22 @@ export default {
         subject: '',
         content: ''
       },
+      editPost: {
+        title: '',
+        subject: '',
+        content: ''
+      },
+      reportPost: {
+        content: ''
+      },
       newMessage: {
         content: ''
       },
       userId: null,
       username: '',
       showForm: false,
+      editForm: false,
+      reportForm: false,
       showMessage: false,
       openFormIndex: null,
     };
@@ -453,45 +781,57 @@ export default {
             const mpostId = messageKeys[j];
             if (mpostId === 'total') continue;
             const mpost = message[mpostId];
-
+            console.log(`Playertalk/${postId}/message/${mpostId}/messagename`);
             if (!mpost) {
               continue; // Skip the current loop iteration
             }
 
             const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
             const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+            const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
 
             const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike`);
             const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike/total`);
             const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote`);
             const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
-            /*
+            const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagename`);
+            const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagereport/total`);
+
             get(officialRef1).then((snapshot) => {
               const messagelike = snapshot.val();
               if (messagelike && messagelike[this.userId]) {
-                this.mlikedPosts[i] = true;
+                this.mlikedPosts[mpostId] = true;
               } else {
-                this.mlikedPosts[i] = false;
+                this.mlikedPosts[mpostId] = false;
               }
             });
-
             get(officialRef3).then((snapshot) => {
               const messageunlike = snapshot.val();
               if (messageunlike && messageunlike[this.userId]) {
-                this.munlikedPosts[i] = true;
+                this.munlikedPosts[mpostId] = true;
               } else {
-                this.munlikedPosts[i] = false;
+                this.munlikedPosts[mpostId] = false;
               }
             });
-            */
+            get(officialRef5).then((snapshot) => {
+              const messagedeleted = snapshot.val();
+              if (messagedeleted && messagedeleted[this.userId]) {
+                this.mdeletePosts[mpostId] = false;
+              } else {
+                this.mdeletePosts[mpostId] = true;
+              }
+            });
+
             set(officialRef2, mlikePeopleCount);
             set(officialRef4, munlikePeopleCount);
+            set(officialRef6, mreportPeopleCount);
           }
         }
 
         const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
         const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
         const messageCount = (Object.keys(post.message || {}).length) - 1;
+        const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
 
         const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
         const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople/total`);
@@ -499,6 +839,7 @@ export default {
         const officialRef4 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/total`);
         const officialRef5 = firebaseRef(db, `Playertalk/${postId}/createname`);
         const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/total`);
+        const officialRef7 = firebaseRef(db, `Playertalk/${postId}/reportpeople/total`);
 
         get(officialRef1).then((snapshot) => {
           const likePeople = snapshot.val();
@@ -530,6 +871,7 @@ export default {
         set(officialRef2, likePeopleCount);
         set(officialRef4, unlikePeopleCount);
         set(officialRef6, messageCount);
+        set(officialRef7, reportCount);
       }
     });
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
@@ -544,11 +886,9 @@ export default {
       const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
-
         remove(officialRef1);
       } else {
         this.likedPosts[index] = true;
-
         set(officialRef1, this.username);
         if (this.unlikedPosts[index]) {
           this.toggleUnLike(index);
@@ -562,16 +902,92 @@ export default {
       const officialRef1 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
-
         remove(officialRef1);
       } else {
         this.unlikedPosts[index] = true;
-
         set(officialRef1, this.username);
         if (this.likedPosts[index]) {
           this.toggleLike(index);
         }
       }
+    },
+    toggleReport() {
+      this.reportForm = !this.reportForm;
+    },
+    toggleReportClone() {
+      this.reportForm = !this.reportForm;
+    },
+    submitReport(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}`);
+
+      set(officialRef1, this.reportPost.content);
+
+      this.reportForm = !this.reportForm;
+    },
+    toggleEdit(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/title`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/subject`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/content`);
+
+      get(officialRef1).then((snapshot) => {
+        if (snapshot.exists()) {
+          this.editPost.title = snapshot.val();
+        } else {
+          this.editPost.title = '';
+        }
+      });
+      get(officialRef2).then((snapshot) => {
+        if (snapshot.exists()) {
+          this.editPost.subject = snapshot.val();
+        } else {
+          this.editPost.subject = '';
+        }
+      });
+      get(officialRef3).then((snapshot) => {
+        if (snapshot.exists()) {
+          this.editPost.content = snapshot.val();
+        } else {
+          this.editPost.content = '';
+        }
+      });
+
+      this.editForm = !this.editForm;
+    },
+    toggleEditClone() {
+      this.editForm = !this.editForm;
+    },
+    submitEdit(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/title`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/subject`);
+      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/content`);
+      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/createtime`);
+
+      set(officialRef1, this.editPost.title);
+      set(officialRef2, this.editPost.subject);
+      set(officialRef3, this.editPost.content);
+      set(officialRef4, currentDateTime);
+
+      this.editForm = !this.editForm;
     },
     toggleDelete(index) {
       const postKeys = Object.keys(this.data);
@@ -599,14 +1015,46 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
-      set(officialRef1, this.username);
+      if (this.mlikedPosts[messageIndex]) {
+        this.mlikedPosts[messageIndex] = false;
+        remove(officialRef1);
+      } else {
+        this.mlikedPosts[messageIndex] = true;
+        set(officialRef1, this.username);
+        if (this.munlikedPosts[messageIndex]) {
+          this.mtoggleUnLike(index, messageIndex);
+        }
+      }
     },
     mtoggleUnLike(index, messageIndex) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`);
-      set(officialRef1, this.username);
+      if (this.munlikedPosts[messageIndex]) {
+        this.munlikedPosts[messageIndex] = false;
+        remove(officialRef1);
+      } else {
+        this.munlikedPosts[messageIndex] = true;
+        set(officialRef1, this.username);
+        if (this.mlikedPosts[messageIndex]) {
+          this.mtoggleLike(index, messageIndex);
+        }
+      }
+    },
+    mtoggleReport(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}`);
+      set(officialRef1, '原因');
+    },
+    mtoggleEdit(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagecontent`);
+      set(officialRef1, '更改內容');
     },
     mtoggleDelete(index, messageIndex) {
       const postKeys = Object.keys(this.data);
@@ -639,19 +1087,21 @@ export default {
       const seconds = now.getSeconds();
 
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
-      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}`;
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagename`);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
       const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagecontent`);
       const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagetime`);
       const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagelike/total`);
       const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
+      const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagereport/total`);
 
       set(officialRef1, this.username);
       set(officialRef2, this.newMessage.content);
       set(officialRef3, currentDateTime);
       set(officialRef4, 0);
       set(officialRef5, 0);
+      set(officialRef6, 0);
 
       this.newMessage.content = '';
     },
@@ -675,9 +1125,10 @@ export default {
       const officialRef3 = firebaseRef(db, `Playertalk/${uniqueCode}/content`);
       const officialRef4 = firebaseRef(db, `Playertalk/${uniqueCode}/likepeople/total`);
       const officialRef5 = firebaseRef(db, `Playertalk/${uniqueCode}/downvotepeople/total`);
-      const officialRef6 = firebaseRef(db, `Playertalk/${uniqueCode}/message/total`);
-      const officialRef7 = firebaseRef(db, `Playertalk/${uniqueCode}/createtime`);
-      const officialRef8 = firebaseRef(db, `Playertalk/${uniqueCode}/createname/${this.userId}`);
+      const officialRef6 = firebaseRef(db, `Playertalk/${uniqueCode}/reportpeople/total`);
+      const officialRef7 = firebaseRef(db, `Playertalk/${uniqueCode}/message/total`);
+      const officialRef8 = firebaseRef(db, `Playertalk/${uniqueCode}/createtime`);
+      const officialRef9 = firebaseRef(db, `Playertalk/${uniqueCode}/createname/${this.userId}`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
@@ -685,8 +1136,9 @@ export default {
       set(officialRef4, 0);
       set(officialRef5, 0);
       set(officialRef6, 0);
-      set(officialRef7, currentDateTime);
-      set(officialRef8, this.username);
+      set(officialRef7, 0);
+      set(officialRef8, currentDateTime);
+      set(officialRef9, this.username);
 
       this.showForm = !this.showForm;
     }
