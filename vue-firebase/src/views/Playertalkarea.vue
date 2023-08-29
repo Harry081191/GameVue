@@ -61,7 +61,6 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              {{ index }}: {{ item }}
               <div class="post-container">
                 <div class="button-content">
                   <div class="button-content-right">
@@ -84,62 +83,70 @@
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="色情內容" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="色情內容"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         色情內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="暴力或反感內容" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="暴力或反感內容"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         暴力或反感內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="仇恨或惡意內容" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="仇恨或惡意內容"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         仇恨或惡意內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="騷擾跟霸凌內容" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="騷擾跟霸凌內容"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         騷擾跟霸凌內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="錯誤資訊" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="錯誤資訊"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         錯誤資訊
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="宣傳恐怖主義" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="宣傳恐怖主義"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         宣傳恐怖主義
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" v-model="reportPost.content" value="垃圾內容或誤導內容" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="垃圾內容或誤導內容"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         垃圾內容或誤導內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
                                       <label class="remember-label" style="font-size: 18px;">
-                                        <input type="checkbox" class="remember-checkbox">
-                                        <span class="checkbox-custom"></span>
+                                        <input type="radio" v-model="reportPost.selectedContent" value="法律問題"
+                                          class="remember-radio">
+                                        <span class="radio-custom"></span>
                                         法律問題
                                       </label>
                                     </div>
-                                    <div style="text-align: right">
-                                      <button type="submit">提交</button>
+                                    <div style="text-align: right;">
+                                      <button type="submit" style="width: 60px; height: 25px;">提交</button>
                                     </div>
                                   </form>
                                 </div>
@@ -210,7 +217,9 @@
                               <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
                             </div>
                             <div class="button-content">
-                              <button type="submit" style="margin-bottom: 10px">提交回復</button>
+                              <div class="button-content-right">
+                                <button type="submit" style="margin-bottom: 10px">提交回復</button>
+                              </div>
                             </div>
                             <ul class="custom-list">
                               <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
@@ -226,13 +235,94 @@
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: !mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleReport(index, messageIndex)"><i
+                                                  @click="mtoggleReport()"><i
                                                     class="fas fa-exclamation-triangle"></i></button>
+                                                <Transition>
+                                                  <div v-if="mreportForm" class="form-container">
+                                                    <form @submit.prevent="msubmitReport(index, messageIndex)">
+                                                      <div class="button-content">
+                                                        <div class="button-content-right">
+                                                          <button type="button" @click="mtoggleReportClone()"><i
+                                                              class="fas fa-times"></i></button>
+                                                        </div>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="色情內容" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          色情內容
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="暴力或反感內容" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          暴力或反感內容
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="仇恨或惡意內容" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          仇恨或惡意內容
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="騷擾跟霸凌內容" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          騷擾跟霸凌內容
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="錯誤資訊" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          錯誤資訊
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="宣傳恐怖主義" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          宣傳恐怖主義
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="垃圾內容或誤導內容" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          垃圾內容或誤導內容
+                                                        </label>
+                                                      </div>
+                                                      <div class="remember" style="text-align: left">
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="法律問題" class="remember-radio">
+                                                          <span class="radio-custom"></span>
+                                                          法律問題
+                                                        </label>
+                                                      </div>
+                                                      <div style="text-align: right;">
+                                                        <button type="submit"
+                                                          style="width: 60px; height: 25px;">提交</button>
+                                                      </div>
+                                                    </form>
+                                                  </div>
+                                                </Transition>
+                                                <div v-if="mreportForm" class="overlay" @click="mtoggleReportClone"></div>
                                               </li>
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleEdit(index, messageIndex)"><i
+                                                  @click="mtoggleEdit(messageIndex)"><i
                                                     class="far fa-edit"></i></button>
                                               </li>
                                               <li><button type="button"
@@ -248,8 +338,15 @@
                                     </div>
                                   </div>
                                   </p>
-                                  <p style="margin-bottom:0px; font-size:15px; text-align: left;">{{
-                                    messageItem.messagecontent }}</p>
+                                  <div v-if="editingMessageIndex === messageIndex">
+                                    <textarea v-model="editedMessageContent" placeholder="回復內容" required></textarea>
+                                    <button @click="saveEditedMessage(index, messageIndex)">保存</button>
+                                  </div>
+                                  <div v-else>
+                                    <p style="margin-bottom:0px; font-size:15px; text-align: left;">
+                                      {{ messageItem.messagecontent }}
+                                    </p>
+                                  </div>
                                   <div style="margin-bottom:30px;" class="button-content">
                                     <button type="button" style="text-align: left;"
                                       :class="{ mliked: mlikedPosts[messageIndex] }"
@@ -567,32 +664,33 @@
   cursor: pointer;
 }
 
-.remember-checkbox {
+.remember-radio {
   /* 隐藏默认的复选框 */
   display: none;
 }
 
-.checkbox-custom {
+.radio-custom {
   display: inline-block;
   width: 20px;
   /* 设置复选框的宽度 */
   height: 20px;
   /* 设置复选框的高度 */
   border: 2px solid #e50808;
-  border-radius: 4px;
+  border-radius: 50%;
+  /* 圆形边框 */
   margin-right: 10px;
   /* 为复选框和文本之间留出间距 */
 }
 
 /* 当复选框被选中时，修改样式 */
-.remember-checkbox:checked+.checkbox-custom {
+.remember-radio:checked+.radio-custom {
   background-color: #007bff;
   /* 选中时的背景颜色 */
   border-color: #007bff;
   /* 选中时的边框颜色 */
 }
 
-.remember-label:hover .checkbox-custom {
+.remember-label:hover .radio-custom {
   border-color: #999;
   /* 鼠标悬停时的边框颜色 */
 }
@@ -731,7 +829,10 @@ export default {
         content: ''
       },
       reportPost: {
-        content: ''
+        selectedContent: ''
+      },
+      mreportPost: {
+        selectedContent: ''
       },
       newMessage: {
         content: ''
@@ -740,7 +841,10 @@ export default {
       username: '',
       showForm: false,
       editForm: false,
+      editingMessageIndex: -1,
+      editedMessageContent: '',
       reportForm: false,
+      mreportForm: false,
       showMessage: false,
       openFormIndex: null,
     };
@@ -783,7 +887,7 @@ export default {
             const mpost = message[mpostId];
             console.log(`Playertalk/${postId}/message/${mpostId}/messagename`);
             if (!mpost) {
-              continue; // Skip the current loop iteration
+              continue;
             }
 
             const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
@@ -912,19 +1016,32 @@ export default {
       }
     },
     toggleReport() {
+      this.reportPost.selectedContent = '';
       this.reportForm = !this.reportForm;
     },
     toggleReportClone() {
+      this.reportPost.selectedContent = '';
       this.reportForm = !this.reportForm;
     },
     submitReport(index) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}`);
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      set(officialRef1, this.reportPost.content);
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}/resaon`);
+
+      set(officialRef1, currentDateTime);
+      set(officialRef2, this.reportPost.selectedContent);
 
       this.reportForm = !this.reportForm;
     },
@@ -1042,19 +1159,61 @@ export default {
         }
       }
     },
-    mtoggleReport(index, messageIndex) {
-      const postKeys = Object.keys(this.data);
-      const postId = postKeys[index];
-      const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}`);
-      set(officialRef1, '原因');
+
+    mtoggleReport() {
+      this.mreportPost.selectedContent = '';
+      this.mreportForm = !this.mreportForm;
     },
-    mtoggleEdit(index, messageIndex) {
+    mtoggleReportClone() {
+      this.mreportPost.selectedContent = '';
+      this.mreportForm = !this.mreportForm;
+    },
+    msubmitReport(index, messageIndex) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}/resaon`);
+
+      set(officialRef1, currentDateTime);
+      set(officialRef2, this.mreportPost.selectedContent);
+
+      this.mreportForm = !this.mreportForm;
+    },
+    mtoggleEdit(messageIndex) {
+      this.editingMessageIndex = messageIndex;
+    },
+    saveEditedMessage(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+
       const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagecontent`);
-      set(officialRef1, '更改內容');
+      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagetime`);
+
+      set(officialRef1, this.editedMessageContent);
+      set(officialRef2, currentDateTime);
+
+      this.editingMessageIndex = -1;
     },
     mtoggleDelete(index, messageIndex) {
       const postKeys = Object.keys(this.data);
