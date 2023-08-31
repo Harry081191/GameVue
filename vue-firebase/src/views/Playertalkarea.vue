@@ -322,7 +322,7 @@
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleEdit(messageIndex)"><i
+                                                  @click="mtoggleEdit(index, messageIndex)"><i
                                                     class="far fa-edit"></i></button>
                                               </li>
                                               <li><button type="button"
@@ -346,16 +346,17 @@
                                     <p style="margin-bottom:0px; font-size:15px; text-align: left;">
                                       {{ messageItem.messagecontent }}
                                     </p>
-                                  </div>
-                                  <div style="margin-bottom:30px;" class="button-content">
-                                    <button type="button" style="text-align: left;"
-                                      :class="{ mliked: mlikedPosts[messageIndex] }"
-                                      @click="mtoggleLike(index, messageIndex)"><i class="fas fa-thumbs-up"></i></button>
-                                    <a class="like-count">{{ messageItem.messagelike.total }}</a>
-                                    <button type="button" style="text-align: left;"
-                                      :class="{ munliked: munlikedPosts[messageIndex] }"
-                                      @click="mtoggleUnLike(index, messageIndex)"><i
-                                        class="fas fa-thumbs-down"></i></button>
+                                    <div style="margin-bottom:30px;" class="button-content">
+                                      <button type="button" style="text-align: left;"
+                                        :class="{ mliked: mlikedPosts[messageIndex] }"
+                                        @click="mtoggleLike(index, messageIndex)"><i
+                                          class="fas fa-thumbs-up"></i></button>
+                                      <a class="like-count">{{ messageItem.messagelike.total }}</a>
+                                      <button type="button" style="text-align: left;"
+                                        :class="{ munliked: munlikedPosts[messageIndex] }"
+                                        @click="mtoggleUnLike(index, messageIndex)"><i
+                                          class="fas fa-thumbs-down"></i></button>
+                                    </div>
                                   </div>
                                 </template>
                               </li>
@@ -1190,7 +1191,21 @@ export default {
 
       this.mreportForm = !this.mreportForm;
     },
-    mtoggleEdit(messageIndex) {
+    mtoggleEdit(index, messageIndex) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+
+      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagecontent`);
+
+      get(officialRef1).then((snapshot) => {
+        if (snapshot.exists()) {
+          this.editedMessageContent = snapshot.val();
+        } else {
+          this.editedMessageContent = '';
+        }
+      });
+
       this.editingMessageIndex = messageIndex;
     },
     saveEditedMessage(index, messageIndex) {
