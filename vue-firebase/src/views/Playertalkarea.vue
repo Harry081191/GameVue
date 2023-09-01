@@ -38,7 +38,7 @@
               <form @submit.prevent="submitPost">
                 <div class="button-content">
                   <div class="button-content-right">
-                    <button type="button" @click="toggleFormClone()"><i class="fas fa-times"></i></button>
+                    <button type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
                   </div>
                 </div>
                 <div>
@@ -56,7 +56,7 @@
               </form>
             </div>
           </Transition>
-          <div v-if="showForm" class="overlay" @click="toggleFormClone"></div>
+          <div v-if="showForm" class="overlay" @click="toggleForm"></div>
         </div>
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
@@ -66,8 +66,8 @@
                   <div class="button-content-right">
                     <div id="menu">
                       <ul>
-                        <li> <a>MENU</a>
-                          <ul>
+                        <li> <a @click="toggleMenu(index)">MENU</a>
+                          <ul v-if="menuStates[index]">
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
@@ -77,7 +77,7 @@
                                   <form @submit.prevent="submitReport(index)">
                                     <div class="button-content">
                                       <div class="button-content-right">
-                                        <button type="button" @click="toggleReportClone()"><i
+                                        <button type="button" @click="toggleReport(index)"><i
                                             class="fas fa-times"></i></button>
                                       </div>
                                     </div>
@@ -151,7 +151,7 @@
                                   </form>
                                 </div>
                               </Transition>
-                              <div v-if="reportForm" class="overlay" @click="toggleReportClone"></div>
+                              <div v-if="reportForm" class="overlay" @click="toggleReport(index)"></div>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
@@ -162,7 +162,7 @@
                                   <form @submit.prevent="submitEdit(index)">
                                     <div class="button-content">
                                       <div class="button-content-right">
-                                        <button type="button" @click="toggleEditClone()"><i
+                                        <button type="button" @click="toggleEdit(index)"><i
                                             class="fas fa-times"></i></button>
                                       </div>
                                     </div>
@@ -184,7 +184,7 @@
                                   </form>
                                 </div>
                               </Transition>
-                              <div v-if="editForm" class="overlay" @click="toggleEditClone"></div>
+                              <div v-if="editForm" class="overlay" @click="toggleEdit(index)"></div>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
@@ -210,7 +210,7 @@
                           <form @submit.prevent="submitMessage(index)">
                             <div class="button-content">
                               <div class="button-content-right">
-                                <button type="button" @click="toggleMessageClone()"><i class="fas fa-times"></i></button>
+                                <button type="button" @click="toggleMessage()"><i class="fas fa-times"></i></button>
                               </div>
                             </div>
                             <div>
@@ -230,8 +230,8 @@
                                     <div class="button-content-right">
                                       <div id="messagemenu">
                                         <ul>
-                                          <li> <a><i class="fas fa-list-ul"></i></a>
-                                            <ul>
+                                          <li> <a @click="mtoggleMenu(messageIndex)"><i class="fas fa-list-ul"></i></a>
+                                            <ul v-if="mmenuStates[messageIndex]">
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: !mdeletePosts[messageIndex] }"
@@ -242,7 +242,7 @@
                                                     <form @submit.prevent="msubmitReport(index, messageIndex)">
                                                       <div class="button-content">
                                                         <div class="button-content-right">
-                                                          <button type="button" @click="mtoggleReportClone()"><i
+                                                          <button type="button" @click="mtoggleReport()"><i
                                                               class="fas fa-times"></i></button>
                                                         </div>
                                                       </div>
@@ -317,7 +317,9 @@
                                                     </form>
                                                   </div>
                                                 </Transition>
-                                                <div v-if="mreportForm" class="overlay" @click="mtoggleReportClone"></div>
+                                                <div v-if="mreportForm" class="messageoverlay"
+                                                  @click="closeWindows(messageIndex)">
+                                                </div>
                                               </li>
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
@@ -380,7 +382,7 @@
               <p style="margin-bottom:20px"></p>
             </li>
           </ul>
-          <div v-if="showMessage" class="overlay" @click="toggleMessageClone"></div>
+          <div v-if="showMessage" class="overlay" @click="closeWindows"></div>
         </div>
       </div>
     </div>
@@ -440,7 +442,6 @@
 }
 
 #menu ul li ul li a {
-  float: none;
   width: 100%;
 }
 
@@ -454,26 +455,6 @@
 
 *:first-child+html #menu ul li ul li ul {
   margin-top: -30px;
-}
-
-#menu ul li ul {
-  /* 預先隱藏第二層 */
-  visibility: hidden;
-}
-
-#menu ul li:hover ul {
-  /* 觸動第一層時，顯示第二層 */
-  visibility: visible;
-}
-
-#menu ul li:hover ul li ul {
-  /* 顯示第二層時，隱藏第三層，避免同時彈出 */
-  visibility: hidden;
-}
-
-#menu ul li ul li:hover ul {
-  /* 觸動第二層時，顯示第三層 */
-  visibility: visible;
 }
 
 #menu {
@@ -582,26 +563,6 @@
 
 *:first-child+html #messagemenu ul li ul li ul {
   margin-top: -30px;
-}
-
-#messagemenu ul li ul {
-  /* 預先隱藏第二層 */
-  visibility: hidden;
-}
-
-#messagemenu ul li:hover ul {
-  /* 觸動第一層時，顯示第二層 */
-  visibility: visible;
-}
-
-#messagemenu ul li:hover ul li ul {
-  /* 顯示第二層時，隱藏第三層，避免同時彈出 */
-  visibility: hidden;
-}
-
-#messagemenu ul li ul li:hover ul {
-  /* 觸動第二層時，顯示第三層 */
-  visibility: visible;
 }
 
 #messagemenu {
@@ -796,6 +757,16 @@ button.mdeleted {
   z-index: 999;
 }
 
+.messageoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
 .form-scroll {
   max-height: 650px;
   overflow-y: auto;
@@ -816,7 +787,8 @@ export default {
       dataindex: [],
       mdataindex: [],
       postData: [],
-      openFormIndex: {},
+      menuStates: [],
+      mmenuStates: [],
       data: {},
       message: {},
       newPost: {
@@ -984,6 +956,16 @@ export default {
     });
   },
   methods: {
+    closeWindows(messageIndex) {
+      if (this.mreportForm) {
+        this.mreportForm = false;
+        this.showMessage = true;
+        this.mmenuStates[messageIndex] = false;
+        console.log(this.mmenuStates[messageIndex]);
+      } else if (this.showMessage) {
+        this.showMessage = false;
+      }
+    },
     toggleLike(index) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
@@ -1016,13 +998,13 @@ export default {
         }
       }
     },
-    toggleReport() {
-      this.reportPost.selectedContent = '';
-      this.reportForm = !this.reportForm;
+    toggleMenu(index) {
+      this.menuStates[index] = !this.menuStates[index];
     },
-    toggleReportClone() {
+    toggleReport(index) {
       this.reportPost.selectedContent = '';
       this.reportForm = !this.reportForm;
+      this.menuStates[index] = !this.menuStates[index];
     },
     submitReport(index) {
       const postKeys = Object.keys(this.data);
@@ -1078,9 +1060,9 @@ export default {
       });
 
       this.editForm = !this.editForm;
-    },
-    toggleEditClone() {
-      this.editForm = !this.editForm;
+      if (!this.editForm) {
+        this.menuStates[index] = !this.menuStates[index];
+      }
     },
     submitEdit(index) {
       const postKeys = Object.keys(this.data);
@@ -1125,9 +1107,6 @@ export default {
       this.newPost.subject = '';
       this.newPost.content = '';
     },
-    toggleFormClone() {
-      this.showForm = !this.showForm;
-    },
     mtoggleLike(index, messageIndex) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
@@ -1160,12 +1139,15 @@ export default {
         }
       }
     },
-
+    mtoggleMenu(messageIndex) {
+      this.mmenuStates[messageIndex] = !this.mmenuStates[messageIndex];
+      console.log(this.mmenuStates[messageIndex]);
+    },
     mtoggleReport() {
       this.mreportPost.selectedContent = '';
       this.mreportForm = !this.mreportForm;
     },
-    mtoggleReportClone() {
+    mtoggleReport() {
       this.mreportPost.selectedContent = '';
       this.mreportForm = !this.mreportForm;
     },
@@ -1243,9 +1225,6 @@ export default {
     },
     toggleMessage(index) {
       this.openFormIndex = index;
-      this.showMessage = !this.showMessage;
-    },
-    toggleMessageClone() {
       this.showMessage = !this.showMessage;
     },
     submitMessage(index) {
