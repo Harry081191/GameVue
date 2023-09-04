@@ -198,8 +198,26 @@
                   </div>
                 </div>
                 <p style="font-size:40px;">{{ item.title }}</p>
-                <p style="font-size:40px;">{{ item.subject }}</p>
-                <p style="font-size:40px;">{{ item.content }}</p>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-3 bg-white text-dark" style="text-align: center;">
+                      <a style="font-size: 40px;">
+                        <p>角色圖片</p>
+                      </a>
+                      <a style="font-size: 16px;">
+                        <p>uid：{{ Object.keys(item.createname)[0] }}</p>
+                      </a>
+                    </div>
+                    <div class="col-9 bg-white text-dark" style="text-align: center;">
+                      <a style="font-size: 32px;">
+                        <p>{{ item.subject }}</p>
+                      </a>
+                      <a style="font-size: 16px;">
+                        <p>uid：{{ item.content }}</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <div class="button-content">
                   <div class="button-content-right">
                     <a class="like-count">{{ item.message.total }}</a>
