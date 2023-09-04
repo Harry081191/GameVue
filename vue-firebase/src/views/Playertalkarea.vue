@@ -974,12 +974,12 @@ export default {
     });
   },
   methods: {
-    closeWindows(messageIndex) {
+    closeWindows() {
+      const messageIndex = this.currentMessageIndex;
       if (this.mreportForm) {
         this.mreportForm = false;
         this.showMessage = true;
         this.mmenuStates[messageIndex] = false;
-        console.log(this.mmenuStates[messageIndex]);
       } else if (this.showMessage) {
         this.showMessage = false;
       }
@@ -1158,6 +1158,7 @@ export default {
       }
     },
     mtoggleMenu(messageIndex) {
+      this.currentMessageIndex = messageIndex;
       this.mmenuStates[messageIndex] = !this.mmenuStates[messageIndex];
       console.log(this.mmenuStates[messageIndex]);
     },
@@ -1168,6 +1169,10 @@ export default {
     mtoggleReport() {
       this.mreportPost.selectedContent = '';
       this.mreportForm = !this.mreportForm;
+      if (!this.mreportForm) {
+        const messageIndex = this.currentMessageIndex;
+        this.mmenuStates[messageIndex] = false;
+      }
     },
     msubmitReport(index, messageIndex) {
       const postKeys = Object.keys(this.data);
