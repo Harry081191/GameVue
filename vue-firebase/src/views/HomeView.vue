@@ -59,22 +59,39 @@ import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
 
 export default {
+  name: 'HomeView',
+  mounted() {
+    const db = getDatabase(firebaseApp);
+    const dataRef = firebaseRef(db, 'Users/');
+
+    onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      this.data = data; // Store the data in the component's data property
+    });
+  },
+  data() {
+    return {
+      data: {},
+      yourUid: '',
+      errorMessage: null
+    };
+  },
+  provide: {
+    yourUid: '',
+  },
   methods: {
     handleSubmit() {
       this.$nextTick(() => {
         const username = this.username;
         const password = this.password;
-        // Access the Firebase Realtime Database
         const db = getDatabase(firebaseApp);
         const usersRef = firebaseRef(db, 'Users/');
 
-        let userId = null; // 清除上一次驗證的結果
+        let userId = null;
 
-        // 監聽 'users' 路徑下的數據
         onValue(usersRef, (snapshot) => {
           const users = snapshot.val();
 
-          // 驗證用戶名稱和密碼是否匹配
           const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
 
           if (matchedUser) {
@@ -82,6 +99,8 @@ export default {
 
             if (userData.Password === password) {
               const userId = matchedUser[0];
+              this.yourUid = userId;
+              console.log(this.yourUid);
               this.$router.push({
                 name: 'Login',
                 params: {
@@ -114,26 +133,8 @@ export default {
       });
     }
   },
-  name: 'HomeView',
   components: {
     HelloWorld
   },
-  data() {
-    return {
-      data: {},
-      errorMessage: null
-    };
-  },
-  mounted() {
-    // Access the Firebase Realtime Database
-    const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, 'Users/');
-
-    // Listen for changes in the 'data' node
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      this.data = data; // Store the data in the component's data property
-    });
-  }
 };
 </script>
