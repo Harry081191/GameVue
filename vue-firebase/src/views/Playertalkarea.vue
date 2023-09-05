@@ -543,7 +543,7 @@
 }
 
 #messagemenu ul li ul {
-  position: absolute;
+  position: relative;
   width: 50px;
   overflow: visible;
   clear: left;
