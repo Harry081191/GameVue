@@ -436,7 +436,7 @@
 }
 
 #menu ul li ul {
-  position: absolute;
+  position: relative;
   width: 150px;
   overflow: visible;
   clear: left;
