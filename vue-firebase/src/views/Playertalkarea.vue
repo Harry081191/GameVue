@@ -979,7 +979,9 @@ export default {
       if (this.mreportForm) {
         this.mreportForm = false;
         this.showMessage = true;
-        this.mmenuStates[messageIndex] = false;
+        setTimeout(() => {
+          this.mmenuStates[messageIndex] = false;
+        }, 500);
       } else if (this.showMessage) {
         this.showMessage = false;
       }
@@ -1022,7 +1024,9 @@ export default {
     toggleReport(index) {
       this.reportPost.selectedContent = '';
       this.reportForm = !this.reportForm;
-      this.menuStates[index] = !this.menuStates[index];
+      setTimeout(() => {
+        this.menuStates[index] = !this.menuStates[index];
+      }, 500);
     },
     submitReport(index) {
       const postKeys = Object.keys(this.data);
@@ -1079,7 +1083,9 @@ export default {
 
       this.editForm = !this.editForm;
       if (!this.editForm) {
-        this.menuStates[index] = !this.menuStates[index];
+        setTimeout(() => {
+          this.menuStates[index] = !this.menuStates[index];
+        }, 500);
       }
     },
     submitEdit(index) {
@@ -1165,13 +1171,11 @@ export default {
     mtoggleReport() {
       this.mreportPost.selectedContent = '';
       this.mreportForm = !this.mreportForm;
-    },
-    mtoggleReport() {
-      this.mreportPost.selectedContent = '';
-      this.mreportForm = !this.mreportForm;
+      const messageIndex = this.currentMessageIndex;
       if (!this.mreportForm) {
-        const messageIndex = this.currentMessageIndex;
-        this.mmenuStates[messageIndex] = false;
+        setTimeout(() => {
+          this.mmenuStates[messageIndex] = false;
+        }, 500);
       }
     },
     msubmitReport(index, messageIndex) {
@@ -1213,7 +1217,7 @@ export default {
 
       this.editingMessageIndex = messageIndex;
     },
-    saveEditedMessage(index, messageIndex) {
+    saveEditedMessage(index, messageIndex) { //0.0
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
@@ -1234,6 +1238,10 @@ export default {
       set(officialRef2, currentDateTime);
 
       this.editingMessageIndex = -1;
+
+      if (this.editingMessageIndex === -1) {
+        this.mmenuStates[messageIndex] = false;
+      }
     },
     mtoggleDelete(index, messageIndex) {
       const postKeys = Object.keys(this.data);
