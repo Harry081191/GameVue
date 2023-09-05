@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store'
+import store from './store/index'
 import { initializeApp } from 'firebase/app';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import VueToast from 'vue-toast-notification';
@@ -20,7 +20,6 @@ const firebaseConfig = {
     appId: "1:745485943638:web:74890acde2bf5368710cf7",
     measurementId: "G-KG736KE2VM"
 };
-
 
 initializeApp(firebaseConfig);
 

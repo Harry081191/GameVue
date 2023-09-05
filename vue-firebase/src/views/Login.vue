@@ -64,6 +64,7 @@
       {{ key }}: {{ item }}
     </li>
   </div>
+  <p>Shared Variable: {{ getSharedUid }}</p>
 </template>
 <style scoped>
 .custom-link {
@@ -73,8 +74,12 @@
 <script>
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
+import { mapGetters } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters(["getSharedUid"])
+  },
   data() {
     return {
       data: {},
@@ -85,7 +90,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const userId = this.$route.params.userId; // 從路由參數中獲取使用者名稱
+    const userId = this.$route.params.userId; // 从路由参数中获取用户名
     const dataRef = firebaseRef(db, `Users/${userId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
@@ -96,6 +101,6 @@ export default {
         { label: 'MP', value: data.MP },
       ];
     });
-  }
+  },
 };
 </script>

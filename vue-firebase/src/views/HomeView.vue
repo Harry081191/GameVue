@@ -54,12 +54,11 @@
 }
 </style>
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
+import { mapActions} from "vuex";
 
 export default {
-  name: 'HomeView',
   mounted() {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Users/');
@@ -76,50 +75,33 @@ export default {
       errorMessage: null
     };
   },
-  provide: {
-    yourUid: '',
-  },
   methods: {
+    ...mapActions(["updateSharedUid"]),
     handleSubmit() {
-      this.$nextTick(() => {
-        const username = this.username;
-        const password = this.password;
-        const db = getDatabase(firebaseApp);
-        const usersRef = firebaseRef(db, 'Users/');
+      const username = this.username;
+      const password = this.password;
+      const db = getDatabase(firebaseApp);
+      const usersRef = firebaseRef(db, 'Users/');
 
-        let userId = null;
+      onValue(usersRef, (snapshot) => {
+        const users = snapshot.val();
 
-        onValue(usersRef, (snapshot) => {
-          const users = snapshot.val();
+        const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
 
-          const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
+        if (matchedUser) {
+          const [, userData] = matchedUser;
 
-          if (matchedUser) {
-            const [, userData] = matchedUser;
-
-            if (userData.Password === password) {
-              const userId = matchedUser[0];
-              this.yourUid = userId;
-              console.log(this.yourUid);
-              this.$router.push({
-                name: 'Login',
-                params: {
-                  userId: userId
-                }
-              });
-            } else {
-              this.errorMessage = 'Invalid password';
-
-              this.$toast.error(this.errorMessage, {
-                position: 'top',
-                duration: 3000,
-                dismissible: true,
-              });
-
-              this.errorMessage = '';
-            }
+          if (userData.Password === password) {
+            const userId = matchedUser[0];
+            this.updateSharedUid(userId);
+            this.$router.push({
+              name: 'Login',
+              params: {
+                userId: userId
+              }
+            });
           } else {
-            this.errorMessage = 'Invalid username';
+            this.errorMessage = 'Invalid password';
 
             this.$toast.error(this.errorMessage, {
               position: 'top',
@@ -129,12 +111,19 @@ export default {
 
             this.errorMessage = '';
           }
-        });
+        } else {
+          this.errorMessage = 'Invalid username';
+
+          this.$toast.error(this.errorMessage, {
+            position: 'top',
+            duration: 3000,
+            dismissible: true,
+          });
+
+          this.errorMessage = '';
+        }
       });
     }
-  },
-  components: {
-    HelloWorld
   },
 };
 </script>
