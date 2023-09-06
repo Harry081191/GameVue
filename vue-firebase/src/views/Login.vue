@@ -17,7 +17,7 @@
         <input type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
         <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
       </from>
-      <router-link :to="{ name: 'home' }" class="custom-link">登出</router-link>
+      <router-link :to="{ name: 'Home' }" class="custom-link">登出</router-link>
     </nav>
     <div class="container">
       <div class="p-3 wrapper">
@@ -100,6 +100,12 @@ export default {
         { label: 'HP', value: data.HP },
         { label: 'MP', value: data.MP },
       ];
+      console.log(this.getSharedUid);
+      if(this.getSharedUid != userId){
+        this.$router.push({
+          name: 'Home',
+        })
+      };
     });
   },
 };

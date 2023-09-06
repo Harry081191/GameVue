@@ -4,7 +4,7 @@
   <nav>
     <router-link to="/">遊戲名</router-link>
   </nav>
-  <div class="home">
+  <div class="Home">
     <div class="container">
       <div class="p-5 wrapper">
         <div class="row justify-content-center">
