@@ -359,8 +359,14 @@
                                   </div>
                                   </p>
                                   <div v-if="editingMessageIndex === messageIndex">
-                                    <textarea v-model="editedMessageContent" placeholder="回復內容" required></textarea>
-                                    <button @click="saveEditedMessage(index, messageIndex)">保存</button>
+                                    <p style="margin-bottom:0px"><textarea v-model="editedMessageContent" placeholder="回復內容" required></textarea>
+                                    </p>
+                                    <div style="margin-bottom:10px;" class="button-content">
+                                      <div class="button-content-right">
+                                        <button @click="cancelEditedMessage(messageIndex)">取消</button>
+                                        <button @click="saveEditedMessage(index, messageIndex)">保存</button>
+                                      </div>
+                                    </div>
                                   </div>
                                   <div v-else>
                                     <p style="margin-bottom:0px; font-size:15px; text-align: left;">
@@ -1217,8 +1223,12 @@ export default {
       });
 
       this.editingMessageIndex = messageIndex;
+      this.mmenuStates[messageIndex] = false;
     },
-    saveEditedMessage(index, messageIndex) { //0.0
+    cancelEditedMessage(messageIndex) {
+      this.editingMessageIndex = -1;
+    },
+    saveEditedMessage(index, messageIndex) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
@@ -1239,10 +1249,6 @@ export default {
       set(officialRef2, currentDateTime);
 
       this.editingMessageIndex = -1;
-
-      if (this.editingMessageIndex === -1) {
-        this.mmenuStates[messageIndex] = false;
-      }
     },
     mtoggleDelete(index, messageIndex) {
       const postKeys = Object.keys(this.data);
