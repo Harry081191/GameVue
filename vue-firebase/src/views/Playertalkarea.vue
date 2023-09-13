@@ -205,7 +205,7 @@
                         <p>角色圖片</p>
                       </a>
                       <a style="font-size: 16px;">
-                        <p>uid：{{ Object.keys(item.createname)[0] }}</p>
+                        <p>UID：{{ Object.keys(item.createname)[0] }}</p>
                       </a>
                     </div>
                     <div class="col-9 bg-white text-dark" style="text-align: center;">
@@ -213,7 +213,7 @@
                         <p>{{ item.subject }}</p>
                       </a>
                       <a style="font-size: 16px;">
-                        <p>uid：{{ item.content }}</p>
+                        <p>內容：{{ item.content }}</p>
                       </a>
                     </div>
                   </div>

@@ -84,6 +84,7 @@ export default {
     return {
       data: {},
       selectedOption: '',
+      checkuserId:'',
       options: [],
     };
   },
@@ -91,6 +92,7 @@ export default {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
     const userId = this.$route.params.userId; // 从路由参数中获取用户名
+    this.checkuserId = userId;
     const dataRef = firebaseRef(db, `Users/${userId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
