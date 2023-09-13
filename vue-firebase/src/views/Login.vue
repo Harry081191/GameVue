@@ -13,10 +13,10 @@
           </li>
         </ul>
       </div>
-      <from class="from-inline" style="text-align: right;">
-        <input type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
+      <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right;">
+        <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
         <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
-      </from>
+      </form>
       <router-link :to="{ name: 'Home' }" class="custom-link">登出</router-link>
     </nav>
     <div class="container">
@@ -83,8 +83,11 @@ export default {
   data() {
     return {
       data: {},
+      newSerch: {
+        userId: '',
+      },
       selectedOption: '',
-      checkuserId:'',
+      checkuserId: '',
       options: [],
     };
   },
@@ -93,7 +96,7 @@ export default {
     const db = getDatabase(firebaseApp);
     const userId = this.$route.params.userId; // 从路由参数中获取用户名
     this.checkuserId = userId;
-    const dataRef = firebaseRef(db, `Users/${userId}`);
+    const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
@@ -109,6 +112,12 @@ export default {
         })
       };
     });
+  },
+  methods: {
+    submitSerch() {
+      this.checkuserId = this.newSerch.userId;
+      console.log(this.checkuserId);
+    }
   },
 };
 </script>
