@@ -79,6 +79,7 @@
 .Font-color {
   Color: #2c3e50;
 }
+
 .button-container {
   display: flex;
   justify-content: space-between;
@@ -89,6 +90,7 @@
   text-align: center;
   width: 100%;
 }
+
 .Serch {
   pointer-events: none;
   opacity: 0.5;
@@ -106,13 +108,16 @@ export default {
   data() {
     return {
       data: {},
+      Serchdata: {},
       dataindex: [],
+      Serchdataindex: [],
       newSerch: {
         userId: '',
       },
       selectedOption: '',
       checkuserId: '',
       Serchstatus: false,
+      isSerchRefListenerInitialized: false,
       options: [],
     };
   },
@@ -121,6 +126,7 @@ export default {
     const db = getDatabase(firebaseApp);
     const userId = this.$route.params.userId; // 从路由参数中获取用户名
     this.checkuserId = userId;
+    const SerchRef = firebaseRef(db, `Users/`);
     const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
@@ -140,13 +146,25 @@ export default {
         })
       };
     });
+    if (!this.isSerchRefListenerInitialized) {
+      onValue(SerchRef, (snapshot) => {
+        const Serchdata = snapshot.val();
+        this.Serchdataindex = Object.values(Serchdata); // Convert object to array
+        this.SerchdataLength = this.Serchdataindex.length; // Store the length
+        this.Serchdata = Serchdata; // Store the data in the component's data property
+        console.log(this.Serchdata);
+      });
+    }
+    this.isSerchRefListenerInitialized = true;
   },
   methods: {
     submitSerch() {
       this.checkuserId = this.newSerch.userId;
       this.newSerch.userId = '';
-      if (!this.Serchstatus) {
-        this.Serchstatus = !this.Serchstatus;
+      if (this.checkuserId != '') {
+        if (!this.Serchstatus) {
+          this.Serchstatus = !this.Serchstatus;
+        }
       }
       console.log(this.Serchstatus);
     },
