@@ -164,22 +164,19 @@ export default {
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
         const SerchpostId = SerchpostKeys[i];
-        if(this.newSerch.userId === SerchpostId && this.newSerch.userId !== this.userId){
+        if (this.newSerch.userId === SerchpostId && this.newSerch.userId !== this.userId) {
           this.accountexist = true;
           break;
-        }else{
+        } else {
           this.accountexist = false;
         }
       }
-      console.log(this.accountexist);
       if (this.checkuserId != '' && this.accountexist) {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
       }
       this.newSerch.userId = '';
-      console.log(this.Serchstatus);
-      console.log(this.Serchdata);
       /*
       這邊打路徑進去給onValue(dataRef, (snapshot) => {中的dataRef讓他讀取其他角色的資料
       */
