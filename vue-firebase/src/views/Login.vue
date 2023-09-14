@@ -114,9 +114,11 @@ export default {
       newSerch: {
         userId: '',
       },
+      userId: null,
       selectedOption: '',
       checkuserId: '',
       Serchstatus: false,
+      accountexist: false,
       isSerchRefListenerInitialized: false,
       options: [],
     };
@@ -124,8 +126,8 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const userId = this.$route.params.userId; // 从路由参数中获取用户名
-    this.checkuserId = userId;
+    this.userId = this.$route.params.userId; // 从路由参数中获取用户名
+    this.checkuserId = this.userId;
     const SerchRef = firebaseRef(db, `Users/`);
     const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
     // Listen for changes in the 'data' node
@@ -140,7 +142,7 @@ export default {
         this.options.push({ label: `${postId}`, value: data[postId] });
       }
       console.log(this.dataLength);
-      if (this.getSharedUid != userId) {
+      if (this.getSharedUid != this.userId) {
         this.$router.push({
           name: 'Home',
         })
@@ -159,14 +161,28 @@ export default {
   methods: {
     submitSerch() {
       this.checkuserId = this.newSerch.userId;
-      this.newSerch.userId = '';
-      if (this.checkuserId != '') {
+      for (let i = 0; i < this.SerchdataLength; i++) {
+        const SerchpostKeys = Object.keys(this.Serchdata);
+        const SerchpostId = SerchpostKeys[i];
+        if(this.newSerch.userId === SerchpostId && this.newSerch.userId !== this.userId){
+          this.accountexist = true;
+          break;
+        }else{
+          this.accountexist = false;
+        }
+      }
+      console.log(this.accountexist);
+      if (this.checkuserId != '' && this.accountexist) {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
       }
+      this.newSerch.userId = '';
       console.log(this.Serchstatus);
       console.log(this.Serchdata);
+      /*
+      這邊打路徑進去給onValue(dataRef, (snapshot) => {中的dataRef讓他讀取其他角色的資料
+      */
     },
     toggleLogin() {
       if (this.Serchstatus) {
