@@ -60,11 +60,7 @@
         </div>
       </div>
     </div>
-    <li v-for="(item, key) in data" :key="key">
-      {{ key }}: {{ item }}
-    </li>
   </div>
-  <p>Shared Variable: {{ getSharedUid }}</p>
 </template>
 <style scoped>
 .custom-link {
