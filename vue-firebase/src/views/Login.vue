@@ -152,7 +152,6 @@ export default {
         this.Serchdataindex = Object.values(Serchdata); // Convert object to array
         this.SerchdataLength = this.Serchdataindex.length; // Store the length
         this.Serchdata = Serchdata; // Store the data in the component's data property
-        console.log(this.Serchdata);
       });
     }
     this.isSerchRefListenerInitialized = true;
@@ -167,6 +166,7 @@ export default {
         }
       }
       console.log(this.Serchstatus);
+      console.log(this.Serchdata);
     },
     toggleLogin() {
       if (this.Serchstatus) {
