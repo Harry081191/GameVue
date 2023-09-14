@@ -800,7 +800,6 @@ button.mdeleted {
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
 import { firebaseApp } from '@/main';
 export default {
-  inject: ['yourUid'], // 使用与提供属性相同的名称
   data() {
     return {
       likedPosts: {},
@@ -883,7 +882,6 @@ export default {
             const mpostId = messageKeys[j];
             if (mpostId === 'total') continue;
             const mpost = message[mpostId];
-            console.log(`Playertalk/${postId}/message/${mpostId}/messagename`);
             if (!mpost) {
               continue;
             }
@@ -1173,7 +1171,6 @@ export default {
     mtoggleMenu(messageIndex) {
       this.currentMessageIndex = messageIndex;
       this.mmenuStates[messageIndex] = !this.mmenuStates[messageIndex];
-      console.log(this.mmenuStates[messageIndex]);
     },
     mtoggleReport() {
       this.mreportPost.selectedContent = '';

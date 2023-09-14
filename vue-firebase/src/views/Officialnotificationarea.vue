@@ -800,7 +800,6 @@ button.mdeleted {
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
 import { firebaseApp } from '@/main';
 export default {
-  inject: ['yourUid'], // 使用与提供属性相同的名称
   data() {
     return {
       likedPosts: {},

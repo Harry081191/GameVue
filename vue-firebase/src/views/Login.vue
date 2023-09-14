@@ -83,6 +83,7 @@ export default {
   data() {
     return {
       data: {},
+      dataindex: [],
       newSerch: {
         userId: '',
       },
@@ -101,12 +102,15 @@ export default {
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
+      this.dataindex = Object.values(data); // Convert object to array
+      this.dataLength = this.dataindex.length; // Store the length
       this.data = data; // Store the data in the component's data property
-      this.options = [
-        { label: 'HP', value: data.HP },
-        { label: 'MP', value: data.MP },
-      ];
-      console.log(this.getSharedUid);
+      for (let i = 0; i < this.dataLength; i++) {
+        const postKeys = Object.keys(this.data);
+        const postId = postKeys[i];
+        this.options.push({ label: `${postId}`, value: data[postId] });
+      }
+      console.log(this.dataLength);
       if (this.getSharedUid != userId) {
         this.$router.push({
           name: 'Home',
