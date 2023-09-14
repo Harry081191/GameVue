@@ -88,6 +88,7 @@ export default {
       },
       selectedOption: '',
       checkuserId: '',
+      Webstatus: false,
       options: [],
     };
   },
@@ -106,7 +107,7 @@ export default {
         { label: 'MP', value: data.MP },
       ];
       console.log(this.getSharedUid);
-      if(this.getSharedUid != userId){
+      if (this.getSharedUid != userId) {
         this.$router.push({
           name: 'Home',
         })
@@ -116,7 +117,11 @@ export default {
   methods: {
     submitSerch() {
       this.checkuserId = this.newSerch.userId;
-      console.log(this.checkuserId);
+      this.newSerch.userId = '';
+      if (!this.Webstatus) {
+        this.Webstatus = !this.Webstatus;
+      }
+      console.log(this.Webstatus);
     }
   },
 };

@@ -363,7 +363,7 @@
                                     </p>
                                     <div style="margin-bottom:10px;" class="button-content">
                                       <div class="button-content-right">
-                                        <button @click="cancelEditedMessage(messageIndex)">取消</button>
+                                        <button @click="cancelEditedMessage()">取消</button>
                                         <button @click="saveEditedMessage(index, messageIndex)">保存</button>
                                       </div>
                                     </div>
@@ -1225,7 +1225,7 @@ export default {
       this.editingMessageIndex = messageIndex;
       this.mmenuStates[messageIndex] = false;
     },
-    cancelEditedMessage(messageIndex) {
+    cancelEditedMessage() {
       this.editingMessageIndex = -1;
     },
     saveEditedMessage(index, messageIndex) {
