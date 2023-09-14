@@ -9,7 +9,7 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
-              class="custom-link">討論版</router-link>
+              class="custom-link" :class="{ Serch: Serchstatus }">討論版</router-link>
           </li>
         </ul>
       </div>
@@ -17,7 +17,16 @@
         <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
         <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
       </form>
-      <router-link :to="{ name: 'Home' }" class="custom-link">登出</router-link>
+      <a class="custom-link from-control mr-3 mb-2 mb-sm-0">
+        |
+      </a>
+      <div v-if="Serchstatus === false" class="button-container">
+        <router-link :to="{ name: 'Home' }" class="custom-link evenly-spaced-text">登出</router-link>
+      </div>
+      <div v-if="Serchstatus === true">
+        <router-link :to="{ name: 'Login', params: { userId: $route.params.userId } }" class="custom-link Font-color"
+          @click="toggleLogin">我的首頁</router-link>
+      </div>
     </nav>
     <div class="container">
       <div class="p-3 wrapper">
@@ -34,7 +43,7 @@
                 </option>
               </select>
             </div>
-            <p style="font-size:20px;">名稱：{{ data.name }}</p>
+            <p style="font-size:20px;">名稱：{{ data.Name }}</p>
             <p style="font-size:80px;">角色圖片{{ selectedOption }}</p>
           </div>
           <div class="col-10 bg-dark text-white" style="text-align: center;">
@@ -66,6 +75,24 @@
 .custom-link {
   font-size: 25px;
 }
+
+.Font-color {
+  Color: #2c3e50;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+}
+
+.evenly-spaced-text {
+  text-align: center;
+  width: 100%;
+}
+.Serch {
+  pointer-events: none;
+  opacity: 0.5;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
@@ -85,7 +112,7 @@ export default {
       },
       selectedOption: '',
       checkuserId: '',
-      Webstatus: false,
+      Serchstatus: false,
       options: [],
     };
   },
@@ -118,11 +145,16 @@ export default {
     submitSerch() {
       this.checkuserId = this.newSerch.userId;
       this.newSerch.userId = '';
-      if (!this.Webstatus) {
-        this.Webstatus = !this.Webstatus;
+      if (!this.Serchstatus) {
+        this.Serchstatus = !this.Serchstatus;
       }
-      console.log(this.Webstatus);
-    }
+      console.log(this.Serchstatus);
+    },
+    toggleLogin() {
+      if (this.Serchstatus) {
+        this.Serchstatus = !this.Serchstatus;
+      }
+    },
   },
 };
 </script>
