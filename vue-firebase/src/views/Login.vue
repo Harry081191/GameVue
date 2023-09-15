@@ -164,7 +164,7 @@ export default {
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
         const SerchpostId = SerchpostKeys[i];
-        if (this.newSerch.userId === SerchpostId && this.newSerch.userId !== this.userId) {
+        if (this.checkuserId === SerchpostId && this.checkuserId !== this.userId) {
           this.accountexist = true;
           break;
         } else {
@@ -175,15 +175,16 @@ export default {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
+        /*
+        這邊打路徑進去給onValue(dataRef, (snapshot) => {中的dataRef讓他讀取其他角色的資料
+        */
       }
       this.newSerch.userId = '';
-      /*
-      這邊打路徑進去給onValue(dataRef, (snapshot) => {中的dataRef讓他讀取其他角色的資料
-      */
     },
     toggleLogin() {
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
+        this.checkuserId = this.userId;
       }
     },
   },
