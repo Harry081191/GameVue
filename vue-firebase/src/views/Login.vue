@@ -132,22 +132,7 @@ export default {
     const SerchRef = firebaseRef(this.db, `Users/`);
     const dataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
     // Listen for changes in the 'data' node
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      this.dataindex = Object.values(data); // Convert object to array
-      this.dataLength = this.dataindex.length; // Store the length
-      this.data = data; // Store the data in the component's data property
-      this.options = Object.keys(data).map((postId) => ({
-        label: postId,
-        value: data[postId],
-      }));
-      console.log(this.dataLength);
-      if (this.getSharedUid != this.userId) {
-        this.$router.push({
-          name: 'Home',
-        })
-      };
-    });
+    this.listenToDataRef(dataRef)
     if (!this.isSerchRefListenerInitialized) {
       onValue(SerchRef, (snapshot) => {
         const Serchdata = snapshot.val();
