@@ -107,6 +107,7 @@ export default {
   },
   data() {
     return {
+      db: {},
       data: {},
       Serchdata: {},
       dataindex: [],
@@ -125,22 +126,21 @@ export default {
   },
   mounted() {
     // Access the Firebase Realtime Database
-    const db = getDatabase(firebaseApp);
+    this.db = getDatabase(firebaseApp);
     this.userId = this.$route.params.userId; // 从路由参数中获取用户名
     this.checkuserId = this.userId;
-    const SerchRef = firebaseRef(db, `Users/`);
-    const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+    const SerchRef = firebaseRef(this.db, `Users/`);
+    const dataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
     // Listen for changes in the 'data' node
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
       this.dataindex = Object.values(data); // Convert object to array
       this.dataLength = this.dataindex.length; // Store the length
       this.data = data; // Store the data in the component's data property
-      for (let i = 0; i < this.dataLength; i++) {
-        const postKeys = Object.keys(this.data);
-        const postId = postKeys[i];
-        this.options.push({ label: `${postId}`, value: data[postId] });
-      }
+      this.options = Object.keys(data).map((postId) => ({
+        label: postId,
+        value: data[postId],
+      }));
       console.log(this.dataLength);
       if (this.getSharedUid != this.userId) {
         this.$router.push({
@@ -159,6 +159,24 @@ export default {
     this.isSerchRefListenerInitialized = true;
   },
   methods: {
+    listenToDataRef(dataRef) {
+      onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        this.dataindex = Object.values(data);
+        this.dataLength = this.dataindex.length;
+        this.data = data;
+        this.options = Object.keys(data).map((postId) => ({
+          label: postId,
+          value: data[postId],
+        }));
+        console.log(this.dataLength);
+        if (this.getSharedUid != this.userId) {
+          this.$router.push({
+            name: 'Home',
+          });
+        }
+      });
+    },
     submitSerch() {
       this.checkuserId = this.newSerch.userId;
       for (let i = 0; i < this.SerchdataLength; i++) {
@@ -175,9 +193,8 @@ export default {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
-        /*
-        這邊打路徑進去給onValue(dataRef, (snapshot) => {中的dataRef讓他讀取其他角色的資料
-        */
+        const newDataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
+        this.listenToDataRef(newDataRef);
       }
       this.newSerch.userId = '';
     },
@@ -185,6 +202,8 @@ export default {
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
         this.checkuserId = this.userId;
+        const newDataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
+        this.listenToDataRef(newDataRef);
       }
     },
   },
