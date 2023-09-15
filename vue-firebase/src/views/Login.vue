@@ -69,6 +69,7 @@
         </div>
       </div>
     </div>
+    <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
 <style scoped>
@@ -107,7 +108,7 @@ export default {
   },
   data() {
     return {
-      db: {},
+      dbmethod: {},
       data: {},
       Serchdata: {},
       dataindex: [],
@@ -116,6 +117,7 @@ export default {
         userId: '',
       },
       userId: null,
+      errorMessage: null,
       selectedOption: '',
       checkuserId: '',
       Serchstatus: false,
@@ -125,20 +127,19 @@ export default {
     };
   },
   mounted() {
-    // Access the Firebase Realtime Database
-    this.db = getDatabase(firebaseApp);
-    this.userId = this.$route.params.userId; // 从路由参数中获取用户名
+    const db = getDatabase(firebaseApp);
+    this.dbmethod = db;
+    this.userId = this.$route.params.userId;
     this.checkuserId = this.userId;
-    const SerchRef = firebaseRef(this.db, `Users/`);
-    const dataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
-    // Listen for changes in the 'data' node
-    this.listenToDataRef(dataRef)
+    const SerchRef = firebaseRef(db, `Users/`);
+    const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+    this.listenToDataRef(dataRef);
     if (!this.isSerchRefListenerInitialized) {
       onValue(SerchRef, (snapshot) => {
         const Serchdata = snapshot.val();
-        this.Serchdataindex = Object.values(Serchdata); // Convert object to array
-        this.SerchdataLength = this.Serchdataindex.length; // Store the length
-        this.Serchdata = Serchdata; // Store the data in the component's data property
+        this.Serchdataindex = Object.values(Serchdata);
+        this.SerchdataLength = this.Serchdataindex.length;
+        this.Serchdata = Serchdata;
       });
     }
     this.isSerchRefListenerInitialized = true;
@@ -167,19 +168,33 @@ export default {
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
         const SerchpostId = SerchpostKeys[i];
-        if (this.checkuserId === SerchpostId && this.checkuserId !== this.userId) {
-          this.accountexist = true;
-          break;
-        } else {
+        if (this.checkuserId !== SerchpostId) {
           this.accountexist = false;
+          this.errorMessage = 'This UID does not exist';
+        } else if (this.checkuserId === this.userId) {
+          this.accountexist = false;
+          this.errorMessage = 'Duplicate UID cannot be used';
+          break;
+        } else if (this.checkuserId === SerchpostId) {
+          this.accountexist = true;
+          this.errorMessage = '';
+          break;
         }
       }
       if (this.checkuserId != '' && this.accountexist) {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
-        const newDataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
+        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
         this.listenToDataRef(newDataRef);
+      }
+      if (this.errorMessage !== '') {
+        this.$toast.error(this.errorMessage, {
+          position: 'top',
+          duration: 3000,
+          dismissible: true,
+        });
+        this.errorMessage = '';
       }
       this.newSerch.userId = '';
     },
@@ -187,7 +202,7 @@ export default {
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
         this.checkuserId = this.userId;
-        const newDataRef = firebaseRef(this.db, `Users/${this.checkuserId}`);
+        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
         this.listenToDataRef(newDataRef);
       }
     },
