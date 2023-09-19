@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <nav>
-    <router-link to="/">遊戲名</router-link>
+    <router-link to="/CreateAccount">Register Account</router-link>
   </nav>
   <div class="Home">
     <div class="container">
@@ -12,6 +12,9 @@
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1>登入</h1>
+                <strong>電子郵件</strong>
+                <input v-model="username" type="text" class="form-control" id="Email" name="Email"
+                  placeholder="請輸入電子郵件">
                 <strong>帳號</strong>
                 <input v-model="username" type="text" class="form-control" id="Username" name="Username"
                   placeholder="請輸入帳號">
