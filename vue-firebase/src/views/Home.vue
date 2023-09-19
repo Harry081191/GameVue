@@ -14,7 +14,7 @@
         </ul>
       </div>
       <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right;">
-        <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
+        <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player's UID">
         <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
       </form>
       <a class="custom-link from-control mr-3 mb-2 mb-sm-0">
