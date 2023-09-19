@@ -19,7 +19,7 @@
           </li>
         </ul>
       </div>
-      <router-link :to="{ name: 'Login', params: { userId: $route.params.userId } }"
+      <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }"
         class="custom-link">我的首頁</router-link>
     </nav>
   </div>

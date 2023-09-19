@@ -1,211 +1,129 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <div class="Longing">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
-        aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-      <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
-            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
-              class="custom-link" :class="{ Serch: Serchstatus }">討論版</router-link>
-          </li>
-        </ul>
-      </div>
-      <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right;">
-        <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0" placeholder="Serch player">
-        <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
-      </form>
-      <a class="custom-link from-control mr-3 mb-2 mb-sm-0">
-        |
-      </a>
-      <div v-if="Serchstatus === false" class="button-container">
-        <router-link :to="{ name: 'Home' }" class="custom-link evenly-spaced-text">登出</router-link>
-      </div>
-      <div v-if="Serchstatus === true">
-        <router-link :to="{ name: 'Login', params: { userId: $route.params.userId } }" class="custom-link Font-color"
-          @click="toggleLogin">我的首頁</router-link>
-      </div>
-    </nav>
+  <nav>
+    <router-link to="/">遊戲名</router-link>
+  </nav>
+  <div class="Home">
     <div class="container">
-      <div class="p-3 wrapper">
+      <div class="p-5 wrapper">
         <div class="row justify-content-center">
-          <div class="col-6" style="text-align: center">
-            <h2>角色資訊</h2>
-          </div>
-          <div class="col-10 bg-dark text-white" style="text-align: center;">
-            <div class="dropdown" style="text-align: right;">
-              <select v-model="selectedOption">
-                <option value="">請選擇</option>
-                <option v-for="option in options" :value="option.value" :key="option.value">
-                  {{ option.label }}
-                </option>
-              </select>
+          <div class="col-6">
+            <div class="jumbotron">
+              <form @submit.prevent="handleSubmit">
+                <h1>登入</h1>
+                <strong>帳號</strong>
+                <input v-model="username" type="text" class="form-control" id="Username" name="Username"
+                  placeholder="請輸入帳號">
+                <strong>密碼</strong>
+                <input v-model="password" type="password" class="form-control" id="Password" name="Password"
+                  placeholder="請輸入密碼">
+                <div class="remember">
+                  <label><input type="checkbox">Remember me</label>
+                  <router-link to="/ForgetPassword">Forget Password?</router-link>
+                </div>
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                  <button type="submit" class="btn btn-outline-danger">
+                    登入
+                  </button>
+                </div>
+                <div>
+                  <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
+                  <router-link to="/CreateAccount">Register</router-link>
+                </div>
+              </form>
             </div>
-            <p style="font-size:20px;">名稱：{{ data.Name }}</p>
-            <p style="font-size:80px;">角色圖片{{ selectedOption }}</p>
-          </div>
-          <div class="col-10 bg-dark text-white" style="text-align: center;">
-            <a style="font-size: 30px;">
-              <div v-if="data">
-                <p>角色等級：{{ data.LV }}</p>
-              </div>
-            </a>
-          </div>
-          <div class="col-5 bg-dark text-white" style="text-align: center;">
-            <a style="font-size: 30px;">
-              <p>HP：{{ data.HP }}</p>
-              <p>MP：{{ data.MP }}</p>
-              <p>ATK：{{ data.ATK }}</p>
-            </a>
-          </div>
-          <div class="col-5 bg-dark text-white" style="text-align: center;">
-            <a style="font-size: 30px;">
-              <p>DEF：{{ data.DFE }}</p>
-              <p>SPD：{{ data.SPD }}</p>
-            </a>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="data">
+      <ul>
+        <li v-for="(item, key) in data" :key="key">
+          {{ key }}: {{ item }}
+        </li>
+      </ul>
     </div>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
 <style scoped>
-.custom-link {
-  font-size: 25px;
-}
-
-.Font-color {
-  Color: #2c3e50;
-}
-
-.button-container {
+.remember {
   display: flex;
   justify-content: space-between;
-  width: 100px;
-}
-
-.evenly-spaced-text {
-  text-align: center;
-  width: 100%;
-}
-
-.Serch {
-  pointer-events: none;
-  opacity: 0.5;
 }
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { mapGetters } from "vuex";
+import { mapActions} from "vuex";
 
 export default {
-  computed: {
-    ...mapGetters(["getSharedUid"])
+  mounted() {
+    const db = getDatabase(firebaseApp);
+    const dataRef = firebaseRef(db, 'Users/');
+
+    onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      this.data = data; // Store the data in the component's data property
+    });
   },
   data() {
     return {
-      dbmethod: {},
       data: {},
-      Serchdata: {},
-      dataindex: [],
-      Serchdataindex: [],
-      newSerch: {
-        userId: '',
-      },
-      userId: null,
-      errorMessage: null,
-      selectedOption: '',
-      checkuserId: '',
-      Serchstatus: false,
-      accountexist: false,
-      isSerchRefListenerInitialized: false,
-      options: [],
+      yourUid: '',
+      errorMessage: null
     };
   },
-  mounted() {
-    const db = getDatabase(firebaseApp);
-    this.dbmethod = db;
-    this.userId = this.$route.params.userId;
-    this.checkuserId = this.userId;
-    const SerchRef = firebaseRef(db, `Users/`);
-    const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
-    this.listenToDataRef(dataRef);
-    if (!this.isSerchRefListenerInitialized) {
-      onValue(SerchRef, (snapshot) => {
-        const Serchdata = snapshot.val();
-        this.Serchdataindex = Object.values(Serchdata);
-        this.SerchdataLength = this.Serchdataindex.length;
-        this.Serchdata = Serchdata;
+  methods: {
+    ...mapActions(["updateSharedUid"]),
+    handleSubmit() {
+      const username = this.username;
+      const password = this.password;
+      const db = getDatabase(firebaseApp);
+      const usersRef = firebaseRef(db, 'Users/');
+
+      onValue(usersRef, (snapshot) => {
+        const users = snapshot.val();
+
+        const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
+
+        if (matchedUser) {
+          const [, userData] = matchedUser;
+
+          if (userData.Password === password) {
+            const userId = matchedUser[0];
+            this.updateSharedUid(userId);
+            this.$router.push({
+              name: 'Home',
+              params: {
+                userId: userId
+              }
+            });
+          } else {
+            this.errorMessage = 'Invalid password';
+
+            this.$toast.error(this.errorMessage, {
+              position: 'top',
+              duration: 3000,
+              dismissible: true,
+            });
+
+            this.errorMessage = '';
+          }
+        } else {
+          this.errorMessage = 'Invalid username';
+
+          this.$toast.error(this.errorMessage, {
+            position: 'top',
+            duration: 3000,
+            dismissible: true,
+          });
+
+          this.errorMessage = '';
+        }
       });
     }
-    this.isSerchRefListenerInitialized = true;
-  },
-  methods: {
-    listenToDataRef(dataRef) {
-      onValue(dataRef, (snapshot) => {
-        const data = snapshot.val();
-        this.dataindex = Object.values(data);
-        this.dataLength = this.dataindex.length;
-        this.data = data;
-        this.options = Object.keys(data).map((postId) => ({
-          label: postId,
-          value: data[postId],
-        }));
-        console.log(this.dataLength);
-        if (this.getSharedUid != this.userId) {
-          this.$router.push({
-            name: 'Home',
-          });
-        }
-      });
-    },
-    submitSerch() {
-      this.checkuserId = this.newSerch.userId;
-      for (let i = 0; i < this.SerchdataLength; i++) {
-        const SerchpostKeys = Object.keys(this.Serchdata);
-        const SerchpostId = SerchpostKeys[i];
-        if (this.checkuserId !== SerchpostId) {
-          this.accountexist = false;
-          this.errorMessage = 'This UID does not exist';
-        } else if (this.checkuserId === this.userId) {
-          this.accountexist = false;
-          this.errorMessage = 'Duplicate UID cannot be used';
-          break;
-        } else if (this.checkuserId === SerchpostId) {
-          this.accountexist = true;
-          this.errorMessage = '';
-          break;
-        }
-      }
-      if (this.checkuserId != '' && this.accountexist) {
-        if (!this.Serchstatus) {
-          this.Serchstatus = !this.Serchstatus;
-        }
-        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
-        this.listenToDataRef(newDataRef);
-      }
-      if (this.errorMessage !== '') {
-        this.$toast.error(this.errorMessage, {
-          position: 'top',
-          duration: 3000,
-          dismissible: true,
-        });
-        this.errorMessage = '';
-      }
-      this.newSerch.userId = '';
-    },
-    toggleLogin() {
-      if (this.Serchstatus) {
-        this.Serchstatus = !this.Serchstatus;
-        this.checkuserId = this.userId;
-        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
-        this.listenToDataRef(newDataRef);
-      }
-    },
   },
 };
 </script>
