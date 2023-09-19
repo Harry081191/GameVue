@@ -56,7 +56,7 @@
 <script>
 import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   mounted() {

@@ -7,6 +7,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
+    path: '/CreateAccount',
+    name: 'CreateAccount',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CreateAccount.vue')
+  },
+  {
     path: '/Home/:userId?',
     name: 'Home',
     // this generates a separate chunk (about.[hash].js) for this route
