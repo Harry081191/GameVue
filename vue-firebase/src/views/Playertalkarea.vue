@@ -48,7 +48,7 @@
                   <textarea style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
                 </div>
                 <div>
-                  <textarea style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
+                  <textarea rows="4" style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
                 </div>
                 <div style="text-align: right">
                   <button type="submit">提交</button>
@@ -175,7 +175,7 @@
                                         required></textarea>
                                     </div>
                                     <div>
-                                      <textarea style="text-align: center" v-model="editPost.content" placeholder="帖子內容"
+                                      <textarea rows="4" style="text-align: center" v-model="editPost.content" placeholder="帖子內容"
                                         required></textarea>
                                     </div>
                                     <div style="text-align: right">
@@ -232,7 +232,7 @@
                               </div>
                             </div>
                             <div>
-                              <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                              <textarea rows="2" v-model="newMessage.content" placeholder="回復內容" required></textarea>
                             </div>
                             <div class="button-content">
                               <div class="button-content-right">
@@ -359,7 +359,7 @@
                                   </div>
                                   </p>
                                   <div v-if="editingMessageIndex === messageIndex">
-                                    <p style="margin-bottom:0px"><textarea v-model="editedMessageContent" placeholder="回復內容" required></textarea>
+                                    <p style="margin-bottom:0px"><textarea rows="2" v-model="editedMessageContent" placeholder="回復內容" required></textarea>
                                     </p>
                                     <div style="margin-bottom:10px;" class="button-content">
                                       <div class="button-content-right">
