@@ -14,10 +14,10 @@
                 <h1>登入</h1>
                 <strong>帳號</strong>
                 <input v-model="username" type="text" class="form-control" id="Username" name="Username"
-                  placeholder="請輸入帳號">
+                  placeholder="請輸入帳號" required>
                 <strong>密碼</strong>
                 <input v-model="password" type="password" class="form-control" id="Password" name="Password"
-                  placeholder="請輸入密碼">
+                  placeholder="請輸入密碼" required>
                 <div class="remember">
                   <label><input type="checkbox">Remember me</label>
                   <router-link to="/ForgetPassword">Forget Password?</router-link>
