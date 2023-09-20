@@ -29,7 +29,7 @@
                 </div>
                 <div>
                   <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
-                  <router-link to="/CreateAccount">Register</router-link>
+                  <router-link to="/CreateAccount" class="from-control mr-2 mb-1 mb-sm-0">Register</router-link>
                 </div>
               </form>
             </div>
@@ -47,7 +47,7 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
-<style scoped>
+<style>
 .remember {
   display: flex;
   justify-content: space-between;
