@@ -59,6 +59,10 @@ import { firebaseApp } from '@/main';
 import { mapActions } from "vuex";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    document.title = '登入畫面';
+    next();
+  },
   mounted() {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Users/');

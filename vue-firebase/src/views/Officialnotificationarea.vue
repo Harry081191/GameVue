@@ -31,7 +31,7 @@
         </div>
         <div class="col-10">
           <div style="text-align: right">
-            <button @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
+            <button class="table" @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
           </div>
           <Transition>
             <div v-if="showForm" class="form-container">
@@ -709,7 +709,9 @@ button.munliked {
   background-color: red;
   color: black;
 }
-
+button.table {
+  visibility: hidden;
+}
 button.deleted {
   display: none;
 }
@@ -800,6 +802,10 @@ button.mdeleted {
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
 import { firebaseApp } from '@/main';
 export default {
+  beforeRouteEnter(to, from, next) {
+    document.title = '官方通知區';
+    next();
+  },
   data() {
     return {
       likedPosts: {},

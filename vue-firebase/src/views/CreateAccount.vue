@@ -54,6 +54,10 @@ import { firebaseApp } from '@/main';
 import { mapActions } from "vuex";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    document.title = '創建帳號';
+    next();
+  },
   mounted() {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Users/');

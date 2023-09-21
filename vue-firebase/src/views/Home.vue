@@ -2,6 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <div class="Longing">
+    <div v-title data-title="我是新的标题"></div>.
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
         aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
@@ -103,6 +104,10 @@ import { firebaseApp } from '@/main';
 import { mapGetters } from "vuex";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    document.title = '首頁';
+    next();
+  },
   computed: {
     ...mapGetters(["getSharedUid"])
   },
