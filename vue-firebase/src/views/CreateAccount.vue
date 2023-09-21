@@ -11,10 +11,10 @@
           <div class="col-6">
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
-                <h1>登入</h1>
+                <h1>註冊帳號</h1>
                 <strong>電子郵件</strong>
-                <input v-model="username" type="text" class="form-control" id="Email" name="Email"
-                  placeholder="請輸入電子郵件" required>
+                <input v-model="email" type="text" class="form-control" id="Email" name="Email" placeholder="請輸入電子郵件"
+                  required>
                 <strong>帳號</strong>
                 <input v-model="username" type="text" class="form-control" id="Username" name="Username"
                   placeholder="請輸入帳號" required>
@@ -46,10 +46,9 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
-<style>
-</style>
+<style></style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
+import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
 import { mapActions } from "vuex";
 
@@ -64,63 +63,52 @@ export default {
 
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
+      this.dataindex = Object.values(data); // Convert object to array
+      this.dataLength = this.dataindex.length; // Store the length
       this.data = data; // Store the data in the component's data property
     });
   },
   data() {
     return {
       data: {},
-      yourUid: '',
-      errorMessage: null
+      userindex: [],
+      errorMessage: null,
+      UIDnumber: 0,
     };
   },
   methods: {
     ...mapActions(["updateSharedUid"]),
     handleSubmit() {
+      const email = this.email;
       const username = this.username;
       const password = this.password;
       const db = getDatabase(firebaseApp);
-      const usersRef = firebaseRef(db, 'Users/');
 
-      onValue(usersRef, (snapshot) => {
-        const users = snapshot.val();
+      this.UIDnumber += this.dataLength + 1;
+      const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
 
-        const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
+      const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
+      const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
+      const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
+      const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
+      const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
+      const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
+      const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
+      const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
+      const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
 
-        if (matchedUser) {
-          const [, userData] = matchedUser;
-
-          if (userData.Password === password) {
-            const userId = matchedUser[0];
-            this.updateSharedUid(userId);
-            this.$router.push({
-              name: 'Home',
-              params: {
-                userId: userId
-              }
-            });
-          } else {
-            this.errorMessage = 'Invalid password';
-
-            this.$toast.error(this.errorMessage, {
-              position: 'top',
-              duration: 3000,
-              dismissible: true,
-            });
-
-            this.errorMessage = '';
-          }
-        } else {
-          this.errorMessage = 'Invalid username';
-
-          this.$toast.error(this.errorMessage, {
-            position: 'top',
-            duration: 3000,
-            dismissible: true,
-          });
-
-          this.errorMessage = '';
-        }
+      set(officialRef1, 0);
+      set(officialRef2, 0);
+      set(officialRef3, 0);
+      set(officialRef4, 0);
+      set(officialRef5, 0);
+      set(officialRef6, '');
+      set(officialRef7, email);
+      set(officialRef8, username);
+      set(officialRef9, password);
+      
+      this.$router.push({
+        name: 'Login',
       });
     }
   },

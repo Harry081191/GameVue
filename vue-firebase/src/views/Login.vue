@@ -86,7 +86,7 @@ export default {
       const password = this.password;
       const db = getDatabase(firebaseApp);
       const usersRef = firebaseRef(db, 'Users/');
-
+      
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
 

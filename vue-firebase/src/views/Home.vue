@@ -160,7 +160,6 @@ export default {
           label: postId,
           value: data[postId],
         }));
-        console.log(this.dataLength);
         if (this.getSharedUid != this.userId) {
           this.$router.push({
             name: 'Login',
