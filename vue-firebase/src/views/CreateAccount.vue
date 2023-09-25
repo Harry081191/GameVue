@@ -89,28 +89,28 @@ export default {
           return sendEmailVerification(userCredential.user);
         })
         .then(() => {
-      this.UIDnumber += this.dataLength + 1;
-      const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
+          this.UIDnumber += this.dataLength + 1;
+          const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
 
-      const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
-      const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
-      const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
-      const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
-      const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
-      const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
-      const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
-      const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
-      const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
+          const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
+          const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
+          const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
+          const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
+          const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
+          const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
+          const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
+          const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
+          const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
 
-      set(officialRef1, 0);
-      set(officialRef2, 0);
-      set(officialRef3, 0);
-      set(officialRef4, 0);
-      set(officialRef5, 0);
-      set(officialRef6, '');
-      set(officialRef7, email);
-      set(officialRef8, username);
-      set(officialRef9, password);
+          set(officialRef1, 0);
+          set(officialRef2, 0);
+          set(officialRef3, 0);
+          set(officialRef4, 0);
+          set(officialRef5, 0);
+          set(officialRef6, '');
+          set(officialRef7, email);
+          set(officialRef8, username);
+          set(officialRef9, password);
           this.$router.push({ name: 'Login' });
         })
         .catch((error) => {
