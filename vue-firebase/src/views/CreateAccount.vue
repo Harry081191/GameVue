@@ -48,9 +48,9 @@
 </template>
 <style></style>
 <script>
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { mapActions } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -66,24 +66,29 @@ export default {
       this.dataindex = Object.values(data); // Convert object to array
       this.dataLength = this.dataindex.length; // Store the length
       this.data = data; // Store the data in the component's data property
+      console.log(this.data);
     });
   },
   data() {
     return {
       data: {},
-      userindex: [],
+      dataindex: [],
       errorMessage: null,
       UIDnumber: 0,
     };
   },
   methods: {
-    ...mapActions(["updateSharedUid"]),
     handleSubmit() {
+      const auth = getAuth(firebaseApp);
       const email = this.email;
       const username = this.username;
       const password = this.password;
       const db = getDatabase(firebaseApp);
-
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          return sendEmailVerification(userCredential.user);
+        })
+        .then(() => {
       this.UIDnumber += this.dataLength + 1;
       const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
 
@@ -106,10 +111,11 @@ export default {
       set(officialRef7, email);
       set(officialRef8, username);
       set(officialRef9, password);
-      
-      this.$router.push({
-        name: 'Login',
-      });
+          this.$router.push({ name: 'Login' });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   },
 };
