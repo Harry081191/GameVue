@@ -112,11 +112,21 @@ export default {
           set(officialRef7, this.User.email);
           set(officialRef8, this.User.username);
           set(officialRef9, this.User.password);
-          
+
           this.$router.push({ name: 'Login' });
         })
         .catch((error) => {
-          console.error(error);
+          this.errorMessage = error;
+
+          this.$toast.error(this.errorMessage, {
+            position: 'top',
+            duration: 3000,
+            dismissible: true,
+          });
+
+          this.User.email = '';
+          this.User.username = '';
+          this.User.password = '';
         });
     }
   },
