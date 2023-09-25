@@ -13,10 +13,10 @@
               <form @submit.prevent="handleSubmit">
                 <h1>登入</h1>
                 <strong>帳號</strong>
-                <input v-model="username" type="text" class="form-control" id="Username" name="Username"
+                <input v-model="User.username" type="text" class="form-control" id="Username" name="Username"
                   placeholder="請輸入帳號" required>
                 <strong>密碼</strong>
-                <input v-model="password" type="password" class="form-control" id="Password" name="Password"
+                <input v-model="User.password" type="password" class="form-control" id="Password" name="Password"
                   placeholder="請輸入密碼" required>
                 <div class="remember">
                   <label><input type="checkbox">Remember me</label>
@@ -75,6 +75,10 @@ export default {
   data() {
     return {
       data: {},
+      User: {
+        username: '',
+        password: ''
+      },
       yourUid: '',
       errorMessage: null
     };
@@ -82,8 +86,8 @@ export default {
   methods: {
     ...mapActions(["updateSharedUid"]),
     handleSubmit() {
-      const username = this.username;
-      const password = this.password;
+      const username = this.User.username;
+      const password = this.User.password;
       const db = getDatabase(firebaseApp);
       const usersRef = firebaseRef(db, 'Users/');
       

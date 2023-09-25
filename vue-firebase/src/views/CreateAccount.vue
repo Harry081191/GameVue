@@ -13,13 +13,13 @@
               <form @submit.prevent="handleSubmit">
                 <h1>註冊帳號</h1>
                 <strong>電子郵件</strong>
-                <input v-model="email" type="text" class="form-control" id="Email" name="Email" placeholder="請輸入電子郵件"
+                <input v-model="User.email" type="text" class="form-control" id="Email" name="Email" placeholder="請輸入電子郵件"
                   required>
                 <strong>帳號</strong>
-                <input v-model="username" type="text" class="form-control" id="Username" name="Username"
+                <input v-model="User.username" type="text" class="form-control" id="Username" name="Username"
                   placeholder="請輸入帳號" required>
                 <strong>密碼</strong>
-                <input v-model="password" type="password" class="form-control" id="Password" name="Password"
+                <input v-model="User.password" type="password" class="form-control" id="Password" name="Password"
                   placeholder="請輸入密碼" required>
                 <div style="margin-top: 10px; margin-bottom: 10px;">
                   <button type="submit" class="btn btn-outline-danger">
@@ -66,13 +66,17 @@ export default {
       this.dataindex = Object.values(data); // Convert object to array
       this.dataLength = this.dataindex.length; // Store the length
       this.data = data; // Store the data in the component's data property
-      console.log(this.data);
     });
   },
   data() {
     return {
       data: {},
       dataindex: [],
+      User: {
+        email: '',
+        username: '',
+        password: ''
+      },
       errorMessage: null,
       UIDnumber: 0,
     };
@@ -80,11 +84,8 @@ export default {
   methods: {
     handleSubmit() {
       const auth = getAuth(firebaseApp);
-      const email = this.email;
-      const username = this.username;
-      const password = this.password;
       const db = getDatabase(firebaseApp);
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, this.User.email, this.User.password)
         .then((userCredential) => {
           return sendEmailVerification(userCredential.user);
         })
@@ -108,9 +109,10 @@ export default {
           set(officialRef4, 0);
           set(officialRef5, 0);
           set(officialRef6, '');
-          set(officialRef7, email);
-          set(officialRef8, username);
-          set(officialRef9, password);
+          set(officialRef7, this.User.email);
+          set(officialRef8, this.User.username);
+          set(officialRef9, this.User.password);
+          
           this.$router.push({ name: 'Login' });
         })
         .catch((error) => {
