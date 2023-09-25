@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       data: {},
-      userindex: [],
+      dataindex: [],
       errorMessage: null,
       UIDnumber: 0,
     };
