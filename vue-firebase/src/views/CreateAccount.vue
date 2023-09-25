@@ -127,6 +127,7 @@ export default {
           this.User.email = '';
           this.User.username = '';
           this.User.password = '';
+          this.errorMessage = '';
         });
     }
   },
