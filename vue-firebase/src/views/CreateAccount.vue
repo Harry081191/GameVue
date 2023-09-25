@@ -50,7 +50,6 @@
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { mapActions } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -77,7 +76,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateSharedUid"]),
     handleSubmit() {
       const email = this.email;
       const username = this.username;
