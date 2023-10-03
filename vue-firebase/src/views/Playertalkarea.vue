@@ -1058,6 +1058,9 @@ export default {
       set(officialRef2, this.reportPost.selectedContent);
 
       this.reportForm = !this.reportForm;
+      setTimeout(() => {
+        this.menuStates[index] = !this.menuStates[index];
+      }, 500);
     },
     toggleEdit(index) {
       const postKeys = Object.keys(this.data);
@@ -1121,6 +1124,9 @@ export default {
       set(officialRef4, currentDateTime);
 
       this.editForm = !this.editForm;
+      setTimeout(() => {
+        this.menuStates[index] = !this.menuStates[index];
+      }, 500);
     },
     toggleDelete(index) {
       const postKeys = Object.keys(this.data);
@@ -1207,6 +1213,11 @@ export default {
       set(officialRef2, this.mreportPost.selectedContent);
 
       this.mreportForm = !this.mreportForm;
+      if (!this.mreportForm) {
+        setTimeout(() => {
+          this.mmenuStates[messageIndex] = false;
+        }, 500);
+      }
     },
     mtoggleEdit(index, messageIndex) {
       const postKeys = Object.keys(this.data);
