@@ -42,6 +42,7 @@
                   {{ option.label }}
                 </option>
               </select>
+              
             </div>
             <p style="font-size:20px;">名稱：{{ data.Name }}</p>
             <p style="font-size:80px;">角色圖片{{ selectedOption }}</p>
