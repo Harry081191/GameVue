@@ -90,7 +90,8 @@ export default {
           return sendEmailVerification(userCredential.user);
         })
         .then(() => {
-          this.UIDnumber += this.dataLength + 1;
+          this.UIDnumber = this.dataLength + 1;
+          console.log(this.dataLength);
           const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
 
           const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
@@ -113,7 +114,7 @@ export default {
           set(officialRef7, ' ');
           set(officialRef8, this.User.email);
           set(officialRef9, this.User.username);
-          set(officialRef10, this.this.User.password);
+          set(officialRef10, this.User.password);
 
           this.$router.push({ name: 'Login' });
         })

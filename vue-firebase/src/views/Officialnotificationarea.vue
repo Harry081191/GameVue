@@ -61,9 +61,9 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container">
+              <div class="post-container" style = "border-radius:50px;">
                 <div class="button-content">
-                  <div class="button-content-right">
+                  <div class="button-content-right" style="margin-right: 15px;">
                     <div id="menu">
                       <ul>
                         <li> <a @click="toggleMenu(index)">MENU</a>
@@ -394,7 +394,7 @@
                     <a class="like-count">{{ item.likepeople.total }}</a>
                     <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                         class="far fa-thumbs-up"></i></button>
-                    <button type="button" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                    <button style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
                         class="far fa-thumbs-down"></i></button>
                   </div>
                 </div>

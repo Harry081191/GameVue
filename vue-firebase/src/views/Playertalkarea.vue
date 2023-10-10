@@ -61,7 +61,7 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container" style = "border-radius:50px; ">
+              <div class="post-container" style = "border-radius:50px;">
                 <div class="button-content">
                   <div class="button-content-right" style="margin-right: 15px;">
                     <div id="menu">
