@@ -60,7 +60,7 @@ import { mapActions } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
-    document.title = '登入畫面';
+    document.title = '登入介面';
     next();
   },
   mounted() {
