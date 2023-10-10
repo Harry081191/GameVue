@@ -124,6 +124,7 @@ export default {
       errorMessage: null,
       selectedOption: '',
       checkuserId: '',
+      checkuserIdc: '',
       Serchstatus: false,
       accountexist: false,
       isSerchRefListenerInitialized: false,
@@ -167,6 +168,7 @@ export default {
       });
     },
     submitSerch() {
+      this.checkuserIdc = this.checkuserId;
       this.checkuserId = this.newSerch.userId;
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
@@ -174,7 +176,7 @@ export default {
         if (this.checkuserId !== SerchpostId) {
           this.accountexist = false;
           this.errorMessage = 'This UID does not exist';
-        } else if (this.checkuserId === this.userId) {
+        } else if (this.checkuserId === this.userId || this.checkuserIdc === this.checkuserId) {
           this.accountexist = false;
           this.errorMessage = 'Duplicate UID cannot be used';
           break;

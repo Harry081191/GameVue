@@ -102,7 +102,7 @@ export default {
           if (userData.Password === password) {
             const userId = matchedUser[0];
             this.updateSharedUid(userId);
-            this.$router.push({
+            this.$router.push({ 
               name: 'Home',
               params: {
                 userId: userId

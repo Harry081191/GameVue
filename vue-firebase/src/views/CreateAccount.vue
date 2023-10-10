@@ -98,20 +98,22 @@ export default {
           const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
           const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
           const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
-          const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
-          const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
-          const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
-          const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
+          const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/SPD`);
+          const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
+          const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
+          const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
+          const officialRef10 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
 
           set(officialRef1, 0);
           set(officialRef2, 0);
           set(officialRef3, 0);
           set(officialRef4, 0);
           set(officialRef5, 0);
-          set(officialRef6, '');
-          set(officialRef7, this.User.email);
-          set(officialRef8, this.User.username);
-          set(officialRef9, this.User.password);
+          set(officialRef6, 0);
+          set(officialRef7, ' ');
+          set(officialRef8, this.User.email);
+          set(officialRef9, this.User.username);
+          set(officialRef10, this.this.User.password);
 
           this.$router.push({ name: 'Login' });
         })
