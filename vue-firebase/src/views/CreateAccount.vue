@@ -69,44 +69,44 @@ export default {
       this.data = data; // Store the data in the component's data property
     });
 
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        console.log(user.emailVerified);
-        if (user.emailVerified) {
-          console.log(this.dataLength);
-          this.UIDnumber = this.dataLength + 1;
-          const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
+    this.$watch(
+      () => auth.currentUser,
+      async (newUser, oldUser) => {
+        if (newUser) {
+          console.log(newUser.emailVerified);
+          if (newUser.emailVerified) {
+            console.log(this.dataLength);
+            this.UIDnumber = this.dataLength + 1;
+            const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
 
-          const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
-          const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
-          const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
-          const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
-          const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
-          const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/SPD`);
-          const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
-          const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
-          const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
-          const officialRef10 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
+            const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
+            const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
+            const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
+            const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
+            const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
+            const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/SPD`);
+            const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
+            const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
+            const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
+            const officialRef10 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
 
-          await set(officialRef1, 0);
-          await set(officialRef2, 0);
-          await set(officialRef3, 0);
-          await set(officialRef4, 0);
-          await set(officialRef5, 0);
-          await set(officialRef6, 0);
-          await set(officialRef7, ' ');
-          await set(officialRef8, this.User.email);
-          await set(officialRef9, this.User.username);
-          await set(officialRef10, this.User.password);
+            await set(officialRef1, 0);
+            await set(officialRef2, 0);
+            await set(officialRef3, 0);
+            await set(officialRef4, 0);
+            await set(officialRef5, 0);
+            await set(officialRef6, 0);
+            await set(officialRef7, ' ');
+            await set(officialRef8, this.User.email);
+            await set(officialRef9, this.User.username);
+            await set(officialRef10, this.User.password);
 
-          console.log("Email verified. Calling onEmailVerified.");
-        } else {
-          console.log("Email not verified.");
+            console.log("Email verified. Calling onEmailVerified.");
+          } else {
+            console.log("Email not verified.");
+          }
         }
-      }
-    });
-
-    this.unsubscribeAuth = unsubscribeAuth;
+      });
   },
   data() {
     return {
