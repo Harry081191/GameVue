@@ -141,6 +141,9 @@ export default {
           dismissible: true,
         });
       }
+      this.$router.push({
+        name: 'Login',
+      });
       this.User.email = '';
       this.User.username = '';
       this.User.password = '';
