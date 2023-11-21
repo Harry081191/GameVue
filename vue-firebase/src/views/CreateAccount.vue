@@ -70,7 +70,6 @@ export default {
     });
 
     this.$watch(
-      () => auth.currentUser,
       async (newUser, oldUser) => {
         if (newUser) {
           console.log(newUser.emailVerified);
@@ -141,9 +140,6 @@ export default {
           dismissible: true,
         });
       }
-      this.$router.push({
-        name: 'Login',
-      });
       this.User.email = '';
       this.User.username = '';
       this.User.password = '';

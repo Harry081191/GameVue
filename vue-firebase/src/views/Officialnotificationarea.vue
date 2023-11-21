@@ -19,8 +19,7 @@
           </li>
         </ul>
       </div>
-      <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }"
-        class="custom-link">我的首頁</router-link>
+      <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }" class="custom-link">我的首頁</router-link>
     </nav>
   </div>
   <div class="container">
@@ -61,7 +60,7 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container" style = "border-radius:50px;">
+              <div class="post-container" style="border-radius:50px;">
                 <div class="button-content">
                   <div class="button-content-right" style="margin-right: 15px;">
                     <div id="menu">
@@ -197,22 +196,22 @@
                     </div>
                   </div>
                 </div>
-                <p style="font-size:40px;">{{ item.title }}</p>
+                <p class="font" style="font-size:40px;">{{ item.title }}</p>
                 <div class="container">
                   <div class="row">
                     <div class="col-3 bg-white text-dark" style="text-align: center;">
                       <a style="font-size: 40px;">
-                        <p>官方圖片</p>
+                        <p><img class="resizable-image" src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c"></p>
                       </a>
                       <a style="font-size: 16px;">
-                        <p>UID：官方</p>
+                        <p class="font">UID：官方</p>
                       </a>
                     </div>
                     <div class="col-9 bg-white text-dark" style="text-align: center;">
-                      <a style="font-size: 32px;">
+                      <a class="font" style="font-size: 32px;">
                         <p>{{ item.subject }}</p>
                       </a>
-                      <a style="font-size: 16px;">
+                      <a class="font" style="font-size: 16px;">
                         <p>內容：{{ item.content }}</p>
                       </a>
                     </div>
@@ -220,7 +219,7 @@
                 </div>
                 <div class="button-content">
                   <div class="button-content-right">
-                    <a class="like-count">{{ item.message.total }}</a>
+                    <a class="like-count font">{{ item.message.total }}</a>
                     <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
                     <Transition>
                       <div v-if="showMessage && index === openFormIndex" class="message-container">
@@ -243,8 +242,11 @@
                               <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
                                 <template v-if="messageIndex !== 'total'">
                                   <p style="margin-bottom:0px; font-size:15px; text-align: left;">
-                                  <div class="button-content">{{
-                                    Object.values(messageItem.messagename)[0] }}　{{ messageItem.messagetime }}
+                                  <div class="button-content">
+                                    <div>
+                                      <img class="resizable-image-message" :src="messageimagelist[messageIndex]" />
+                                      留言人：{{ Object.values(messageItem.messagename)[0] }}
+                                    </div>
                                     <div class="button-content-right">
                                       <div id="messagemenu">
                                         <ul>
@@ -359,7 +361,8 @@
                                   </div>
                                   </p>
                                   <div v-if="editingMessageIndex === messageIndex">
-                                    <p style="margin-bottom:0px"><textarea v-model="editedMessageContent" placeholder="回復內容" required></textarea>
+                                    <p style="margin-bottom:0px"><textarea v-model="editedMessageContent"
+                                        placeholder="回復內容" required></textarea>
                                     </p>
                                     <div style="margin-bottom:10px;" class="button-content">
                                       <div class="button-content-right">
@@ -382,6 +385,7 @@
                                         :class="{ munliked: munlikedPosts[messageIndex] }"
                                         @click="mtoggleUnLike(index, messageIndex)"><i
                                           class="fas fa-thumbs-down"></i></button>
+                                      <a style="text-align: right;">時間：{{ messageItem.messagetime }}</a>
                                     </div>
                                   </div>
                                 </template>
@@ -391,17 +395,17 @@
                         </div>
                       </div>
                     </Transition>
-                    <a class="like-count">{{ item.likepeople.total }}</a>
+                    <a class="like-count font">{{ item.likepeople.total }}</a>
                     <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                         class="far fa-thumbs-up"></i></button>
-                    <button style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                        class="far fa-thumbs-down"></i></button>
+                    <button style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }"
+                      @click="toggleUnLike(index)"><i class="far fa-thumbs-down"></i></button>
                   </div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <span style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                <span style="font-size: 20px;">創建人：官方</span>
+                <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
+                <span class="font" style="font-size: 20px;">創建人：官方</span>
               </div>
               <p style="margin-bottom:20px"></p>
             </li>
@@ -413,6 +417,20 @@
   </div>
 </template>
 <style scoped>
+.font{
+  font-family: 微軟正黑體;
+}
+.resizable-image {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+.resizable-image-message {
+  max-width: 10%;
+  height: auto;
+  margin: 0 auto;
+}
+
 #menu {
   width: 150px;
   height: 30px;
@@ -709,9 +727,11 @@ button.munliked {
   background-color: red;
   color: black;
 }
+
 button.table {
   visibility: hidden;
 }
+
 button.deleted {
   display: none;
 }
@@ -814,6 +834,7 @@ export default {
       mlikedPosts: {},
       munlikedPosts: {},
       mdeletePosts: {},
+      messageimagelist: {},
       dataindex: [],
       mdataindex: [],
       postData: [],
@@ -842,6 +863,7 @@ export default {
       },
       userId: null,
       username: '',
+      messageimage: '',
       showForm: false,
       editForm: false,
       editingMessageIndex: -1,
@@ -921,6 +943,11 @@ export default {
               }
             });
             get(officialRef5).then((snapshot) => {
+              this.messageimage = Object.keys(snapshot.val());
+              get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
+                this.messageimage = snapshot.val();
+                this.messageimagelist[mpostId] = this.messageimage;
+              });
               const messagedeleted = snapshot.val();
               if (messagedeleted && messagedeleted[this.userId]) {
                 this.mdeletePosts[mpostId] = false;
