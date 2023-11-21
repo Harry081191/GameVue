@@ -22,8 +22,21 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
 
-auth.onAuthStateChanged(() => {
-    app.mount('#app');
-});
+// 使用異步等待確保 Firebase SDK 完全初始化
+async function initializeFirebase() {
+  return new Promise((resolve) => {
+    const unsubscribe = firebaseApp.auth().onAuthStateChanged(() => {
+      unsubscribe(); // 停止監聽
+      resolve();
+    });
+  });
+}
+
+// 在這裡使用異步等待確保 Firebase SDK 完全初始化後再執行其他操作
+async function startApp() {
+  await initializeFirebase();
+  app.mount('#app');
+}
+
+startApp();
