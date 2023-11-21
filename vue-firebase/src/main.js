@@ -21,6 +21,9 @@ const firebaseConfig = {
     measurementId: "G-KG736KE2VM"
 };
 
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
 
-app.mount('#app');
+auth.onAuthStateChanged(() => {
+    app.mount('#app');
+});
