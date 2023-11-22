@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <nav>
-    <router-link to="/" class="font">遊戲名</router-link>
+    <router-link to="/">MageSurvivor</router-link>
   </nav>
   <div class="Home">
     <div class="container">
@@ -12,24 +12,24 @@
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
-                <strong class="font">帳號</strong>
-                <input v-model="User.username" type="text" class="form-control font" id="Username" name="Username"
-                  placeholder="請輸入帳號" required>
+                <strong class="font">電子信箱</strong>
+                <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email"
+                  placeholder="請輸入電子郵件" required>
                 <strong class="font">密碼</strong>
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required>
                 <div class="remember">
                   <label><input type="checkbox"><a class="font">Remember me</a></label>
-                  <router-link to="/ForgetPassword" class="font">Forget Password?</router-link>
+                  <router-link to="/ForgetPassword">Forget Password?</router-link>
                 </div>
                 <div style="margin-top: 10px; margin-bottom: 10px;">
-                  <button type="submit" class="btn btn-outline-danger font">
+                  <button type="submit" class="btn btn-outline-danger">
                     登入
                   </button>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0 font">Don't have an account?</a>
-                  <router-link to="/CreateAccount" class="from-control mr-2 mb-1 mb-sm-0 font">Register</router-link>
+                  <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
+                  <router-link to="/CreateAccount" class="from-control mr-2 mb-1 mb-sm-0">Register</router-link>
                 </div>
               </form>
             </div>
@@ -79,7 +79,7 @@ export default {
     return {
       data: {},
       User: {
-        username: '',
+        email: '',
         password: ''
       },
       yourUid: '',
@@ -89,7 +89,7 @@ export default {
   methods: {
     ...mapActions(["updateSharedUid"]),
     handleSubmit() {
-      const username = this.User.username;
+      const email = this.User.email;
       const password = this.User.password;
       const db = getDatabase(firebaseApp);
       const usersRef = firebaseRef(db, 'Users/');
@@ -97,7 +97,7 @@ export default {
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
 
-        const matchedUser = Object.entries(users).find(([key, user]) => user.Username === username);
+        const matchedUser = Object.entries(users).find(([key, user]) => user.Email === email);
 
         if (matchedUser) {
           const [, userData] = matchedUser;
@@ -123,7 +123,7 @@ export default {
             this.errorMessage = '';
           }
         } else {
-          this.errorMessage = 'Invalid username';
+          this.errorMessage = 'Invalid mail';
 
           this.$toast.error(this.errorMessage, {
             position: 'top',

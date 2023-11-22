@@ -33,37 +33,37 @@
       <div class="p-3 wrapper">
         <div class="row justify-content-center">
           <div class="col-6" style="text-align: center">
-            <h2 class="font">角色資訊</h2>
+            <h2>角色資訊</h2>
           </div>
           <div class="col-10 bg-secondary text-white"
             style="border-top-left-radius:50px; border-top-right-radius:50px; text-align: center;">
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
               <select v-model="selectedOption">
-                <option class="font" value="">請選擇</option>
+                <option value="">請選擇</option>
                 <option v-for="option in options" :value="option.value" :key="option.value">
                   {{ option.label }}
                 </option>
               </select>
             </div>
-            <p class="font" style="font-size:20px;=">名稱：{{ data.Name }}</p>
+            <p style="font-size:20px;">名稱：{{ data.Name }}</p>
             <img class="resizable-image" :src="data.UserImage">
           </div>
           <div class="col-10 bg-secondary text-white" style="text-align: center;">
             <a style="font-size: 30px;">
               <div v-if="data">
-                <p style="font-family:微軟正黑體;">角色等級：{{ data.LV }}</p>
+                <p>角色等級：{{ data.LV }}</p>
               </div>
             </a>
           </div>
           <div class="col-5 bg-secondary text-white" style="border-bottom-left-radius:50px; text-align: center;">
-            <a class="font" style="font-size: 30px;">
+            <a style="font-size: 30px;">
               <p>HP：{{ data.HP }}</p>
               <p>MP：{{ data.MP }}</p>
               <p>ATK：{{ data.ATK }}</p>
             </a>
           </div>
           <div class="col-5 bg-secondary text-white" style="border-bottom-right-radius:50px; text-align: center;">
-            <a class="font" style="font-size: 30px;">
+            <a style="font-size: 30px;">
               <p>DEF：{{ data.DFE }}</p>
               <p>SPD：{{ data.SPD }}</p>
             </a>
@@ -75,11 +75,8 @@
   </div>
 </template>
 <style scoped>
-.font{
-  font-family: 微軟正黑體;
-}
 .resizable-image {
-  max-width: 50%;
+  max-width: 500px;
   height: auto;
   margin: 0 auto;
 }

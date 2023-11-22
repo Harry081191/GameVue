@@ -10,12 +10,12 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
             <router-link :to="{ name: 'Playertalkarea', params: { userId: $route.params.userId } }"
-              class="custom-link">玩家討論版</router-link>
+              class="custom-link font">玩家討論版</router-link>
             <a class="custom-link">
               |
             </a>
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
-              class="custom-link">官方通知區</router-link>
+              class="custom-link font">官方通知區</router-link>
           </li>
         </ul>
       </div>
@@ -26,32 +26,32 @@
     <div class="p-3 wrapper" style="margin-bottom: -1px;">
       <div class="row justify-content-center">
         <div class="col-8" style="text-align: center">
-          <h2>討論區</h2>
+          <strong class = "font" style="font-size: 36px;">討論區</strong>
         </div>
         <div class="col-10">
           <div style="text-align: right">
-            <button @click="toggleForm" style="margin-bottom: 10px">開啟表單</button>
+            <button class = "font" @click="toggleForm" style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
           </div>
           <Transition>
             <div v-if="showForm" class="form-container">
               <form @submit.prevent="submitPost">
                 <div class="button-content">
                   <div class="button-content-right">
-                    <button type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
+                    <button class = "font" type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
                   </div>
                 </div>
                 <div>
-                  <input style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                  <input class = "font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
                 </div>
                 <div>
-                  <textarea style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                  <textarea class = "font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
                 </div>
                 <div>
-                  <textarea rows="4" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
+                  <textarea class = "font" rows="4" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
                     required></textarea>
                 </div>
                 <div style="text-align: right">
-                  <button type="submit">提交</button>
+                  <button class = "font" type="submit">提交</button>
                 </div>
               </form>
             </div>
@@ -213,7 +213,7 @@
                         <p>{{ item.subject }}</p>
                       </a>
                       <a class="font" style="font-size: 16px;">
-                        <p>內容：{{ item.content }}</p>
+                        <p>{{ item.content }}</p>
                       </a>
                     </div>
                   </div>

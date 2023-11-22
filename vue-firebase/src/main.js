@@ -2,10 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store/index'
-import firebase from 'firebase/app'; // 引入整個 Firebase
-import 'firebase/auth'; // 引入 Firebase Authentication 模組
-import 'firebase/firestore'; // 引入 Firebase Firestore 模組
-import 'firebase/storage'; // 引入 Firebase Storage 模組
+import { initializeApp } from 'firebase/app';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import VueToast from 'vue-toast-notification';
 
@@ -24,20 +21,6 @@ const firebaseConfig = {
     measurementId: "G-KG736KE2VM"
 };
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
-async function initializeFirebase() {
-  return new Promise((resolve) => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(() => {
-      unsubscribe();
-      resolve();
-    });
-  });
-}
-
-async function startApp() {
-  await initializeFirebase();
-  app.mount('#app');
-}
-
-startApp();
+app.mount('#app');
