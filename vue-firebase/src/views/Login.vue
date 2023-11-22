@@ -37,13 +37,6 @@
         </div>
       </div>
     </div>
-    <div v-if="data">
-      <ul>
-        <li v-for="(item, key) in data" :key="key">
-          {{ key }}: {{ item }}
-        </li>
-      </ul>
-    </div>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
