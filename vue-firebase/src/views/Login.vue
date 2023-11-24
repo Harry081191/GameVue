@@ -12,7 +12,7 @@
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
-                <strong class="font">電子信箱</strong>
+                <strong class="font">帳號</strong>
                 <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email"
                   placeholder="請輸入電子郵件" required>
                 <strong class="font">密碼</strong>
@@ -90,7 +90,7 @@ export default {
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
 
-        const matchedUser = Object.entries(users).find(([key, user]) => user.Email === email);
+        const matchedUser = Object.entries(users).find(([key, user]) => user.name === email);
 
         if (matchedUser) {
           const [, userData] = matchedUser;
