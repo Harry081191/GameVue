@@ -14,7 +14,7 @@
                 <h1 class="font">登入</h1>
                 <strong class="font">帳號</strong>
                 <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email"
-                  placeholder="請輸入電子郵件" required>
+                  placeholder="請輸入帳號" required>
                 <strong class="font">密碼</strong>
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required>
