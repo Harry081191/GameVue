@@ -11,7 +11,7 @@
           <div class="col-6">
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
-                <h1>註冊帳號</h1>
+                <h1 class="font">註冊帳號</h1>
                 <strong class="font">電子郵件</strong>
                 <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email" placeholder="請輸入電子郵件"
                   required>
