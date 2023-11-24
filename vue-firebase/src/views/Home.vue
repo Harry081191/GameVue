@@ -45,7 +45,7 @@
                 </option>
               </select>
             </div>
-            <p style="font-size:20px;">名稱：{{ data.Name }}</p>
+            <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage">
           </div>
           <div class="col-10 bg-secondary text-white" style="text-align: center;">
