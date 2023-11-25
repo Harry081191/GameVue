@@ -8,7 +8,7 @@
     <div class="container">
       <div class="p-5 wrapper">
         <div class="row justify-content-center">
-          <div class="col col-6 col-sm-9">
+          <div class="col col-9 col-sm-6">
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
