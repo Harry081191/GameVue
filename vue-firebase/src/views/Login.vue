@@ -2,13 +2,13 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <nav>
-    <router-link to="/">MageSurvivor</router-link>
+    <router-link to="/" style="font-size:50px;">MageSurvivor</router-link>
   </nav>
   <div class="Home">
     <div class="container">
       <div class="p-5 wrapper">
         <div class="row justify-content-center">
-          <div class="col-6">
+          <div class="col col-12 col-sm-6">
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
