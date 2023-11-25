@@ -21,7 +21,10 @@
                     發送驗證碼
                   </button>
                 </div>
-
+                <div>
+                  <a class="from-control mr-2 mb-1 mb-sm-0 font">I have the account return to</a>
+                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0">Login</router-link>
+                </div>
               </form>
             </div>
           </div>
