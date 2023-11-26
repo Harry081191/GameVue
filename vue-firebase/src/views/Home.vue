@@ -72,7 +72,7 @@
       </div>
     </div>
     <li v-for="(item, index) in Recordindex" :key="index">
-      {{ index }}: {{ item }}
+      <a>第{{index + 1}}場</a>{{ index }}: {{ item }}
     </li>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
