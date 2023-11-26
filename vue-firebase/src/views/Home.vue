@@ -122,8 +122,10 @@ export default {
     return {
       dbmethod: {},
       data: {},
+      Recorddata: {},
       Serchdata: {},
       dataindex: [],
+      Recordindex: [],
       Serchdataindex: [],
       newSerch: {
         userId: '',
@@ -146,7 +148,9 @@ export default {
     this.checkuserId = this.userId;
     const SerchRef = firebaseRef(db, `Users/`);
     const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+    const RecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
     this.listenToDataRef(dataRef);
+    this.listenToRecord(RecordRef);
     if (!this.isSerchRefListenerInitialized) {
       onValue(SerchRef, (snapshot) => {
         const Serchdata = snapshot.val();
@@ -167,6 +171,23 @@ export default {
         this.options = Object.keys(data).map((postId) => ({
           label: postId,
           value: data[postId],
+        }));
+        if (this.getSharedUid != this.userId) {
+          this.$router.push({
+            name: 'Login',
+          });
+        }
+      });
+    },
+    listenToRecord(RecordRef) {
+      onValue(RecordRef, (snapshot) => {
+        const Recorddata = snapshot.val();
+        this.Recordindex = Object.values(Recorddata);
+        this.dataLength = this.Recordindex.length;
+        this.Recorddata = Recorddata;
+        this.options = Object.keys(Recorddata).map((postId) => ({
+          label: postId,
+          value: Recorddata[postId],
         }));
         if (this.getSharedUid != this.userId) {
           this.$router.push({
