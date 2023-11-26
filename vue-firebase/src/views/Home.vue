@@ -71,9 +71,11 @@
         </div>
       </div>
     </div>
-    <li v-for="(item, index) in Recordindex" :key="index">
-      <a>第{{index + 1}}場</a>{{ index }}: {{ item }}
-    </li>
+    <ul class="custom-list">
+      <li v-for="(item, index) in Recordindex" :key="index">
+        <a>第{{ index + 1 }}場</a>{{ index }}: {{ item }}
+      </li>
+    </ul>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
@@ -106,6 +108,12 @@
 .Serch {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.custom-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 </style>
 <script>
