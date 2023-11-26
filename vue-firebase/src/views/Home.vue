@@ -50,9 +50,7 @@
           </div>
           <div class="col-10 bg-secondary text-white" style="text-align: center;">
             <a style="font-size: 30px;">
-              <div v-if="data">
-                <p>角色等級：{{ data.LV }}</p>
-              </div>
+              <p>角色等級：{{ data.LV }}</p>
             </a>
           </div>
           <div class="col-5 bg-secondary text-white" style="border-bottom-left-radius:50px; text-align: center;">
