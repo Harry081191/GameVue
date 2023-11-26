@@ -71,6 +71,7 @@
         </div>
       </div>
     </div>
+    <li v-for="(item, index) in Recordindex" :key="index"></li>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
@@ -183,7 +184,7 @@ export default {
       onValue(RecordRef, (snapshot) => {
         const Recorddata = snapshot.val();
         this.Recordindex = Object.values(Recorddata);
-        this.dataLength = this.Recordindex.length;
+        this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
         this.options = Object.keys(Recorddata).map((postId) => ({
           label: postId,
