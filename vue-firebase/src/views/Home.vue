@@ -71,7 +71,9 @@
         </div>
       </div>
     </div>
-    <li v-for="(item, index) in Recordindex" :key="index"></li>
+    <li v-for="(item, index) in Recordindex" :key="index">
+      {{ index }}: {{ item }}
+    </li>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
