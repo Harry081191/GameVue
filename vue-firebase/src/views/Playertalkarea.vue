@@ -881,6 +881,9 @@ export default {
     this.userId = this.$route.params.userId;
     console.log(this.userId);
     this.username = firebaseRef(db, `Users/${this.userId}/name`);
+    get(this.username).then((snapshot) => {
+      this.username = snapshot.val();
+    });
     console.log(this.username);
 
     // Listen for changes in the 'data' node
@@ -1016,9 +1019,6 @@ export default {
         set(officialRef6, messageCount);
         set(officialRef7, reportCount);
       }
-    });
-    get(firebaseRef(db, `Users/${this.userId}/Name`)).then((snapshot) => {
-      this.username = snapshot.val();
     });
   },
   methods: {
