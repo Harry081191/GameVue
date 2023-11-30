@@ -881,10 +881,10 @@ export default {
     this.userId = this.$route.params.userId;
     console.log(this.userId);
     this.username = firebaseRef(db, `Users/${this.userId}/name`);
-    get(this.username).then((snapshot) => {
+    get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
+      console.log(this.username);
     });
-    console.log(this.username);
 
     // Listen for changes in the 'data' node
     onValue(dataRef, async (snapshot) => {
