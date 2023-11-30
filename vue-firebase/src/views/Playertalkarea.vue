@@ -1009,6 +1009,7 @@ export default {
           const deleted = snapshot.val();
           if (deleted && deleted[this.username]) {
             this.deletePosts[i] = false;
+            console.log("delete false");
           } else {
             this.deletePosts[i] = true;
           }
