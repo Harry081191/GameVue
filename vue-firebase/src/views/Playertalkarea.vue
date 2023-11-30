@@ -880,8 +880,13 @@ export default {
     const dataRef = firebaseRef(db, 'Playertalk/');
     this.userId = this.$route.params.userId;
     console.log(this.userId);
-    this.username = firebaseRef(db, `Users/${this.userId}/name`);
-    console.log(this.username);
+    firebaseRef(db, `Users/${this.userId}/name`).once('value')
+      .then(snapshot => {
+        const data = snapshot.val();
+        console.log(data);
+    })
+    //this.username = firebaseRef(db, `Users/${this.userId}/name`);
+    //console.log(this.username);
 
     // Listen for changes in the 'data' node
     onValue(dataRef, async (snapshot) => {
