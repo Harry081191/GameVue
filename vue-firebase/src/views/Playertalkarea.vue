@@ -1008,7 +1008,7 @@ export default {
         get(officialRef5).then((snapshot) => {
           const deleted = snapshot.val();
           const userName = Object.values(deleted);
-          console.log(userName);
+          console.log(deleted);
           if (deleted && this.username == userName) {
             this.deletePosts[i] = false;
           } else {
