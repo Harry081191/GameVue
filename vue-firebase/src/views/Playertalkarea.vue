@@ -879,11 +879,8 @@ export default {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Playertalk/');
     this.userId = this.$route.params.userId;
-    console.log(this.userId);
-    this.username = firebaseRef(db, `Users/${this.userId}/name`);
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
-      console.log(this.username);
     });
 
     // Listen for changes in the 'data' node
@@ -1007,9 +1004,7 @@ export default {
 
         get(officialRef5).then((snapshot) => {
           const deleted = snapshot.val();
-          const userName = Object.values(deleted);
-          console.log(deleted);
-          if (deleted && this.username == userName) {
+          if (deleted && deleted[this.userId]) {
             this.deletePosts[i] = false;
           } else {
             this.deletePosts[i] = true;
