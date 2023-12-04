@@ -48,32 +48,18 @@
             <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage">
           </div>
-          <div class="col-10 bg-secondary text-white" style="text-align: center;">
-            <a style="font-size: 30px;">
-              <p>角色等級：{{ data.LV }}</p>
-            </a>
-          </div>
-          <div class="col-5 bg-secondary text-white" style="border-bottom-left-radius:50px; text-align: center;">
-            <a style="font-size: 30px;">
-              <p>HP：{{ data.HP }}</p>
-              <p>MP：{{ data.MP }}</p>
-              <p>ATK：{{ data.ATK }}</p>
-            </a>
-          </div>
-          <div class="col-5 bg-secondary text-white" style="border-bottom-right-radius:50px; text-align: center;">
-            <a style="font-size: 30px;">
-              <p>DEF：{{ data.DFE }}</p>
-              <p>SPD：{{ data.SPD }}</p>
+          <div class="col-10 bg-secondary text-white" style="border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
+            <a style="font-size: 20px;">
+              <ul class="custom-list">
+                <li v-for="(item, index) in Recordindex" :key="index">
+                  <a>第{{ index + 1 }}場：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                </li>
+              </ul>
             </a>
           </div>
         </div>
       </div>
     </div>
-    <ul class="custom-list">
-      <li v-for="(item, index) in Recordindex" :key="index">
-        <a>第{{ index + 1 }}場</a>{{ index }}: {{ item }}
-      </li>
-    </ul>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
