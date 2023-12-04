@@ -885,7 +885,6 @@ export default {
     this.userId = this.$route.params.userId;
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
-      console.log(this.username);
 
       // Listen for changes in the 'data' node
       onValue(dataRef, async (snapshot) => {
@@ -941,7 +940,8 @@ export default {
 
               get(officialRef1).then((snapshot) => {
                 const messagelike = snapshot.val();
-                if (messagelike && messagelike[this.userId]) {
+                const userNames = Object.values(messagelike);
+                if (messagelike && this.username === userNames[0]) {
                   this.mlikedPosts[mpostId] = true;
                 } else {
                   this.mlikedPosts[mpostId] = false;
@@ -949,7 +949,8 @@ export default {
               });
               get(officialRef3).then((snapshot) => {
                 const messageunlike = snapshot.val();
-                if (messageunlike && messageunlike[this.userId]) {
+                const userNames = Object.values(messageunlike);
+                if (messageunlike && this.username === userNames[0]) {
                   this.munlikedPosts[mpostId] = true;
                 } else {
                   this.munlikedPosts[mpostId] = false;
@@ -962,7 +963,8 @@ export default {
                   this.messageimagelist[mpostId] = this.messageimage;
                 });
                 const messagedeleted = snapshot.val();
-                if (messagedeleted && messagedeleted[this.userId]) {
+                const userNames = Object.values(messagedeleted);
+                if (messagedeleted && this.username === userNames[0]) {
                   this.mdeletePosts[mpostId] = false;
                 } else {
                   this.mdeletePosts[mpostId] = true;
@@ -990,7 +992,8 @@ export default {
 
           get(officialRef1).then((snapshot) => {
             const likePeople = snapshot.val();
-            if (likePeople && likePeople[this.userId]) {
+            const userNames = Object.values(likePeople);
+            if (likePeople && this.username === userNames[0]) {
               this.likedPosts[i] = true;
             } else {
               this.likedPosts[i] = false;
@@ -999,7 +1002,8 @@ export default {
 
           get(officialRef3).then((snapshot) => {
             const unlikePeople = snapshot.val();
-            if (unlikePeople && unlikePeople[this.userId]) {
+            const userNames = Object.values(unlikePeople);
+            if (unlikePeople && this.username === userNames[0]) {
               this.unlikedPosts[i] = true;
             } else {
               this.unlikedPosts[i] = false;
@@ -1008,8 +1012,8 @@ export default {
 
           get(officialRef5).then((snapshot) => {
             const deleted = snapshot.val();
-            console.log(this.username);
-            if (deleted && deleted[this.userId]) {
+            const userNames = Object.values(deleted);
+            if (deleted && this.username === userNames[0]) {
               this.deletePosts[i] = false;
             } else {
               this.deletePosts[i] = true;
