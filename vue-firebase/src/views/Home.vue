@@ -48,11 +48,32 @@
             <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage">
           </div>
+          <div class="col-10 bg-secondary text-white" style="text-align: center;">
+            <a style="font-size: 20px;">
+              <ul class="custom-list">
+                <p style="margin-bottom:15px;">最近遊玩(抓五個)</p>
+                <li v-for="(item, key) in Recorddata" :key="key">
+                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                </li>
+              </ul>
+            </a>
+          </div>
+          <div class="col-10 bg-secondary text-white" style="text-align: center;">
+            <a style="font-size: 20px;">
+              <ul class="custom-list">
+                <p style="margin-top:15px; margin-bottom:15px;">存活時間最長(抓三個)</p>
+                <li v-for="(item, key) in Recorddata" :key="key">
+                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                </li>
+              </ul>
+            </a>
+          </div>
           <div class="col-10 bg-secondary text-white" style="border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
             <a style="font-size: 20px;">
               <ul class="custom-list">
-                <li v-for="(item, index) in Recordindex" :key="index">
-                  <a>第{{ index + 1 }}場：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                <p style="margin-top:15px; margin-bottom:15px;">遊玩總計</p>
+                <li v-for="(item, key) in Recorddata" :key="key">
+                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
                 </li>
               </ul>
             </a>
