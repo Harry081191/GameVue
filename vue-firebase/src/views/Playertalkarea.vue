@@ -879,7 +879,9 @@ export default {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Playertalk/');
     this.userId = this.$route.params.userId;
-    this.username = firebaseRef(db, `Users/${this.userId}/Name`);
+    get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
+      this.username = snapshot.val();
+    });
 
     // Listen for changes in the 'data' node
     onValue(dataRef, async (snapshot) => {
@@ -1014,9 +1016,6 @@ export default {
         set(officialRef6, messageCount);
         set(officialRef7, reportCount);
       }
-    });
-    get(firebaseRef(db, `Users/${this.userId}/Name`)).then((snapshot) => {
-      this.username = snapshot.val();
     });
   },
   methods: {
