@@ -26,32 +26,35 @@
     <div class="p-3 wrapper" style="margin-bottom: -1px;">
       <div class="row justify-content-center">
         <div class="col-8" style="text-align: center">
-          <strong class = "font" style="font-size: 36px;">討論區</strong>
+          <strong class="font" style="font-size: 36px;">討論區</strong>
         </div>
         <div class="col-10">
           <div style="text-align: right">
-            <button class = "font" @click="toggleForm" style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
+            <button class="font" @click="toggleForm"
+              style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
           </div>
           <Transition>
             <div v-if="showForm" class="form-container">
               <form @submit.prevent="submitPost">
                 <div class="button-content">
                   <div class="button-content-right">
-                    <button class = "font" type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
+                    <button class="font" type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
                   </div>
                 </div>
                 <div>
-                  <input class = "font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
+                  <input class="font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題"
+                    required>
                 </div>
                 <div>
-                  <textarea class = "font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
+                  <textarea class="font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨"
+                    required></textarea>
                 </div>
                 <div>
-                  <textarea class = "font" rows="4" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
+                  <textarea class="font" rows="4" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
                     required></textarea>
                 </div>
                 <div style="text-align: right">
-                  <button class = "font" type="submit">提交</button>
+                  <button class="font" type="submit">提交</button>
                 </div>
               </form>
             </div>
@@ -418,9 +421,10 @@
   </div>
 </template>
 <style>
-.font{
+.font {
   font-family: 微軟正黑體;
 }
+
 .resizable-image {
   max-width: 100%;
   height: auto;
@@ -881,141 +885,143 @@ export default {
     this.userId = this.$route.params.userId;
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
-    });
+      console.log(this.username);
 
-    // Listen for changes in the 'data' node
-    onValue(dataRef, async (snapshot) => {
-      const data = snapshot.val();
-      this.dataindex = Object.values(data); // Convert object to array
-      this.dataLength = this.dataindex.length; // Store the length
-      this.data = data;
+      // Listen for changes in the 'data' node
+      onValue(dataRef, async (snapshot) => {
+        const data = snapshot.val();
+        this.dataindex = Object.values(data); // Convert object to array
+        this.dataLength = this.dataindex.length; // Store the length
+        this.data = data;
 
-      for (let i = 0; i < this.dataLength; i++) {
-        const post = this.dataindex[i];
-        const postId = Object.keys(this.data)[i];
-        const MessageeRef = firebaseRef(db, `Playertalk/${postId}/message`);
-        const talkimage = firebaseRef(db, `Playertalk/${postId}/createname`);
-        get(talkimage).then((snapshot) => {
-          this.userimage = Object.keys(snapshot.val());
-          get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
-            this.userimage = snapshot.val();
-            this.userimagelist[i] = this.userimage;
+        for (let i = 0; i < this.dataLength; i++) {
+          const post = this.dataindex[i];
+          const postId = Object.keys(this.data)[i];
+          const MessageeRef = firebaseRef(db, `Playertalk/${postId}/message`);
+          const talkimage = firebaseRef(db, `Playertalk/${postId}/createname`);
+          get(talkimage).then((snapshot) => {
+            this.userimage = Object.keys(snapshot.val());
+            get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
+              this.userimage = snapshot.val();
+              this.userimagelist[i] = this.userimage;
+            });
           });
-        });
-        this.postData.push({
-          post: post, // 儲存論壇帖子資料
-          messages: this.mdataindex, // 儲存對應的留言資料
-        });
-        const messageSnapshot = await get(MessageeRef);
-        const message = messageSnapshot.val();
-        this.mdataindex = Object.values(message); // Convert object to array
-        this.mdataLength = this.mdataindex.length; // Store the length
-        this.message = message;
+          this.postData.push({
+            post: post, // 儲存論壇帖子資料
+            messages: this.mdataindex, // 儲存對應的留言資料
+          });
+          const messageSnapshot = await get(MessageeRef);
+          const message = messageSnapshot.val();
+          this.mdataindex = Object.values(message); // Convert object to array
+          this.mdataLength = this.mdataindex.length; // Store the length
+          this.message = message;
 
-        if (message) {
-          const messageKeys = Object.keys(message);
-          this.messageLength = messageKeys.length;
+          if (message) {
+            const messageKeys = Object.keys(message);
+            this.messageLength = messageKeys.length;
 
-          for (let j = 0; j < this.messageLength; j++) {
-            const mpostId = messageKeys[j];
-            if (mpostId === 'total') continue;
-            const mpost = message[mpostId];
-            if (!mpost) {
-              continue;
-            }
-
-            const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
-            const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
-            const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
-
-            const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike`);
-            const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike/total`);
-            const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote`);
-            const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
-            const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagename`);
-            const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagereport/total`);
-
-            get(officialRef1).then((snapshot) => {
-              const messagelike = snapshot.val();
-              if (messagelike && messagelike[this.userId]) {
-                this.mlikedPosts[mpostId] = true;
-              } else {
-                this.mlikedPosts[mpostId] = false;
+            for (let j = 0; j < this.messageLength; j++) {
+              const mpostId = messageKeys[j];
+              if (mpostId === 'total') continue;
+              const mpost = message[mpostId];
+              if (!mpost) {
+                continue;
               }
-            });
-            get(officialRef3).then((snapshot) => {
-              const messageunlike = snapshot.val();
-              if (messageunlike && messageunlike[this.userId]) {
-                this.munlikedPosts[mpostId] = true;
-              } else {
-                this.munlikedPosts[mpostId] = false;
-              }
-            });
-            get(officialRef5).then((snapshot) => {
-              this.messageimage = Object.keys(snapshot.val());
-              get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
-                this.messageimage = snapshot.val();
-                this.messageimagelist[mpostId] = this.messageimage;
+
+              const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
+              const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+              const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
+
+              const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike`);
+              const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike/total`);
+              const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote`);
+              const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
+              const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagename`);
+              const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagereport/total`);
+
+              get(officialRef1).then((snapshot) => {
+                const messagelike = snapshot.val();
+                if (messagelike && messagelike[this.userId]) {
+                  this.mlikedPosts[mpostId] = true;
+                } else {
+                  this.mlikedPosts[mpostId] = false;
+                }
               });
-              const messagedeleted = snapshot.val();
-              if (messagedeleted && messagedeleted[this.userId]) {
-                this.mdeletePosts[mpostId] = false;
-              } else {
-                this.mdeletePosts[mpostId] = true;
-              }
-            });
+              get(officialRef3).then((snapshot) => {
+                const messageunlike = snapshot.val();
+                if (messageunlike && messageunlike[this.userId]) {
+                  this.munlikedPosts[mpostId] = true;
+                } else {
+                  this.munlikedPosts[mpostId] = false;
+                }
+              });
+              get(officialRef5).then((snapshot) => {
+                this.messageimage = Object.keys(snapshot.val());
+                get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
+                  this.messageimage = snapshot.val();
+                  this.messageimagelist[mpostId] = this.messageimage;
+                });
+                const messagedeleted = snapshot.val();
+                if (messagedeleted && messagedeleted[this.userId]) {
+                  this.mdeletePosts[mpostId] = false;
+                } else {
+                  this.mdeletePosts[mpostId] = true;
+                }
+              });
 
-            set(officialRef2, mlikePeopleCount);
-            set(officialRef4, munlikePeopleCount);
-            set(officialRef6, mreportPeopleCount);
+              set(officialRef2, mlikePeopleCount);
+              set(officialRef4, munlikePeopleCount);
+              set(officialRef6, mreportPeopleCount);
+            }
           }
+
+          const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+          const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+          const messageCount = (Object.keys(post.message || {}).length) - 1;
+          const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
+
+          const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
+          const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople/total`);
+          const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
+          const officialRef4 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/total`);
+          const officialRef5 = firebaseRef(db, `Playertalk/${postId}/createname`);
+          const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/total`);
+          const officialRef7 = firebaseRef(db, `Playertalk/${postId}/reportpeople/total`);
+
+          get(officialRef1).then((snapshot) => {
+            const likePeople = snapshot.val();
+            if (likePeople && likePeople[this.userId]) {
+              this.likedPosts[i] = true;
+            } else {
+              this.likedPosts[i] = false;
+            }
+          });
+
+          get(officialRef3).then((snapshot) => {
+            const unlikePeople = snapshot.val();
+            if (unlikePeople && unlikePeople[this.userId]) {
+              this.unlikedPosts[i] = true;
+            } else {
+              this.unlikedPosts[i] = false;
+            }
+          });
+
+          get(officialRef5).then((snapshot) => {
+            const deleted = snapshot.val();
+            console.log(this.username);
+            if (deleted && deleted[this.userId]) {
+              this.deletePosts[i] = false;
+            } else {
+              this.deletePosts[i] = true;
+            }
+          });
+
+          set(officialRef2, likePeopleCount);
+          set(officialRef4, unlikePeopleCount);
+          set(officialRef6, messageCount);
+          set(officialRef7, reportCount);
         }
-
-        const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
-        const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
-        const messageCount = (Object.keys(post.message || {}).length) - 1;
-        const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
-
-        const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
-        const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople/total`);
-        const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
-        const officialRef4 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/total`);
-        const officialRef5 = firebaseRef(db, `Playertalk/${postId}/createname`);
-        const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/total`);
-        const officialRef7 = firebaseRef(db, `Playertalk/${postId}/reportpeople/total`);
-
-        get(officialRef1).then((snapshot) => {
-          const likePeople = snapshot.val();
-          if (likePeople && likePeople[this.userId]) {
-            this.likedPosts[i] = true;
-          } else {
-            this.likedPosts[i] = false;
-          }
-        });
-
-        get(officialRef3).then((snapshot) => {
-          const unlikePeople = snapshot.val();
-          if (unlikePeople && unlikePeople[this.userId]) {
-            this.unlikedPosts[i] = true;
-          } else {
-            this.unlikedPosts[i] = false;
-          }
-        });
-
-        get(officialRef5).then((snapshot) => {
-          const deleted = snapshot.val();
-          if (deleted && deleted[this.userId]) {
-            this.deletePosts[i] = false;
-          } else {
-            this.deletePosts[i] = true;
-          }
-        });
-
-        set(officialRef2, likePeopleCount);
-        set(officialRef4, unlikePeopleCount);
-        set(officialRef6, messageCount);
-        set(officialRef7, reportCount);
-      }
+      });
     });
   },
   methods: {
