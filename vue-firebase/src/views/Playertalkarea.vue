@@ -207,9 +207,6 @@
                       <a style="font-size: 40px;">
                         <img class="resizable-image" :src="userimagelist[index]">
                       </a>
-                      <a class="font" style="font-size: 16px;">
-                        <p>UID：{{ Object.keys(item.createname)[0] }}</p>
-                      </a>
                     </div>
                     <div class="col-9 bg-white text-dark" style="text-align: center;">
                       <a class="font" style="font-size: 32px;">
