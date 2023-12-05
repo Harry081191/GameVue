@@ -345,13 +345,13 @@
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: mdeletePosts[messageIndex] }"
                                                   @click="mtoggleEdit(index, messageIndex)"><i
-                                                    class="far fa-edit font"></i></button>
+                                                    class="far fa-edit"></i></button>
                                               </li>
                                               <li><button type="button"
                                                   style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
                                                   :class="{ mdeleted: mdeletePosts[messageIndex] }"
                                                   @click="mtoggleDelete(index, messageIndex)"><i
-                                                    class="far fa-trash-alt font"></i></button>
+                                                    class="far fa-trash-alt"></i></button>
                                               </li>
                                             </ul>
                                           </li>
