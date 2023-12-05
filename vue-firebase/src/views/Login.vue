@@ -116,7 +116,7 @@ export default {
             this.errorMessage = '';
           }
         } else {
-          this.errorMessage = 'Invalid mail';
+          this.errorMessage = 'Invalid account';
 
           this.$toast.error(this.errorMessage, {
             position: 'top',
