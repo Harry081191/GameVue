@@ -53,7 +53,9 @@
               <ul class="custom-list">
                 <p style="margin-bottom:15px;">最近遊玩(抓五個)</p>
                 <li v-for="(item, key) in Recorddata" :key="key">
-                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                  <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{
+                    item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}
+                  </template>
                 </li>
               </ul>
             </a>
@@ -63,17 +65,22 @@
               <ul class="custom-list">
                 <p style="margin-top:15px; margin-bottom:15px;">存活時間最長(抓三個)</p>
                 <li v-for="(item, key) in Recorddata" :key="key">
-                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                  <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{
+                    item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}
+                  </template>
                 </li>
               </ul>
             </a>
           </div>
-          <div class="col-10 bg-secondary text-white" style="border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
+          <div class="col-10 bg-secondary text-white"
+            style="border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
             <a style="font-size: 20px;">
               <ul class="custom-list">
                 <p style="margin-top:15px; margin-bottom:15px;">遊玩總計</p>
                 <li v-for="(item, key) in Recorddata" :key="key">
-                  <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／Money：{{ item.money }}／Time：{{ item.time }}
+                  <template v-if="key === 'TotalRecord'"><a>總紀錄：</a> 總擊殺數：{{ item.totalkillnumber }}／總獲取金幣：{{
+                    item.totalmoney }}／總遊玩時長：{{ item.totaltime }}秒
+                  </template>
                 </li>
               </ul>
             </a>
@@ -235,8 +242,8 @@ export default {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
-        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
-        this.listenToDataRef(newDataRef);
+        const newDataRef = firebaseRef(this.dbmethod, `Record/${this.checkuserId}`);
+        this.listenToRecord(newDataRef);
       }
       if (this.errorMessage !== '') {
         this.$toast.error(this.errorMessage, {
@@ -252,8 +259,8 @@ export default {
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
         this.checkuserId = this.userId;
-        const newDataRef = firebaseRef(this.dbmethod, `Users/${this.checkuserId}`);
-        this.listenToDataRef(newDataRef);
+        const newDataRef = firebaseRef(this.dbmethod, `Record/${this.checkuserId}`);
+        this.listenToRecord(newDataRef);
       }
     },
   },
