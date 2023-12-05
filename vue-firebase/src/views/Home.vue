@@ -75,11 +75,10 @@
                     item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br>
                     技能升級： FireBallChain：{{ item.SkillUpgradeRecord.FireBallChain }}／FireBallDamage：{{
                       item.SkillUpgradeRecord.FireBallDamage }}／FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
-                      }}／getBloodExplode：{{
-                      item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{ item.SkillUpgradeRecord.getFireBall
-                      }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet }}／getLightningBlast：{{
-                      item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{ item.SkillUpgradeRecord.getMagicWeapon
-                      }}
+                      }}／getBloodExplode：{{item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
+                      item.SkillUpgradeRecord.getFireBall}}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
+                      }}／getLightningBlast：{{item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
+                      item.SkillUpgradeRecord.getMagicWeapon}}
                   </template>
                 </li>
               </ul>
