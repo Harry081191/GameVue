@@ -878,7 +878,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, 'Playertalk/');
+    const dataRef = firebaseRef(db, 'Playerforum/');
     this.userId = this.$route.params.userId;
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
@@ -893,8 +893,8 @@ export default {
         for (let i = 0; i < this.dataLength; i++) {
           const post = this.dataindex[i];
           const postId = Object.keys(this.data)[i];
-          const MessageeRef = firebaseRef(db, `Playertalk/${postId}/message`);
-          const talkimage = firebaseRef(db, `Playertalk/${postId}/createname`);
+          const MessageeRef = firebaseRef(db, `Playerforum/${postId}/message`);
+          const talkimage = firebaseRef(db, `Playerforum/${postId}/createname`);
           get(talkimage).then((snapshot) => {
             this.userimage = Object.keys(snapshot.val());
             get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
@@ -928,12 +928,12 @@ export default {
               const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
               const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
 
-              const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike`);
-              const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagelike/total`);
-              const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote`);
-              const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagedownvote/total`);
-              const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagename`);
-              const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${mpostId}/messagereport/total`);
+              const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagelike`);
+              const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagelike/total`);
+              const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagedownvote`);
+              const officialRef4 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagedownvote/total`);
+              const officialRef5 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagename`);
+              const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagereport/total`);
 
               get(officialRef1).then((snapshot) => {
                 const messagelike = snapshot.val();
@@ -979,13 +979,13 @@ export default {
           const messageCount = (Object.keys(post.message || {}).length) - 1;
           const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
 
-          const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
-          const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople/total`);
-          const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
-          const officialRef4 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/total`);
-          const officialRef5 = firebaseRef(db, `Playertalk/${postId}/createname`);
-          const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/total`);
-          const officialRef7 = firebaseRef(db, `Playertalk/${postId}/reportpeople/total`);
+          const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
+          const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople/total`);
+          const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
+          const officialRef4 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/total`);
+          const officialRef5 = firebaseRef(db, `Playerforum/${postId}/createname`);
+          const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/total`);
+          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
 
           get(officialRef1).then((snapshot) => {
             const likePeople = snapshot.val();
@@ -1042,7 +1042,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/likepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
         remove(officialRef1);
@@ -1058,7 +1058,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/downvotepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
         remove(officialRef1);
@@ -1094,8 +1094,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}/createtime`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/reportpeople/${this.userId}/resaon`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/reportpeople/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/reportpeople/${this.userId}/resaon`);
 
       set(officialRef1, currentDateTime);
       set(officialRef2, this.reportPost.selectedContent);
@@ -1110,9 +1110,9 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/title`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/subject`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/content`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/title`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/subject`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/content`);
 
       get(officialRef1).then((snapshot) => {
         if (snapshot.exists()) {
@@ -1156,10 +1156,10 @@ export default {
       const seconds = now.getSeconds();
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/title`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/subject`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/content`);
-      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/createtime`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/title`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/subject`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/content`);
+      const officialRef4 = firebaseRef(db, `Playerforum/${postId}/createtime`);
 
       set(officialRef1, this.editPost.title);
       set(officialRef2, this.editPost.subject);
@@ -1175,9 +1175,9 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/likepeople`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/downvotepeople`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
       remove(officialRef1);
       remove(officialRef2);
       remove(officialRef3);
@@ -1193,7 +1193,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
       if (this.mlikedPosts[messageIndex]) {
         this.mlikedPosts[messageIndex] = false;
         remove(officialRef1);
@@ -1209,7 +1209,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`);
       if (this.munlikedPosts[messageIndex]) {
         this.munlikedPosts[messageIndex] = false;
         remove(officialRef1);
@@ -1249,8 +1249,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}/createtime`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagereport/${this.userId}/resaon`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/resaon`);
 
       set(officialRef1, currentDateTime);
       set(officialRef2, this.mreportPost.selectedContent);
@@ -1267,7 +1267,7 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagecontent`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagecontent`);
 
       get(officialRef1).then((snapshot) => {
         if (snapshot.exists()) {
@@ -1297,8 +1297,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagecontent`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagetime`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagecontent`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagetime`);
 
       set(officialRef1, this.editedMessageContent);
       set(officialRef2, currentDateTime);
@@ -1309,9 +1309,9 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagelike`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${messageIndex}/messagedownvote`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagelike`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagedownvote`);
       remove(officialRef1);
       remove(officialRef2);
       remove(officialRef3);
@@ -1335,12 +1335,12 @@ export default {
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagecontent`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagetime`);
-      const officialRef4 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagelike/total`);
-      const officialRef5 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
-      const officialRef6 = firebaseRef(db, `Playertalk/${postId}/message/${currentDateTimeID}/messagereport/total`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagecontent`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagetime`);
+      const officialRef4 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagelike/total`);
+      const officialRef5 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
+      const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagereport/total`);
 
       set(officialRef1, this.username);
       set(officialRef2, this.newMessage.content);
@@ -1366,15 +1366,15 @@ export default {
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playertalk/${uniqueCode}/title`);
-      const officialRef2 = firebaseRef(db, `Playertalk/${uniqueCode}/subject`);
-      const officialRef3 = firebaseRef(db, `Playertalk/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(db, `Playertalk/${uniqueCode}/likepeople/total`);
-      const officialRef5 = firebaseRef(db, `Playertalk/${uniqueCode}/downvotepeople/total`);
-      const officialRef6 = firebaseRef(db, `Playertalk/${uniqueCode}/reportpeople/total`);
-      const officialRef7 = firebaseRef(db, `Playertalk/${uniqueCode}/message/total`);
-      const officialRef8 = firebaseRef(db, `Playertalk/${uniqueCode}/createtime`);
-      const officialRef9 = firebaseRef(db, `Playertalk/${uniqueCode}/createname/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${uniqueCode}/title`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${uniqueCode}/subject`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${uniqueCode}/content`);
+      const officialRef4 = firebaseRef(db, `Playerforum/${uniqueCode}/likepeople/total`);
+      const officialRef5 = firebaseRef(db, `Playerforum/${uniqueCode}/downvotepeople/total`);
+      const officialRef6 = firebaseRef(db, `Playerforum/${uniqueCode}/reportpeople/total`);
+      const officialRef7 = firebaseRef(db, `Playerforum/${uniqueCode}/message/total`);
+      const officialRef8 = firebaseRef(db, `Playerforum/${uniqueCode}/createtime`);
+      const officialRef9 = firebaseRef(db, `Playerforum/${uniqueCode}/createname/${this.userId}`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
