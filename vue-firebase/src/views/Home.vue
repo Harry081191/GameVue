@@ -73,7 +73,7 @@
                 <li style="margin-bottom:20px;" v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{
                     item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br>
-                    技能升級： FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject }}／getBloodExplode：{{
+                    技能升級： FireBallChain：{{ item.SkillUpgradeRecord.FireBallChain }}／FireBallDamage：{{ item.SkillUpgradeRecord.FireBallDamage }}／FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject }}／getBloodExplode：{{
                       item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{ item.SkillUpgradeRecord.getFireBall
                       }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet }}／getLightningBlast：{{
                       item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{ item.SkillUpgradeRecord.getMagicWeapon
