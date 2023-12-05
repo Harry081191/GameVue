@@ -70,7 +70,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
-                                  class="fas fa-exclamation-triangle font"></i> 舉報</button>
+                                  class="fas fa-exclamation-triangle"></i> 舉報</button>
                               <Transition>
                                 <div v-if="reportForm" class="form-container">
                                   <form @submit.prevent="submitReport(index)">
@@ -155,7 +155,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
-                                  class="far fa-edit font"></i> 編輯</button>
+                                  class="far fa-edit"></i> 編輯</button>
                               <Transition>
                                 <div v-if="editForm" class="form-container">
                                   <form @submit.prevent="submitEdit(index)">
@@ -188,7 +188,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
-                                  class="far fa-trash-alt font"></i> 刪除</button>
+                                  class="far fa-trash-alt"></i> 刪除</button>
                             </li>
                           </ul>
                         </li>
