@@ -19,15 +19,14 @@
           </li>
         </ul>
       </div>
-      <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }"
-        class="custom-link font">我的首頁</router-link>
+      <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }" class="custom-link font">我的首頁</router-link>
     </nav>
   </div>
   <div class="container">
     <div class="p-3 wrapper" style="margin-bottom: -1px;">
       <div class="row justify-content-center">
         <div class="col-8" style="text-align: center">
-          <strong class="font" style="font-size: 36px;">討論區</strong>
+          <strong class = "font" style="font-size: 36px;">討論區</strong>
         </div>
         <div class="col-10">
           <div style="text-align: right">
@@ -42,19 +41,16 @@
                   </div>
                 </div>
                 <div>
-                  <input class="font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題"
-                    required>
+                  <input class = "font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題" required>
                 </div>
                 <div>
-                  <textarea class="font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨"
-                    required></textarea>
+                  <textarea class = "font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨" required></textarea>
                 </div>
                 <div>
-                  <textarea class="font" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
-                    required></textarea>
+                  <textarea class = "font" style="text-align: center" v-model="newPost.content" placeholder="帖子內容" required></textarea>
                 </div>
                 <div style="text-align: right">
-                  <button class="font" type="submit">提交</button>
+                  <button class = "font"  type="submit">提交</button>
                 </div>
               </form>
             </div>
@@ -74,7 +70,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
-                                  class="fas fa-exclamation-triangle"></i><a class="font">舉報</a></button>
+                                  class="fas fa-exclamation-triangle"></i> 舉報</button>
                               <Transition>
                                 <div v-if="reportForm" class="form-container">
                                   <form @submit.prevent="submitReport(index)">
@@ -149,7 +145,7 @@
                                       </label>
                                     </div>
                                     <div style="text-align: right;">
-                                      <button class="font" type="submit" style="width: 60px; height: 25px;">提交</button>
+                                      <button class = "font" type="submit" style="width: 60px; height: 25px;">提交</button>
                                     </div>
                                   </form>
                                 </div>
@@ -159,7 +155,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
-                                  class="far fa-edit"></i><a class="font">編輯</a></button>
+                                  class="far fa-edit"></i> 編輯</button>
                               <Transition>
                                 <div v-if="editForm" class="form-container">
                                   <form @submit.prevent="submitEdit(index)">
@@ -170,19 +166,19 @@
                                       </div>
                                     </div>
                                     <div>
-                                      <input class="font" style="text-align: center" v-model="editPost.title" type="text"
+                                      <input class = "font" style="text-align: center" v-model="editPost.title" type="text"
                                         placeholder="帖子標題" required>
                                     </div>
                                     <div>
-                                      <textarea class="font" style="text-align: center" v-model="editPost.subject"
-                                        placeholder="帖子主旨" required></textarea>
+                                      <textarea class = "font" style="text-align: center" v-model="editPost.subject" placeholder="帖子主旨"
+                                        required></textarea>
                                     </div>
                                     <div>
-                                      <textarea class="font" style="text-align: center" v-model="editPost.content"
-                                        placeholder="帖子內容" required></textarea>
+                                      <textarea class = "font" style="text-align: center" v-model="editPost.content" placeholder="帖子內容"
+                                        required></textarea>
                                     </div>
                                     <div style="text-align: right">
-                                      <button class="font" type="submit">提交</button>
+                                      <button class = "font" type="submit">提交</button>
                                     </div>
                                   </form>
                                 </div>
@@ -192,7 +188,7 @@
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
-                                  class="far fa-trash-alt"></i><a class="font">刪除</a></button>
+                                  class="far fa-trash-alt"></i> 刪除</button>
                             </li>
                           </ul>
                         </li>
@@ -205,9 +201,7 @@
                   <div class="row">
                     <div class="col-3 bg-white text-dark" style="text-align: center;">
                       <a style="font-size: 40px;">
-                        <p><img class="resizable-image"
-                            src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c">
-                        </p>
+                        <p><img class="resizable-image" src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c"></p>
                       </a>
                       <a style="font-size: 16px;">
                         <p>UID：官方</p>
@@ -241,7 +235,7 @@
                             </div>
                             <div class="button-content">
                               <div class="button-content-right">
-                                <button class="font" type="submit" style="margin-bottom: 10px">提交回復</button>
+                                <button class = "font" type="submit" style="margin-bottom: 10px">提交回復</button>
                               </div>
                             </div>
                             <ul class="custom-list">
@@ -337,7 +331,7 @@
                                                         </label>
                                                       </div>
                                                       <div style="text-align: right;">
-                                                        <button class="font" type="submit"
+                                                        <button class = "font" type="submit"
                                                           style="width: 60px; height: 25px;">提交</button>
                                                       </div>
                                                     </form>
@@ -367,13 +361,13 @@
                                   </div>
                                   </p>
                                   <div v-if="editingMessageIndex === messageIndex">
-                                    <p class="font" style="margin-bottom:0px"><textarea v-model="editedMessageContent"
+                                    <p class = "font" style="margin-bottom:0px"><textarea v-model="editedMessageContent"
                                         placeholder="回復內容" required></textarea>
                                     </p>
                                     <div style="margin-bottom:10px;" class="button-content">
                                       <div class="button-content-right font">
-                                        <button class="font" @click="cancelEditedMessage(messageIndex)">取消</button>
-                                        <button class="font" @click="saveEditedMessage(index, messageIndex)">保存</button>
+                                        <button class = "font" @click="cancelEditedMessage(messageIndex)">取消</button>
+                                        <button class = "font" @click="saveEditedMessage(index, messageIndex)">保存</button>
                                       </div>
                                     </div>
                                   </div>
@@ -404,15 +398,14 @@
                     <a class="like-count font">{{ item.likepeople.total }}</a>
                     <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                         class="far fa-thumbs-up"></i></button>
-                    <button class="font" style="margin-right: 15px;" type="button"
-                      :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                        class="far fa-thumbs-down"></i></button>
+                    <button class = "font" style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }"
+                      @click="toggleUnLike(index)"><i class="far fa-thumbs-down"></i></button>
                   </div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                <span class="font" style="font-size: 20px;">創建人：官方</span>
+                <span class = "font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
+                <span class = "font" style="font-size: 20px;">創建人：官方</span>
               </div>
               <p style="margin-bottom:20px"></p>
             </li>
@@ -424,16 +417,14 @@
   </div>
 </template>
 <style scoped>
-.font {
+.font{
   font-family: 微軟正黑體;
 }
-
 .resizable-image {
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
-
 .resizable-image-message {
   max-width: 10%;
   height: auto;
