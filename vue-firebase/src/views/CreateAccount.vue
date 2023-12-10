@@ -57,7 +57,10 @@ import { firebaseApp } from '@/main';
 export default {
   data() {
     return {
-      
+      User: {
+        name: '',
+        password: ''
+      },
     };
   },
   computed: {
