@@ -819,7 +819,7 @@ button.mdeleted {
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
-import { firebaseApp } from '@/main.js';
+import { firebaseApp } from '@/main';
 export default {
   beforeRouteEnter(to, from, next) {
     document.title = '遊戲討論區';

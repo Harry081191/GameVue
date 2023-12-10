@@ -35,7 +35,7 @@
 </template>
 <script>
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { firebaseApp } from '@/main.js';
+import { firebaseApp } from '@/main';
 
 export default {
   data() {
