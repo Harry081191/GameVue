@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <nav>
-    <router-link to="/CreateAccount">Register Account</router-link>
+    <router-link to="/" style="font-size:50px;">MageSurvivor</router-link>
   </nav>
   <div class="Home">
     <div class="container">
@@ -12,11 +12,8 @@
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">註冊帳號</h1>
-                <strong class="font">電子郵件</strong>
-                <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email" placeholder="請輸入電子郵件"
-                  required>
                 <strong class="font">帳號</strong>
-                <input v-model="User.username" type="text" class="form-control font" id="Username" name="Username"
+                <input v-model="User.name" type="text" class="form-control font" id="Username" name="Username"
                   placeholder="請輸入帳號" required>
                 <strong class="font">密碼</strong>
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
@@ -39,80 +36,68 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
+
 <style>
-.font{
+.font {
   font-family: 微軟正黑體;
 }
 </style>
+
 <script>
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from 'firebase/auth';
-import { getDatabase, ref as firebaseRef, onValue, set } from 'firebase/database';
+import {
+  getDatabase,
+  ref as firebaseRef,
+  onValue,
+  set,
+  child,
+  get,
+} from 'firebase/database';
 import { firebaseApp } from '@/main';
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    document.title = '創建帳號';
-    next();
-  },
-  mounted() {
-    const db = getDatabase(firebaseApp);
-    const auth = getAuth(firebaseApp);
-    const dataRef = firebaseRef(db, 'Users/');
-
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      this.dataindex = Object.values(data); // Convert object to array
-      this.dataLength = this.dataindex.length; // Store the length
-      this.data = data; // Store the data in the component's data property
-    });
-
-
-
-    console.log("Email verified. Calling onEmailVerified.");
-
-    this.unsubscribeAuth = unsubscribeAuth;
-  },
   data() {
     return {
-      data: {},
-      dataindex: [],
-      User: {
-        email: '',
-        username: '',
-        password: ''
-      },
-      errorMessage: null,
-      UIDnumber: 0,
+      
     };
+  },
+  computed: {
+    isInvalidPassword() {
+      return this.User.password.length < 6;
+    },
   },
   methods: {
     async handleSubmit() {
-      this.UIDnumber = this.dataLength + 1;
-      const formattedUIDnumber = this.UIDnumber.toString().padStart(7, '0');
+      try {
+        const db = getDatabase(firebaseApp);
+        const name = this.User.name;
 
-      const officialRef1 = firebaseRef(db, `Users/${formattedUIDnumber}/ATK`);
-      const officialRef2 = firebaseRef(db, `Users/${formattedUIDnumber}/DFE`);
-      const officialRef3 = firebaseRef(db, `Users/${formattedUIDnumber}/HP`);
-      const officialRef4 = firebaseRef(db, `Users/${formattedUIDnumber}/MP`);
-      const officialRef5 = firebaseRef(db, `Users/${formattedUIDnumber}/LV`);
-      const officialRef6 = firebaseRef(db, `Users/${formattedUIDnumber}/SPD`);
-      const officialRef7 = firebaseRef(db, `Users/${formattedUIDnumber}/Name`);
-      const officialRef8 = firebaseRef(db, `Users/${formattedUIDnumber}/Email`);
-      const officialRef9 = firebaseRef(db, `Users/${formattedUIDnumber}/Username`);
-      const officialRef10 = firebaseRef(db, `Users/${formattedUIDnumber}/Password`);
+        const userRef = firebaseRef(db, `Users/${name}`);
+        const userSnapshot = await get(userRef);
 
-      set(officialRef1, 0);
-      set(officialRef2, 0);
-      set(officialRef3, 0);
-      set(officialRef4, 0);
-      set(officialRef5, 0);
-      set(officialRef6, 0);
-      set(officialRef7, ' ');
-      set(officialRef8, this.User.email);
-      set(officialRef9, this.User.username);
-      set(officialRef10, this.User.password);
+        if (userSnapshot.exists()) {
+          this.errorMessage = '用戶已存在，請使用其他用戶名稱。';
+          return;
+        }
 
-    }
+        if (this.isInvalidPassword) {
+          this.errorMessage = '密碼不能小於六個字。';
+          return;
+        }
+
+        const password = this.User.password;
+        set(userRef, {
+          name: name,
+          password: password,
+        });
+
+        this.$router.push({ name: 'Login' });
+
+        console.log('User registered successfully!');
+      } catch (error) {
+        this.errorMessage = error.message;
+        console.error('Error registering user:', error);
+      }
+    },
   },
 };
 </script>
