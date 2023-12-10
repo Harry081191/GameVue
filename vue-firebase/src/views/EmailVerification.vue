@@ -16,7 +16,6 @@
                                 <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email"
                                     placeholder="請輸入電子郵件" required>
                                 <strong class="font">帳號</strong>
-                                
                                 <input v-model="User.name" type="text" class="form-control font" id="Name" name="Name"
                                     placeholder="請輸入帳號" required>
                                 <strong class="font">密碼</strong>

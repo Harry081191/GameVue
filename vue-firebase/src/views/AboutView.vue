@@ -12,7 +12,6 @@
             <div class="jumbotron">
               <form @submit.prevent="handleSubmit">
                 <h1>找回密碼</h1>
-                
                 <strong>電子信箱</strong>
                 <input v-model="User.mail" type="text" class="form-control" id="Mail" name="Mail"
                   placeholder="請輸入帳號" required>

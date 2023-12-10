@@ -42,7 +42,6 @@
             style="border-top-left-radius:50px; border-top-right-radius:50px; text-align: center;">
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
               <select v-model="selectedOption">
-                
                 <option value="">請選擇</option>
                 <option v-for="option in options" :value="option.value" :key="option.value">
                   {{ option.label }}

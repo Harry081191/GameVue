@@ -17,7 +17,6 @@
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
               class="custom-link font">官方通知區</router-link>
           </li>
-          
         </ul>
       </div>
       <router-link :to="{ name: 'Home', params: { userId: $route.params.userId } }" class="custom-link">我的首頁</router-link>
