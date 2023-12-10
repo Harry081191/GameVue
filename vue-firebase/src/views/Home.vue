@@ -36,7 +36,7 @@
           <div class="col-6" style="text-align: center">
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
-          <button type="button" :class="{ ban: (!myselfidentity || !Serchbutton || data.Manager) }" @click="ban"><i
+          <button type="button" :class="{ ban: (!myselfidentity || !Serchstatus || data.Manager) }" @click="ban"><i
               class="fas fa-exclamation-triangle"></i></button>
           <div class="col-10 bg-secondary text-white"
             style="border-top-left-radius:50px; border-top-right-radius:50px; text-align: center;">
@@ -186,7 +186,6 @@ export default {
       checkuserId: '',
       checkuserIdc: '',
       Serchstatus: false,
-      Serchbutton: false,
       accountexist: false,
       myselfidentity: false,
       options: [],
@@ -256,7 +255,6 @@ export default {
       const db = getDatabase(firebaseApp);
       this.checkuserIdc = this.checkuserId;
       this.checkuserId = this.newSerch.userId;
-      this.Serchbutton = true;
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
         const SerchpostId = SerchpostKeys[i];
@@ -296,7 +294,6 @@ export default {
       const db = getDatabase(firebaseApp);
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
-        this.Serchbutton = false;
         this.checkuserId = this.userId;
         this.Recorddata = null;
         const newDataRef = firebaseRef(db, `Users/${this.checkuserId}`);
@@ -308,7 +305,6 @@ export default {
     ban() {
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
-      console.log(officialRef1);
       set(officialRef1, false);
     },
   },
