@@ -79,6 +79,7 @@ export default {
       User: {
         name: '',
         password: ''
+        
       },
       yourUid: '',
       errorMessage: null

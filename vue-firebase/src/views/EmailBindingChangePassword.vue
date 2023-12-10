@@ -15,6 +15,7 @@
             <button @click="changePassword">Change Password</button>
         </div>
         <div v-else>
+            
             <p>No user found with the provided email.</p>
         </div>
         <div v-if="ChangePasswordSuccess">

@@ -16,6 +16,7 @@
                 <strong class="font">帳號</strong>
                 <input v-model="User.name" type="text" class="form-control font" id="Name" name="Name" placeholder="請輸入帳號"
                   required>
+                  
                 <div style="margin-top: 10px; margin-bottom: 10px;">
                   <button type="submit" class="btn btn-outline-danger">
                     發送信件

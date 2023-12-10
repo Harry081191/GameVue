@@ -69,6 +69,7 @@ export default {
     },
   },
   methods: {
+    
     async handleSubmit() {
       try {
         const db = getDatabase(firebaseApp);
