@@ -13,8 +13,8 @@
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
                 <strong class="font">帳號</strong>
-                <input v-model="User.email" type="text" class="form-control font" id="Email" name="Email"
-                  placeholder="請輸入帳號" required>
+                <input v-model="User.name" type="text" class="form-control font" id="Name" name="Name" placeholder="請輸入帳號"
+                  required>
                 <strong class="font">密碼</strong>
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required>
@@ -45,12 +45,13 @@
   display: flex;
   justify-content: space-between;
 }
-.font{
+
+.font {
   font-family: 微軟正黑體;
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
+import { getDatabase, ref as firebaseRef, onValue, get, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
 import { mapActions } from "vuex";
 
@@ -72,7 +73,7 @@ export default {
     return {
       data: {},
       User: {
-        email: '',
+        name: '',
         password: ''
       },
       yourUid: '',
@@ -82,15 +83,18 @@ export default {
   methods: {
     ...mapActions(["updateSharedUid"]),
     handleSubmit() {
-      const email = this.User.email;
+      const name = this.User.name;
       const password = this.User.password;
       const db = getDatabase(firebaseApp);
       const usersRef = firebaseRef(db, 'Users/');
-      
+
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
-
-        const matchedUser = Object.entries(users).find(([key, user]) => user.name === email);
+        const userImage = 'https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac.png?alt=media&token=b8785e2a-0017-4160-b015-4c6799b2adb2';
+        const userAvailable = true;
+        const matchedUser = Object.entries(users).find(([key, user]) => user.name === name);
+        const officialRef1 = firebaseRef(db, `Users/${name}/UserImage`);
+        const officialRef2 = firebaseRef(db, `Users/${name}/UserAvailable`);
 
         if (matchedUser) {
           const [, userData] = matchedUser;
@@ -98,12 +102,29 @@ export default {
           if (userData.password === password) {
             const userId = matchedUser[0];
             this.updateSharedUid(userId);
-            this.$router.push({ 
-              name: 'Home',
-              params: {
-                userId: userId
+            get(firebaseRef(db, `Users/${name}/UserImage`)).then((snapshot) => {
+              const UserImage = snapshot.val();
+              if (UserImage === null) {
+                set(officialRef1, userImage);
               }
-            });
+            })
+            get(firebaseRef(db, `Users/${name}/Manager`)).then((snapshot) => {
+              const UserManager = snapshot.val();
+              get(firebaseRef(db, `Users/${name}/UserAvailable`)).then((snapshot) => {
+                const UserAvailable = snapshot.val();
+                if (UserAvailable === null && UserManager === null) {
+                  set(officialRef2, userAvailable);
+                }
+                if (UserAvailable || UserManager) {
+                  this.$router.push({
+                    name: 'Home',
+                    params: {
+                      userId: userId
+                    }
+                  });
+                }
+              })
+            })
           } else {
             this.errorMessage = 'Invalid password';
 
