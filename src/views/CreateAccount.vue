@@ -46,7 +46,6 @@
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, child, get } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { firebaseApp } from '@/main';
 
 export default {
   data() {
