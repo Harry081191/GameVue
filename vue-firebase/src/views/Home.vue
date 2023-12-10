@@ -16,7 +16,7 @@
       </div>
       <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right;">
         <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0"
-          placeholder="Serch player's UID">
+          placeholder="Serch player's Name">
         <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">Serch</button>
       </form>
       <a class="custom-link from-control mr-3 mb-2 mb-sm-0">
@@ -36,7 +36,8 @@
           <div class="col-6" style="text-align: center">
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
-          <button type="button" :class="{ ban: (!myselfidentity || !Serchbutton || data.Manager) }" @click="ban"><i class="fas fa-exclamation-triangle"></i></button>
+          <button type="button" :class="{ ban: (!myselfidentity || !Serchbutton || data.Manager) }" @click="ban"><i
+              class="fas fa-exclamation-triangle"></i></button>
           <div class="col-10 bg-secondary text-white"
             style="border-top-left-radius:50px; border-top-right-radius:50px; text-align: center;">
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
@@ -204,9 +205,9 @@ export default {
       this.Serchdataindex = Object.values(Serchdata);
       this.SerchdataLength = this.Serchdataindex.length;
       this.Serchdata = Serchdata;
+      this.listenToDataRef(dataRef);
+      this.listenToRecord(RecordRef);
     });
-    this.listenToDataRef(dataRef);
-    this.listenToRecord(RecordRef);
   },
   methods: {
     listenToDataRef(dataRef) {
@@ -292,7 +293,7 @@ export default {
       this.newSerch.userId = '';
     },
     toggleLogin() {
-    const db = getDatabase(firebaseApp);
+      const db = getDatabase(firebaseApp);
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
         this.Serchbutton = false;
