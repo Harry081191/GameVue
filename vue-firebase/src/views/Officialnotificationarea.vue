@@ -203,9 +203,6 @@
                       <a style="font-size: 40px;">
                         <p><img class="resizable-image" src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c"></p>
                       </a>
-                      <a style="font-size: 16px;">
-                        <p>UID：官方</p>
-                      </a>
                     </div>
                     <div class="col-9 bg-white text-dark" style="text-align: center;">
                       <a style="font-size: 32px;">
