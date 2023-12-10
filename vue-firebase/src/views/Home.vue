@@ -1,6 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <div class="Longing">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
@@ -33,8 +34,9 @@
       <div class="p-3 wrapper">
         <div class="row justify-content-center">
           <div class="col-6" style="text-align: center">
-            <h2>角色資訊</h2>
+            <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
+          <button type="button" :class="{ ban: (!myselfidentity || !Serchbutton || data.Manager) }" @click="ban"><i class="fas fa-exclamation-triangle"></i></button>
           <div class="col-10 bg-secondary text-white"
             style="border-top-left-radius:50px; border-top-right-radius:50px; text-align: center;">
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
@@ -48,7 +50,11 @@
             <p style="font-size:20px;">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage">
           </div>
-          <div class="col-10 bg-secondary text-white" style="text-align: center;">
+          <div v-if="Recorddata === null" class="col-10 bg-secondary text-white"
+            style=" border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
+            <a style="font-size: 20px;">此帳戶目前沒有任何紀錄</a>
+          </div>
+          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center;">
             <a style="font-size: 20px;">
               <ul class="custom-list">
                 <p style="margin-bottom:15px;">最近遊玩(抓五個)</p>
@@ -66,7 +72,7 @@
               </ul>
             </a>
           </div>
-          <div class="col-10 bg-secondary text-white" style="text-align: center;">
+          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center;">
             <a style="font-size: 20px;">
               <ul class="custom-list">
                 <p style="margin-top:15px; margin-bottom:15px;">存活時間最長(抓三個)</p>
@@ -75,16 +81,16 @@
                     item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br>
                     技能升級： FireBallChain：{{ item.SkillUpgradeRecord.FireBallChain }}／FireBallDamage：{{
                       item.SkillUpgradeRecord.FireBallDamage }}／FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
-                      }}／getBloodExplode：{{item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
-                      item.SkillUpgradeRecord.getFireBall}}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
-                      }}／getLightningBlast：{{item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
-                      item.SkillUpgradeRecord.getMagicWeapon}}
+  }}／getBloodExplode：{{ item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
+  item.SkillUpgradeRecord.getFireBall }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
+  }}／getLightningBlast：{{ item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
+  item.SkillUpgradeRecord.getMagicWeapon }}
                   </template>
                 </li>
               </ul>
             </a>
           </div>
-          <div class="col-10 bg-secondary text-white"
+          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white"
             style="border-bottom-left-radius:50px; border-bottom-right-radius:50px; text-align: center;">
             <a style="font-size: 20px;">
               <ul class="custom-list">
@@ -103,7 +109,7 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
-<style scoped>
+<style>
 .resizable-image {
   max-width: 500px;
   height: auto;
@@ -139,23 +145,30 @@
   padding: 0;
   margin: 0;
 }
+
+button.ban {
+  visibility: hidden;
+}
+
+a.ban {
+  visibility: hidden;
+}
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue } from 'firebase/database';
+import { getDatabase, ref as firebaseRef, onValue, get, set } from 'firebase/database';
 import { firebaseApp } from '@/main';
-import { mapGetters } from "vuex";
+//import { mapGetters } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
     document.title = '首頁';
     next();
-  },
+  },/*
   computed: {
     ...mapGetters(["getSharedUid"])
-  },
+  },*/
   data() {
     return {
-      dbmethod: {},
       data: {},
       Recorddata: {},
       Serchdata: {},
@@ -167,35 +180,33 @@ export default {
       },
       userId: null,
       errorMessage: null,
+      Recorddata: null,
       selectedOption: '',
       checkuserId: '',
       checkuserIdc: '',
       Serchstatus: false,
+      Serchbutton: false,
       accountexist: false,
-      isSerchRefListenerInitialized: false,
+      myselfidentity: false,
       options: [],
       RecordLength: 0,
     };
   },
   mounted() {
     const db = getDatabase(firebaseApp);
-    this.dbmethod = db;
     this.userId = this.$route.params.userId;
     this.checkuserId = this.userId;
     const SerchRef = firebaseRef(db, `Users/`);
     const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
     const RecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
+    onValue(SerchRef, (snapshot) => {
+      const Serchdata = snapshot.val();
+      this.Serchdataindex = Object.values(Serchdata);
+      this.SerchdataLength = this.Serchdataindex.length;
+      this.Serchdata = Serchdata;
+    });
     this.listenToDataRef(dataRef);
     this.listenToRecord(RecordRef);
-    if (!this.isSerchRefListenerInitialized) {
-      onValue(SerchRef, (snapshot) => {
-        const Serchdata = snapshot.val();
-        this.Serchdataindex = Object.values(Serchdata);
-        this.SerchdataLength = this.Serchdataindex.length;
-        this.Serchdata = Serchdata;
-      });
-    }
-    this.isSerchRefListenerInitialized = true;
   },
   methods: {
     listenToDataRef(dataRef) {
@@ -204,37 +215,47 @@ export default {
         this.dataindex = Object.values(data);
         this.dataLength = this.dataindex.length;
         this.data = data;
+        if (this.myselfidentity === false) {
+          if (data.Manager === true) {
+            this.myselfidentity = true;
+          }
+        }
         this.options = Object.keys(data).map((postId) => ({
           label: postId,
           value: data[postId],
-        }));
+        }));/*
         if (this.getSharedUid != this.userId) {
           this.$router.push({
             name: 'Login',
           });
-        }
+        }*/
       });
     },
     listenToRecord(RecordRef) {
       onValue(RecordRef, (snapshot) => {
         const Recorddata = snapshot.val();
+        if (Recorddata === null || Recorddata === undefined) {
+          return;
+        }
         this.Recordindex = Object.values(Recorddata);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
         this.options = Object.keys(Recorddata).map((postId) => ({
           label: postId,
           value: Recorddata[postId],
-        }));
+        }));/*
         if (this.getSharedUid != this.userId) {
           this.$router.push({
             name: 'Login',
           });
-        }
+        }*/
       });
     },
     submitSerch() {
+      const db = getDatabase(firebaseApp);
       this.checkuserIdc = this.checkuserId;
       this.checkuserId = this.newSerch.userId;
+      this.Serchbutton = true;
       for (let i = 0; i < this.SerchdataLength; i++) {
         const SerchpostKeys = Object.keys(this.Serchdata);
         const SerchpostId = SerchpostKeys[i];
@@ -255,8 +276,10 @@ export default {
         if (!this.Serchstatus) {
           this.Serchstatus = !this.Serchstatus;
         }
-        const newDataRef = firebaseRef(this.dbmethod, `Record/${this.checkuserId}`);
-        this.listenToRecord(newDataRef);
+        const newDataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+        const newDataRecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
+        this.listenToRecord(newDataRecordRef);
+        this.listenToDataRef(newDataRef);
       }
       if (this.errorMessage !== '') {
         this.$toast.error(this.errorMessage, {
@@ -269,12 +292,23 @@ export default {
       this.newSerch.userId = '';
     },
     toggleLogin() {
+    const db = getDatabase(firebaseApp);
       if (this.Serchstatus) {
         this.Serchstatus = !this.Serchstatus;
+        this.Serchbutton = false;
         this.checkuserId = this.userId;
-        const newDataRef = firebaseRef(this.dbmethod, `Record/${this.checkuserId}`);
-        this.listenToRecord(newDataRef);
+        this.Recorddata = null;
+        const newDataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+        const newDataRecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
+        this.listenToRecord(newDataRecordRef);
+        this.listenToDataRef(newDataRef);
       }
+    },
+    ban() {
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
+      console.log(officialRef1);
+      set(officialRef1, false);
     },
   },
 };
