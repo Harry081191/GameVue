@@ -208,6 +208,7 @@
                       <a style="font-size: 32px;">
                         <p>{{ item.subject }}</p>
                       </a>
+                      
                       <a style="font-size: 16px;">
                         <p>內容：{{ item.content }}</p>
                       </a>
