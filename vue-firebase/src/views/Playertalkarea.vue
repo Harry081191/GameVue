@@ -13,7 +13,6 @@
               class="custom-link font">玩家討論版</router-link>
             <a class="custom-link">
               |
-              
             </a>
             <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
               class="custom-link font">官方通知區</router-link>
