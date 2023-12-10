@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "Users": {
+      ".indexOn": ["Username"]
+    },
+    ".read":  "auth === null",
+    ".write":  "auth === null"
+  }
+}
