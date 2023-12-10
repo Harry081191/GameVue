@@ -817,7 +817,7 @@ button.mdeleted {
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
-import { firebaseApp } from '@/main';
+import { firebaseApp } from '@/main.js';
 export default {
   beforeRouteEnter(to, from, next) {
     document.title = '官方通知區';
