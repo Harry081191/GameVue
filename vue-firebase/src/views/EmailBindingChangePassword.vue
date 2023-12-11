@@ -1,10 +1,6 @@
 <template>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
   <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   <div>
     <p v-if="bindSuccess" style="color: green">綁定成功</p>
@@ -31,6 +27,7 @@
 
 <script>
 import { getDatabase, ref, update, get } from "firebase/database";
+import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
 
 export default {
   data() {
@@ -44,6 +41,8 @@ export default {
     };
   },
   async created() {
+    const auth = getAuth();
+
     const email = localStorage.getItem("userEmail");
     const name = localStorage.getItem("userName");
     const forget = localStorage.getItem("forget");

@@ -1,10 +1,6 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   <div class="ForgetPassword">
     <div class="container">
@@ -15,37 +11,19 @@
               <form @submit.prevent="handleSubmit">
                 <h1>找回密碼</h1>
                 <strong>電子信箱</strong>
-                <input
-                  v-model="User.email"
-                  type="text"
-                  class="form-control"
-                  id="forgot"
-                  name="Mail"
-                  placeholder="請輸入帳號"
-                  required
-                />
+                <input v-model="User.email" type="text" class="form-control" id="forgot" name="Mail" placeholder="請輸入帳號"
+                  required />
                 <strong class="font">帳號</strong>
-                <input
-                  v-model="User.name"
-                  type="text"
-                  class="form-control font"
-                  id="Name"
-                  name="Name"
-                  placeholder="請輸入帳號"
-                  required
-                />
+                <input v-model="User.name" type="text" class="form-control font" id="Name" name="Name" placeholder="請輸入帳號"
+                  required />
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger">
                     發送信件
                   </button>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0 font"
-                    >I recalled my password. Return to</a
-                  >
-                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0"
-                    >Login</router-link
-                  >
+                  <a class="from-control mr-2 mb-1 mb-sm-0 font">I recalled my password. Return to</a>
+                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0">Login</router-link>
                 </div>
               </form>
             </div>

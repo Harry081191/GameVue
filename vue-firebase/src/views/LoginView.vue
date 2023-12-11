@@ -1,10 +1,6 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <nav>
     <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   </nav>
@@ -17,34 +13,14 @@
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">登入</h1>
                 <strong class="font">帳號</strong>
-                <input
-                  v-model="User.name"
-                  type="text"
-                  class="form-control font"
-                  id="Name"
-                  name="Name"
-                  placeholder="請輸入帳號"
-                  required
-                />
+                <input v-model="User.name" type="text" class="form-control font" id="Name" name="Name" placeholder="請輸入帳號"
+                  required />
                 <strong class="font">密碼</strong>
-                <input
-                  v-model="User.password"
-                  type="password"
-                  class="form-control font"
-                  id="Password"
-                  name="Password"
-                  placeholder="請輸入密碼"
-                  required
-                />
+                <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
+                  placeholder="請輸入密碼" required />
                 <div class="remember">
-                  <label
-                    ><input type="checkbox" /><a class="font"
-                      >Remember me</a
-                    ></label
-                  >
-                  <router-link to="/ForgetPassword"
-                    >Forget Password?</router-link
-                  >
+                  <label><input type="checkbox" /><a class="font">Remember me</a></label>
+                  <router-link to="/ForgetPassword">Forget Password?</router-link>
                 </div>
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger">
@@ -52,24 +28,12 @@
                   </button>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0"
-                    >Don't have an account?</a
-                  >
-                  <router-link
-                    to="/CreateAccount"
-                    class="from-control mr-2 mb-1 mb-sm-0"
-                    >Register</router-link
-                  >
+                  <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
+                  <router-link to="/CreateAccount" class="from-control mr-2 mb-1 mb-sm-0">Register</router-link>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0"
-                    >Haven’t bound your email yet?</a
-                  >
-                  <router-link
-                    to="/EmailVerification"
-                    class="from-control mr-2 mb-1 mb-sm-0"
-                    >Binding</router-link
-                  >
+                  <a class="from-control mr-2 mb-1 mb-sm-0">Haven’t bound your email yet?</a>
+                  <router-link to="/EmailVerification" class="from-control mr-2 mb-1 mb-sm-0">Binding</router-link>
                 </div>
               </form>
             </div>

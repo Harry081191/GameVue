@@ -1,10 +1,6 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <nav>
     <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   </nav>
@@ -17,37 +13,19 @@
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">註冊帳號</h1>
                 <strong class="font">帳號</strong>
-                <input
-                  v-model="User.name"
-                  type="text"
-                  class="form-control font"
-                  id="Username"
-                  name="Username"
-                  placeholder="請輸入帳號"
-                  required
-                />
+                <input v-model="User.name" type="text" class="form-control font" id="Username" name="Username"
+                  placeholder="請輸入帳號" required />
                 <strong class="font">密碼</strong>
-                <input
-                  v-model="User.password"
-                  type="password"
-                  class="form-control font"
-                  id="Password"
-                  name="Password"
-                  placeholder="請輸入密碼"
-                  required
-                />
+                <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
+                  placeholder="請輸入密碼" required />
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger font">
                     註冊
                   </button>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0 font"
-                    >I have the account return to</a
-                  >
-                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0"
-                    >Login</router-link
-                  >
+                  <a class="from-control mr-2 mb-1 mb-sm-0 font">I have the account return to</a>
+                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0">Login</router-link>
                 </div>
               </form>
             </div>

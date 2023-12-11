@@ -1,10 +1,6 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <nav>
     <router-link to="/">遊戲名</router-link>
   </nav>
@@ -17,30 +13,16 @@
               <form @submit.prevent="handleSubmit">
                 <h1>找回密碼</h1>
                 <strong>電子信箱</strong>
-                <input
-                  v-model="User.mail"
-                  type="text"
-                  class="form-control"
-                  id="Mail"
-                  name="Mail"
-                  placeholder="請輸入帳號"
-                  required
-                />
+                <input v-model="User.mail" type="text" class="form-control" id="Mail" name="Mail" placeholder="請輸入帳號"
+                  required />
 
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="button" class="btn btn-outline-danger">
                     發送驗證碼
                   </button>
                 </div>
-                <input
-                  v-model="User.mail"
-                  type="text"
-                  id="Mail"
-                  name="Mail"
-                  size="10"
-                  style="margin-top: 75px"
-                  required
-                />
+                <input v-model="User.mail" type="text" id="Mail" name="Mail" size="10" style="margin-top: 75px"
+                  required />
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger">
                     驗證

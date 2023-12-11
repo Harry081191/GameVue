@@ -278,12 +278,7 @@ a.ban {
 }
 </style>
 <script>
-import {
-  getDatabase,
-  ref as firebaseRef,
-  onValue,
-  set,
-} from "firebase/database";
+import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
 import { firebaseApp } from "@/main";
 //import { mapGetters } from "vuex";
 
