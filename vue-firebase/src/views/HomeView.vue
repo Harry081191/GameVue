@@ -35,14 +35,12 @@
           <div class="col-6" style="text-align: center">
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
-          <button type="button" :class="{ ban: !myselfidentity || !Serchstatus || data.Manager }" @click="ban">
+          <button type="button" :class="{ ban: !myselfidentity || !Serchstatus || data.Manager || !data.UserAvailable }"
+            @click="ban">
             <i class="fas fa-exclamation-triangle"></i>
           </button>
-          <div class="col-10 bg-secondary text-white" style="
-              border-top-left-radius: 50px;
-              border-top-right-radius: 50px;
-              text-align: center;
-            ">
+          <div class="col-10 bg-secondary text-white"
+            style=" border-top-left-radius: 50px; border-top-right-radius: 50px; text-align: center;">
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px">
               <select v-model="selectedOption">
                 <option value="">請選擇</option>
@@ -54,11 +52,8 @@
             <p style="font-size: 20px">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage" />
           </div>
-          <div v-if="Recorddata === null" class="col-10 bg-secondary text-white" style="
-              border-bottom-left-radius: 50px;
-              border-bottom-right-radius: 50px;
-              text-align: center;
-            ">
+          <div v-if="Recorddata === null" class="col-10 bg-secondary text-white"
+            style=" border-bottom-left-radius: 50px; border-bottom-right-radius: 50px; text-align: center;">
             <a style="font-size: 20px">此帳戶目前沒有任何紀錄</a>
           </div>
           <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center">
@@ -67,24 +62,12 @@
                 <p style="margin-bottom: 15px">最近遊玩(抓五個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
-                    <a>遊玩日期{{ key }}：</a> 等級：{{
-                      item.Level
-                    }}／擊殺數：{{ item.killnumber }}／金幣：{{
-  item.money
-}}／遊玩時長：{{ item.time }}<br />
-                    技能升級： FireBallProject：{{
-                      item.SkillUpgradeRecord.FireBallProject
-                    }}／getBloodExplode：{{
-  item.SkillUpgradeRecord.getBloodExplode
-}}／getFireBall：{{
-  item.SkillUpgradeRecord.getFireBall
-}}／getFlameJet：{{
-  item.SkillUpgradeRecord.getFlameJet
-}}／getLightningBlast：{{
-  item.SkillUpgradeRecord.getLightningBlast
-}}／getMagicWeapon：{{
-  item.SkillUpgradeRecord.getMagicWeapon
-}}
+                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{
+                      item.time }}<br />技能升級： FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
+  }}／getBloodExplode：{{ item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
+  item.SkillUpgradeRecord.getFireBall }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
+  }}／getLightningBlast：{{ item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
+  item.SkillUpgradeRecord.getMagicWeapon }}
                   </template>
                 </li>
               </ul>
@@ -97,28 +80,14 @@
                   存活時間最長(抓三個)
                 </p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
-                  <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{
-                    item.Level
-                  }}／擊殺數：{{ item.killnumber }}／金幣：{{
-  item.money
-}}／遊玩時長：{{ item.time }}<br />
-                    技能升級： FireBallChain：{{
-                      item.SkillUpgradeRecord.FireBallChain
-                    }}／FireBallDamage：{{
-  item.SkillUpgradeRecord.FireBallDamage
-}}／FireBallProject：{{
-  item.SkillUpgradeRecord.FireBallProject
-}}／getBloodExplode：{{
-  item.SkillUpgradeRecord.getBloodExplode
-}}／getFireBall：{{
-  item.SkillUpgradeRecord.getFireBall
-}}／getFlameJet：{{
-  item.SkillUpgradeRecord.getFlameJet
-}}／getLightningBlast：{{
-  item.SkillUpgradeRecord.getLightningBlast
-}}／getMagicWeapon：{{
-  item.SkillUpgradeRecord.getMagicWeapon
-}}
+                  <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
+                  }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br />技能升級：
+                    FireBallChain：{{ item.SkillUpgradeRecord.FireBallChain }}／FireBallDamage：{{
+                      item.SkillUpgradeRecord.FireBallDamage }}／FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
+  }}／getBloodExplode：{{ item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
+  item.SkillUpgradeRecord.getFireBall }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
+  }}／getLightningBlast：{{ item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
+  item.SkillUpgradeRecord.getMagicWeapon }}
                   </template>
                 </li>
               </ul>
@@ -133,11 +102,8 @@
               <ul class="custom-list">
                 <p style="margin-top: 15px; margin-bottom: 15px">遊玩總計</p>
                 <li v-for="(item, key) in Recorddata" :key="key">
-                  <template v-if="key === 'TotalRecord'"><a>總紀錄：</a> 總擊殺數：{{
-                    item.totalkillnumber
-                  }}／總獲取金幣：{{ item.totalmoney }}／總遊玩時長：{{
-  item.totaltime
-}}秒
+                  <template v-if="key === 'TotalRecord'"><a>總紀錄：</a> 總擊殺數：{{ item.totalkillnumber }}／總獲取金幣：{{
+                    item.totalmoney }}／總遊玩時長：{{ item.totaltime }}秒
                   </template>
                 </li>
               </ul>
