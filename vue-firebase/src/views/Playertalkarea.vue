@@ -1,6 +1,6 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <div class="Playertalkarea">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
@@ -9,10 +9,12 @@
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
-            <router-link :to="{ name: 'Playertalkarea', params: { userId: $route.params.userId }, }"
+            <router-link :to="{ name: 'Playertalkarea', params: { userId: $route.params.userId } }"
               class="custom-link font">玩家討論版</router-link>
-            <a class="custom-link"> | </a>
-            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId }, }"
+            <a class="custom-link">
+              |
+            </a>
+            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
               class="custom-link font">官方通知區</router-link>
           </li>
         </ul>
@@ -22,30 +24,27 @@
     </nav>
   </div>
   <div class="container">
-    <div class="p-3 wrapper" style="margin-bottom: -1px">
+    <div class="p-3 wrapper" style="margin-bottom: -1px;">
       <div class="row justify-content-center">
         <div class="col-8" style="text-align: center">
-          <strong class="font" style="font-size: 36px">討論區</strong>
+          <strong class="font" style="font-size: 36px;">討論區</strong>
         </div>
         <div class="col-10">
           <div style="text-align: right">
-            <button class="font" @click="toggleForm" style="margin-bottom: 20px; padding: 15px; font-size: 24px">
-              發表文章
-            </button>
+            <button class="font" @click="toggleForm"
+              style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
           </div>
           <Transition>
             <div v-if="showForm" class="form-container">
               <form @submit.prevent="submitPost">
                 <div class="button-content">
                   <div class="button-content-right">
-                    <button class="font" type="button" @click="toggleForm()">
-                      <i class="fas fa-times"></i>
-                    </button>
+                    <button class="font" type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
                   </div>
                 </div>
                 <div>
                   <input class="font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題"
-                    required />
+                    required>
                 </div>
                 <div>
                   <textarea class="font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨"
@@ -63,129 +62,117 @@
           </Transition>
           <div v-if="showForm" class="overlay" @click="toggleForm"></div>
         </div>
-        <div class="col-10 bg-white text-dark" style="text-align: center">
+        <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container" style="border-radius: 50px">
+              <div class="post-container" style="border-radius:50px;">
                 <div class="button-content">
-                  <div class="button-content-right" style="margin-right: 15px">
+                  <div class="button-content-right" style="margin-right: 15px;">
                     <div id="menu">
                       <ul>
-                        <li>
-                          <a @click="toggleMenu(index)">MENU</a>
+                        <li> <a @click="toggleMenu(index)">MENU</a>
                           <ul v-if="menuStates[index]">
-                            <li>
-                              <button type="button" style="
-                                  margin-bottom: 2.5px;
-                                  margin-top: 2.5px;
-                                  width: 60px;
-                                  height: 25px;
-                                " :class="{ deleted: !deletePosts[index] }" @click="toggleReport()">
-                                <i class="fas fa-exclamation-triangle"></i> 舉報
-                              </button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
+                                  class="fas fa-exclamation-triangle"></i> 舉報</button>
                               <Transition>
                                 <div v-if="reportForm" class="form-container">
                                   <form @submit.prevent="submitReport(index)">
                                     <div class="button-content">
                                       <div class="button-content-right">
-                                        <button type="button" @click="toggleReport(index)">
-                                          <i class="fas fa-times"></i>
-                                        </button>
+                                        <button type="button" @click="toggleReport(index)"><i
+                                            class="fas fa-times"></i></button>
                                       </div>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="色情內容"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         色情內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="暴力或反感內容"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         暴力或反感內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="仇恨或惡意內容"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         仇恨或惡意內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="騷擾跟霸凌內容"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         騷擾跟霸凌內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="錯誤資訊"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         錯誤資訊
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="宣傳恐怖主義"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         宣傳恐怖主義
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="垃圾內容或誤導內容"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         垃圾內容或誤導內容
                                       </label>
                                     </div>
                                     <div class="remember" style="text-align: left">
-                                      <label class="remember-label" style="font-size: 18px">
+                                      <label class="remember-label" style="font-size: 18px;">
                                         <input type="radio" v-model="reportPost.selectedContent" value="法律問題"
-                                          class="remember-radio" />
+                                          class="remember-radio">
                                         <span class="radio-custom"></span>
                                         法律問題
                                       </label>
                                     </div>
-                                    <div style="text-align: right">
-                                      <button type="submit" style="width: 60px; height: 25px">
-                                        提交
-                                      </button>
+                                    <div style="text-align: right;">
+                                      <button type="submit" style="width: 60px; height: 25px;">提交</button>
                                     </div>
                                   </form>
                                 </div>
                               </Transition>
                               <div v-if="reportForm" class="overlay" @click="toggleReport(index)"></div>
                             </li>
-                            <li>
-                              <button type="button"
-                                style=" margin-bottom: 2.5px; margin-top: 2.5px; width: 60px; height: 25px; "
-                                :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)">
-                                <i class="far fa-edit"></i> 編輯
-                              </button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
+                                  class="far fa-edit"></i> 編輯</button>
                               <Transition>
                                 <div v-if="editForm" class="form-container">
                                   <form @submit.prevent="submitEdit(index)">
                                     <div class="button-content">
                                       <div class="button-content-right">
-                                        <button type="button" @click="toggleEdit(index)">
-                                          <i class="fas fa-times"></i>
-                                        </button>
+                                        <button type="button" @click="toggleEdit(index)"><i
+                                            class="fas fa-times"></i></button>
                                       </div>
                                     </div>
                                     <div>
                                       <input style="text-align: center" v-model="editPost.title" type="text"
-                                        placeholder="帖子標題" required />
+                                        placeholder="帖子標題" required>
                                     </div>
                                     <div>
                                       <textarea style="text-align: center" v-model="editPost.subject" placeholder="帖子主旨"
@@ -203,12 +190,10 @@
                               </Transition>
                               <div v-if="editForm" class="overlay" @click="toggleEdit(index)"></div>
                             </li>
-                            <li>
-                              <button type="button"
-                                style=" margin-bottom: 2.5px; margin-top: 2.5px; width: 60px; height: 25px;  "
-                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)">
-                                <i class="far fa-trash-alt"></i> 刪除
-                              </button>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                  class="far fa-trash-alt"></i> 刪除</button>
                             </li>
                           </ul>
                         </li>
@@ -216,19 +201,19 @@
                     </div>
                   </div>
                 </div>
-                <p class="font" style="font-size: 40px">{{ item.title }}</p>
+                <p class="font" style="font-size:40px;">{{ item.title }}</p>
                 <div class="container">
                   <div class="row">
-                    <div class="col-3 bg-white text-dark" style="text-align: center">
-                      <a style="font-size: 40px">
-                        <img class="resizable-image" :src="userimagelist[index]" />
+                    <div class="col-3 bg-white text-dark" style="text-align: center;">
+                      <a style="font-size: 40px;">
+                        <img class="resizable-image" :src="userimagelist[index]">
                       </a>
                     </div>
-                    <div class="col-9 bg-white text-dark" style="text-align: center">
-                      <a class="font" style="font-size: 32px">
+                    <div class="col-9 bg-white text-dark" style="text-align: center;">
+                      <a class="font" style="font-size: 32px;">
                         <p>{{ item.subject }}</p>
                       </a>
-                      <a class="font" style="font-size: 16px">
+                      <a class="font" style="font-size: 16px;">
                         <p>{{ item.content }}</p>
                       </a>
                     </div>
@@ -237,18 +222,14 @@
                 <div class="button-content">
                   <div class="button-content-right">
                     <a class="like-count font">{{ item.message.total }}</a>
-                    <button type="button" @click="toggleMessage(index)">
-                      <i class="far fa-comment"></i>
-                    </button>
+                    <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
                     <Transition>
                       <div v-if="showMessage && index === openFormIndex" class="message-container">
                         <div class="form-scroll">
                           <form @submit.prevent="submitMessage(index)">
                             <div class="button-content">
                               <div class="button-content-right">
-                                <button type="button" @click="toggleMessage()">
-                                  <i class="fas fa-times"></i>
-                                </button>
+                                <button type="button" @click="toggleMessage()"><i class="fas fa-times"></i></button>
                               </div>
                             </div>
                             <div>
@@ -256,187 +237,122 @@
                             </div>
                             <div class="button-content">
                               <div class="button-content-right">
-                                <button type="submit" style="margin-bottom: 10px">
-                                  提交回復
-                                </button>
+                                <button type="submit" style="margin-bottom: 10px">提交回復</button>
                               </div>
                             </div>
                             <ul class="custom-list">
                               <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
                                 <template v-if="messageIndex !== 'total'">
-                                  <div class="button-content"
-                                    style=" margin-bottom: 0px; font-size: 15px; text-align: left; ">
+                                  <div class="button-content" style="margin-bottom:0px; font-size:15px; text-align: left;">
                                     <div>
-                                      <img class="resizable-image-message" :src="messageimagelist[messageIndex]" /> 留言人：{{
-                                        Object.values(messageItem.messagename)[0] }}
+                                      <img class="resizable-image-message" :src="messageimagelist[messageIndex]" />
+                                      留言人：{{ Object.values(messageItem.messagename)[0] }}
                                     </div>
                                     <div class="button-content-right">
                                       <div id="messagemenu">
                                         <ul>
-                                          <li>
-                                            <a @click="mtoggleMenu(messageIndex)"><i class="fas fa-list-ul"></i></a>
+                                          <li> <a @click="mtoggleMenu(messageIndex)"><i class="fas fa-list-ul"></i></a>
                                             <ul v-if="mmenuStates[messageIndex]">
-                                              <li>
-                                                <button type="button"
-                                                  style=" margin-bottom: 2.5px; margin-top: 2.5px; width: 50px; height: 25px;"
-                                                  :class="{
-                                                    mdeleted: !mdeletePosts[messageIndex],
-                                                  }" @click="mtoggleReport()">
-                                                  <i class="fas fa-exclamation-triangle"></i>
-                                                </button>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: !mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleReport()"><i
+                                                    class="fas fa-exclamation-triangle"></i></button>
                                                 <Transition>
                                                   <div v-if="mreportForm" class="form-container">
-                                                    <form @submit.prevent="
-                                                      msubmitReport(
-                                                        index,
-                                                        messageIndex
-                                                      )
-                                                      ">
+                                                    <form @submit.prevent="msubmitReport(index, messageIndex)">
                                                       <div class="button-content">
                                                         <div class="button-content-right">
-                                                          <button type="button" @click="
-                                                            mtoggleReport()
-                                                            ">
-                                                            <i class="fas fa-times"></i>
-                                                          </button>
+                                                          <button type="button" @click="mtoggleReport()"><i
+                                                              class="fas fa-times"></i></button>
                                                         </div>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="色情內容" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="色情內容" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           色情內容
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="暴力或反感內容" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="暴力或反感內容" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           暴力或反感內容
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="仇恨或惡意內容" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="仇恨或惡意內容" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           仇恨或惡意內容
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="騷擾跟霸凌內容" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="騷擾跟霸凌內容" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           騷擾跟霸凌內容
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="錯誤資訊" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="錯誤資訊" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           錯誤資訊
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="宣傳恐怖主義" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="宣傳恐怖主義" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           宣傳恐怖主義
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="垃圾內容或誤導內容" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="垃圾內容或誤導內容" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           垃圾內容或誤導內容
                                                         </label>
                                                       </div>
                                                       <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="
-                                                            font-size: 18px;
-                                                          ">
-                                                          <input type="radio" v-model="mreportPost.selectedContent
-                                                            " value="法律問題" class="remember-radio" />
+                                                        <label class="remember-label" style="font-size: 18px;">
+                                                          <input type="radio" v-model="mreportPost.selectedContent"
+                                                            value="法律問題" class="remember-radio">
                                                           <span class="radio-custom"></span>
                                                           法律問題
                                                         </label>
                                                       </div>
-                                                      <div style="
-                                                          text-align: right;
-                                                        ">
-                                                        <button type="submit" style="
-                                                            width: 60px;
-                                                            height: 25px;
-                                                          ">
-                                                          提交
-                                                        </button>
+                                                      <div style="text-align: right;">
+                                                        <button type="submit"
+                                                          style="width: 60px; height: 25px;">提交</button>
                                                       </div>
                                                     </form>
                                                   </div>
                                                 </Transition>
-                                                <div v-if="mreportForm" class="messageoverlay" @click="
-                                                  closeWindows(messageIndex)
-                                                  "></div>
+                                                <div v-if="mreportForm" class="messageoverlay"
+                                                  @click="closeWindows(messageIndex)">
+                                                </div>
                                               </li>
-                                              <li>
-                                                <button type="button" style="
-                                                    margin-bottom: 2.5px;
-                                                    margin-top: 2.5px;
-                                                    width: 50px;
-                                                    height: 25px;
-                                                  " :class="{
-                                                    mdeleted:
-                                                      mdeletePosts[
-                                                      messageIndex
-                                                      ],
-                                                  }" @click="
-  mtoggleEdit(
-    index,
-    messageIndex
-  )
-  ">
-                                                  <i class="far fa-edit"></i>
-                                                </button>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleEdit(index, messageIndex)"><i
+                                                    class="far fa-edit"></i></button>
                                               </li>
-                                              <li>
-                                                <button type="button" style="
-                                                    margin-bottom: 2.5px;
-                                                    margin-top: 2.5px;
-                                                    width: 50px;
-                                                    height: 25px;
-                                                  " :class="{
-                                                    mdeleted:
-                                                      mdeletePosts[
-                                                      messageIndex
-                                                      ],
-                                                  }" @click="
-  mtoggleDelete(
-    index,
-    messageIndex
-  )
-  ">
-                                                  <i class="far fa-trash-alt"></i>
-                                                </button>
+                                              <li><button type="button"
+                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                  @click="mtoggleDelete(index, messageIndex)"><i
+                                                    class="far fa-trash-alt"></i></button>
                                               </li>
                                             </ul>
                                           </li>
@@ -445,56 +361,31 @@
                                     </div>
                                   </div>
                                   <div v-if="editingMessageIndex === messageIndex">
-                                    <p style="margin-bottom: 0px">
-                                      <textarea rows="2" v-model="editedMessageContent" placeholder="回復內容"
-                                        required></textarea>
+                                    <p style="margin-bottom:0px"><textarea rows="2" v-model="editedMessageContent"
+                                        placeholder="回復內容" required></textarea>
                                     </p>
-                                    <div style="margin-bottom: 10px" class="button-content">
+                                    <div style="margin-bottom:10px;" class="button-content">
                                       <div class="button-content-right">
-                                        <button @click="cancelEditedMessage()">
-                                          取消
-                                        </button>
-                                        <button @click="
-                                          saveEditedMessage(
-                                            index,
-                                            messageIndex
-                                          )
-                                          ">
-                                          保存
-                                        </button>
+                                        <button @click="cancelEditedMessage()">取消</button>
+                                        <button @click="saveEditedMessage(index, messageIndex)">保存</button>
                                       </div>
                                     </div>
                                   </div>
                                   <div v-else>
-                                    <p style="
-                                        margin-bottom: 0px;
-                                        font-size: 15px;
-                                        text-align: left;
-                                      ">
+                                    <p style="margin-bottom:0px; font-size:15px; text-align: left;">
                                       {{ messageItem.messagecontent }}
                                     </p>
-                                    <div style="margin-bottom: 30px" class="button-content">
-                                      <button type="button" style="text-align: left" :class="{
-                                        mliked: mlikedPosts[messageIndex],
-                                      }" @click="
-  mtoggleLike(index, messageIndex)
-  ">
-                                        <i class="fas fa-thumbs-up"></i>
-                                      </button>
-                                      <a class="like-count">{{
-                                        messageItem.messagelike.total
-                                      }}</a>
-                                      <button type="button" style="
-                                          text-align: left;
-                                          margin-right: 20px;
-                                        " :class="{
-                                              munliked: munlikedPosts[messageIndex],
-                                            }" @click="
-      mtoggleUnLike(index, messageIndex)
-      ">
-                                        <i class="fas fa-thumbs-down"></i>
-                                      </button>
-                                      <a style="text-align: right">時間：{{ messageItem.messagetime }}</a>
+                                    <div style="margin-bottom:30px;" class="button-content">
+                                      <button type="button" style="text-align: left;"
+                                        :class="{ mliked: mlikedPosts[messageIndex] }"
+                                        @click="mtoggleLike(index, messageIndex)"><i
+                                          class="fas fa-thumbs-up"></i></button>
+                                      <a class="like-count">{{ messageItem.messagelike.total }}</a>
+                                      <button type="button" style="text-align: left; margin-right:20px;"
+                                        :class="{ munliked: munlikedPosts[messageIndex] }"
+                                        @click="mtoggleUnLike(index, messageIndex)"><i
+                                          class="fas fa-thumbs-down"></i></button>
+                                      <a style="text-align: right;">時間：{{ messageItem.messagetime }}</a>
                                     </div>
                                   </div>
                                 </template>
@@ -505,21 +396,18 @@
                       </div>
                     </Transition>
                     <a class="like-count font">{{ item.likepeople.total }}</a>
-                    <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)">
-                      <i class="far fa-thumbs-up"></i>
-                    </button>
-                    <button style="margin-right: 15px" type="button" :class="{ unliked: unlikedPosts[index] }"
-                      @click="toggleUnLike(index)">
-                      <i class="far fa-thumbs-down"></i>
-                    </button>
+                    <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                        class="far fa-thumbs-up"></i></button>
+                    <button style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }"
+                      @click="toggleUnLike(index)"><i class="far fa-thumbs-down"></i></button>
                   </div>
                 </div>
               </div>
-              <div style="text-align: right">
-                <span class="font" style="font-size: 20px; margin-right: 20px">創建時間：{{ item.createtime }}</span>
-                <span class="font" style="font-size: 20px">創建人：{{ Object.values(item.createname)[0] }}</span>
+              <div style="text-align: right;">
+                <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
+                <span class="font" style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
               </div>
-              <p style="margin-bottom: 20px"></p>
+              <p style="margin-bottom:20px"></p>
             </li>
           </ul>
           <div v-if="showMessage" class="overlay" @click="closeWindows"></div>
@@ -623,7 +511,7 @@
 }
 
 #menu ul li a {
-  color: #fff;
+  color: #FFF;
   text-decoration: none;
   line-height: 30px;
 }
@@ -731,7 +619,7 @@
 }
 
 #messagemenu ul li a {
-  color: #fff;
+  color: #FFF;
   text-decoration: none;
   line-height: 30px;
 }
@@ -929,18 +817,11 @@ button.mdeleted {
 }
 </style>
 <script>
-import {
-  getDatabase,
-  ref as firebaseRef,
-  onValue,
-  set,
-  get,
-  remove,
-} from "firebase/database";
-import { firebaseApp } from "@/main";
+import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
+import { firebaseApp } from '@/main';
 export default {
   beforeRouteEnter(to, from, next) {
-    document.title = "遊戲討論區";
+    document.title = '遊戲討論區';
     next();
   },
   data() {
@@ -961,32 +842,32 @@ export default {
       data: {},
       message: {},
       newPost: {
-        title: "",
-        subject: "",
-        content: "",
+        title: '',
+        subject: '',
+        content: ''
       },
       editPost: {
-        title: "",
-        subject: "",
-        content: "",
+        title: '',
+        subject: '',
+        content: ''
       },
       reportPost: {
-        selectedContent: "",
+        selectedContent: ''
       },
       mreportPost: {
-        selectedContent: "",
+        selectedContent: ''
       },
       newMessage: {
-        content: "",
+        content: ''
       },
       userId: null,
-      username: "",
-      userimage: "",
-      messageimage: "",
+      username: '',
+      userimage: '',
+      messageimage: '',
       showForm: false,
       editForm: false,
       editingMessageIndex: -1,
-      editedMessageContent: "",
+      editedMessageContent: '',
       reportForm: false,
       mreportForm: false,
       showMessage: false,
@@ -996,7 +877,7 @@ export default {
   mounted() {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
-    const dataRef = firebaseRef(db, "Playerforum/");
+    const dataRef = firebaseRef(db, 'Playerforum/');
     this.userId = this.$route.params.userId;
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
@@ -1015,12 +896,10 @@ export default {
           const talkimage = firebaseRef(db, `Playerforum/${postId}/createname`);
           get(talkimage).then((snapshot) => {
             this.userimage = Object.keys(snapshot.val());
-            get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then(
-              (snapshot) => {
-                this.userimage = snapshot.val();
-                this.userimagelist[i] = this.userimage;
-              }
-            );
+            get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
+              this.userimage = snapshot.val();
+              this.userimagelist[i] = this.userimage;
+            });
           });
           this.postData.push({
             post: post, // 儲存論壇帖子資料
@@ -1038,43 +917,22 @@ export default {
 
             for (let j = 0; j < this.messageLength; j++) {
               const mpostId = messageKeys[j];
-              if (mpostId === "total") continue;
+              if (mpostId === 'total') continue;
               const mpost = message[mpostId];
               if (!mpost) {
                 continue;
               }
 
-              const mlikePeopleCount =
-                Object.keys(mpost.messagelike || {}).length - 1;
-              const munlikePeopleCount =
-                Object.keys(mpost.messagedownvote || {}).length - 1;
-              const mreportPeopleCount =
-                Object.keys(mpost.messagereport || {}).length - 1;
+              const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
+              const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+              const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
 
-              const officialRef1 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagelike`
-              );
-              const officialRef2 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagelike/total`
-              );
-              const officialRef3 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagedownvote`
-              );
-              const officialRef4 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagedownvote/total`
-              );
-              const officialRef5 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagename`
-              );
-              const officialRef6 = firebaseRef(
-                db,
-                `Playerforum/${postId}/message/${mpostId}/messagereport/total`
-              );
+              const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagelike`);
+              const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagelike/total`);
+              const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagedownvote`);
+              const officialRef4 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagedownvote/total`);
+              const officialRef5 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagename`);
+              const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/${mpostId}/messagereport/total`);
 
               get(officialRef1).then((snapshot) => {
                 const messagelike = snapshot.val();
@@ -1096,9 +954,7 @@ export default {
               });
               get(officialRef5).then((snapshot) => {
                 this.messageimage = Object.keys(snapshot.val());
-                get(
-                  firebaseRef(db, `Users/${this.messageimage}/UserImage`)
-                ).then((snapshot) => {
+                get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
                   this.messageimage = snapshot.val();
                   this.messageimagelist[mpostId] = this.messageimage;
                 });
@@ -1117,40 +973,18 @@ export default {
             }
           }
 
-          const likePeopleCount = Object.keys(post.likepeople || {}).length - 1;
-          const unlikePeopleCount =
-            Object.keys(post.downvotepeople || {}).length - 1;
-          const messageCount = Object.keys(post.message || {}).length - 1;
-          const reportCount = Object.keys(post.reportpeople || {}).length - 1;
+          const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+          const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+          const messageCount = (Object.keys(post.message || {}).length) - 1;
+          const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
 
-          const officialRef1 = firebaseRef(
-            db,
-            `Playerforum/${postId}/likepeople`
-          );
-          const officialRef2 = firebaseRef(
-            db,
-            `Playerforum/${postId}/likepeople/total`
-          );
-          const officialRef3 = firebaseRef(
-            db,
-            `Playerforum/${postId}/downvotepeople`
-          );
-          const officialRef4 = firebaseRef(
-            db,
-            `Playerforum/${postId}/downvotepeople/total`
-          );
-          const officialRef5 = firebaseRef(
-            db,
-            `Playerforum/${postId}/createname`
-          );
-          const officialRef6 = firebaseRef(
-            db,
-            `Playerforum/${postId}/message/total`
-          );
-          const officialRef7 = firebaseRef(
-            db,
-            `Playerforum/${postId}/reportpeople/total`
-          );
+          const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
+          const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople/total`);
+          const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
+          const officialRef4 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/total`);
+          const officialRef5 = firebaseRef(db, `Playerforum/${postId}/createname`);
+          const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/total`);
+          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
 
           get(officialRef1).then((snapshot) => {
             const likePeople = snapshot.val();
@@ -1207,10 +1041,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/likepeople/${this.userId}`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
         remove(officialRef1);
@@ -1226,10 +1057,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/downvotepeople/${this.userId}`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/${this.userId}`);
       if (this.unlikedPosts[index]) {
         this.unlikedPosts[index] = false;
         remove(officialRef1);
@@ -1245,7 +1073,7 @@ export default {
       this.menuStates[index] = !this.menuStates[index];
     },
     toggleReport(index) {
-      this.reportPost.selectedContent = "";
+      this.reportPost.selectedContent = '';
       this.reportForm = !this.reportForm;
       setTimeout(() => {
         this.menuStates[index] = !this.menuStates[index];
@@ -1265,14 +1093,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/reportpeople/${this.userId}/createtime`
-      );
-      const officialRef2 = firebaseRef(
-        db,
-        `Playerforum/${postId}/reportpeople/${this.userId}/resaon`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/reportpeople/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/reportpeople/${this.userId}/resaon`);
 
       set(officialRef1, currentDateTime);
       set(officialRef2, this.reportPost.selectedContent);
@@ -1295,21 +1117,21 @@ export default {
         if (snapshot.exists()) {
           this.editPost.title = snapshot.val();
         } else {
-          this.editPost.title = "";
+          this.editPost.title = '';
         }
       });
       get(officialRef2).then((snapshot) => {
         if (snapshot.exists()) {
           this.editPost.subject = snapshot.val();
         } else {
-          this.editPost.subject = "";
+          this.editPost.subject = '';
         }
       });
       get(officialRef3).then((snapshot) => {
         if (snapshot.exists()) {
           this.editPost.content = snapshot.val();
         } else {
-          this.editPost.content = "";
+          this.editPost.content = '';
         }
       });
 
@@ -1354,10 +1176,7 @@ export default {
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Playerforum/${postId}`);
       const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
-      const officialRef3 = firebaseRef(
-        db,
-        `Playerforum/${postId}/downvotepeople`
-      );
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
       remove(officialRef1);
       remove(officialRef2);
       remove(officialRef3);
@@ -1365,18 +1184,15 @@ export default {
     toggleForm() {
       this.showForm = !this.showForm;
 
-      this.newPost.title = "";
-      this.newPost.subject = "";
-      this.newPost.content = "";
+      this.newPost.title = '';
+      this.newPost.subject = '';
+      this.newPost.content = '';
     },
     mtoggleLike(index, messageIndex) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagelike/${this.userId}`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
       if (this.mlikedPosts[messageIndex]) {
         this.mlikedPosts[messageIndex] = false;
         remove(officialRef1);
@@ -1392,10 +1208,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagedownvote/${this.userId}`);
       if (this.munlikedPosts[messageIndex]) {
         this.munlikedPosts[messageIndex] = false;
         remove(officialRef1);
@@ -1412,7 +1225,7 @@ export default {
       this.mmenuStates[messageIndex] = !this.mmenuStates[messageIndex];
     },
     mtoggleReport() {
-      this.mreportPost.selectedContent = "";
+      this.mreportPost.selectedContent = '';
       this.mreportForm = !this.mreportForm;
       const messageIndex = this.currentMessageIndex;
       if (!this.mreportForm) {
@@ -1435,14 +1248,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/createtime`
-      );
-      const officialRef2 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/resaon`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/createtime`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagereport/${this.userId}/resaon`);
 
       set(officialRef1, currentDateTime);
       set(officialRef2, this.mreportPost.selectedContent);
@@ -1459,16 +1266,13 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
 
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagecontent`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagecontent`);
 
       get(officialRef1).then((snapshot) => {
         if (snapshot.exists()) {
           this.editedMessageContent = snapshot.val();
         } else {
-          this.editedMessageContent = "";
+          this.editedMessageContent = '';
         }
       });
 
@@ -1492,14 +1296,8 @@ export default {
 
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagecontent`
-      );
-      const officialRef2 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagetime`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagecontent`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagetime`);
 
       set(officialRef1, this.editedMessageContent);
       set(officialRef2, currentDateTime);
@@ -1510,18 +1308,9 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}`
-      );
-      const officialRef2 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagelike`
-      );
-      const officialRef3 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${messageIndex}/messagedownvote`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagelike`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${messageIndex}/messagedownvote`);
       remove(officialRef1);
       remove(officialRef2);
       remove(officialRef3);
@@ -1545,30 +1334,12 @@ export default {
       const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
       const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-      const officialRef1 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`
-      );
-      const officialRef2 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagecontent`
-      );
-      const officialRef3 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagetime`
-      );
-      const officialRef4 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagelike/total`
-      );
-      const officialRef5 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagedownvote/total`
-      );
-      const officialRef6 = firebaseRef(
-        db,
-        `Playerforum/${postId}/message/${currentDateTimeID}/messagereport/total`
-      );
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagecontent`);
+      const officialRef3 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagetime`);
+      const officialRef4 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagelike/total`);
+      const officialRef5 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
+      const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/${currentDateTimeID}/messagereport/total`);
 
       set(officialRef1, this.username);
       set(officialRef2, this.newMessage.content);
@@ -1577,7 +1348,7 @@ export default {
       set(officialRef5, 0);
       set(officialRef6, 0);
 
-      this.newMessage.content = "";
+      this.newMessage.content = '';
     },
     submitPost() {
       const timestamp = Date.now();
@@ -1597,30 +1368,12 @@ export default {
       const officialRef1 = firebaseRef(db, `Playerforum/${uniqueCode}/title`);
       const officialRef2 = firebaseRef(db, `Playerforum/${uniqueCode}/subject`);
       const officialRef3 = firebaseRef(db, `Playerforum/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/likepeople/total`
-      );
-      const officialRef5 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/downvotepeople/total`
-      );
-      const officialRef6 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/reportpeople/total`
-      );
-      const officialRef7 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/message/total`
-      );
-      const officialRef8 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/createtime`
-      );
-      const officialRef9 = firebaseRef(
-        db,
-        `Playerforum/${uniqueCode}/createname/${this.userId}`
-      );
+      const officialRef4 = firebaseRef(db, `Playerforum/${uniqueCode}/likepeople/total`);
+      const officialRef5 = firebaseRef(db, `Playerforum/${uniqueCode}/downvotepeople/total`);
+      const officialRef6 = firebaseRef(db, `Playerforum/${uniqueCode}/reportpeople/total`);
+      const officialRef7 = firebaseRef(db, `Playerforum/${uniqueCode}/message/total`);
+      const officialRef8 = firebaseRef(db, `Playerforum/${uniqueCode}/createtime`);
+      const officialRef9 = firebaseRef(db, `Playerforum/${uniqueCode}/createname/${this.userId}`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
@@ -1633,7 +1386,7 @@ export default {
       set(officialRef9, this.username);
 
       this.showForm = !this.showForm;
-    },
+    }
   },
-};
+}
 </script>
