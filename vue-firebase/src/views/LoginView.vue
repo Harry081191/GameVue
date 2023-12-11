@@ -1,6 +1,4 @@
 <template>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <nav>
     <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   </nav>
@@ -100,8 +98,7 @@ export default {
 
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
-        const userImage =
-          "https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac.png?alt=media&token=b8785e2a-0017-4160-b015-4c6799b2adb2";
+        const userImage = "https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac.png?alt=media&token=b8785e2a-0017-4160-b015-4c6799b2adb2";
         const userAvailable = true;
         const matchedUser = Object.entries(users).find(
           ([key, user]) => user.name === name

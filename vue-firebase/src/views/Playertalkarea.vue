@@ -1,7 +1,4 @@
 <template>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <div class="Playertalkarea">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
@@ -243,7 +240,8 @@
                             <ul class="custom-list">
                               <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
                                 <template v-if="messageIndex !== 'total'">
-                                  <div class="button-content" style="margin-bottom:0px; font-size:15px; text-align: left;">
+                                  <div class="button-content"
+                                    style="margin-bottom:0px; font-size:15px; text-align: left;">
                                     <div>
                                       <img class="resizable-image-message" :src="messageimagelist[messageIndex]" />
                                       留言人：{{ Object.values(messageItem.messagename)[0] }}
