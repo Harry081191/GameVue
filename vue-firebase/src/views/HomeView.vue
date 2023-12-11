@@ -35,9 +35,11 @@
           <div class="col-6" style="text-align: center">
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
-          <button type="button" :class="{ ban: !myselfidentity || !Serchstatus || data.Manager || !data.UserAvailable }"
-            @click="ban">
+          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
             <i class="fas fa-exclamation-triangle"></i>
+          </button>
+          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && !data.UserAvailable" @click="unban">
+            <i class="far fa-edit"></i>
           </button>
           <div class="col-10 bg-secondary text-white"
             style=" border-top-left-radius: 50px; border-top-right-radius: 50px; text-align: center;">
@@ -93,11 +95,8 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="
-              border-bottom-left-radius: 50px;
-              border-bottom-right-radius: 50px;
-              text-align: center;
-            ">
+          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white"
+            style=" border-bottom-left-radius: 50px;border-bottom-right-radius: 50px;text-align: center;">
             <a style="font-size: 20px">
               <ul class="custom-list">
                 <p style="margin-top: 15px; margin-bottom: 15px">遊玩總計</p>
@@ -317,14 +316,14 @@ export default {
       );
       set(officialRef1, false);
     },
+    unban() {
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(
+        db,
+        `Users/${this.checkuserId}/UserAvailable`
+      );
+      set(officialRef1, true);
+    }
   },
-  unban() {
-    const db = getDatabase(firebaseApp);
-    const officialRef1 = firebaseRef(
-      db,
-      `Users/${this.checkuserId}/UserAvailable`
-    );
-    set(officialRef1, true);
-  }
 };
 </script>
