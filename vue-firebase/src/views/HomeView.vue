@@ -315,6 +315,7 @@ export default {
         `Users/${this.checkuserId}/UserAvailable`
       );
       set(officialRef1, false);
+      this.toggleLogin();
     },
     unban() {
       const db = getDatabase(firebaseApp);
@@ -323,6 +324,7 @@ export default {
         `Users/${this.checkuserId}/UserAvailable`
       );
       set(officialRef1, true);
+      this.toggleLogin();
     }
   },
 };
