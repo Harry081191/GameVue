@@ -1,10 +1,14 @@
 <template>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
   <nav>
-    <router-link to="/" style="font-size:50px;">MageSurvivor</router-link>
+    <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
   </nav>
-  <div class="Home">
+  <div class="CreateAccount">
     <div class="container">
       <div class="p-5 wrapper">
         <div class="row justify-content-center">
@@ -13,19 +17,37 @@
               <form @submit.prevent="handleSubmit">
                 <h1 class="font">註冊帳號</h1>
                 <strong class="font">帳號</strong>
-                <input v-model="User.name" type="text" class="form-control font" id="Username" name="Username"
-                  placeholder="請輸入帳號" required>
+                <input
+                  v-model="User.name"
+                  type="text"
+                  class="form-control font"
+                  id="Username"
+                  name="Username"
+                  placeholder="請輸入帳號"
+                  required
+                />
                 <strong class="font">密碼</strong>
-                <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
-                  placeholder="請輸入密碼" required>
-                <div style="margin-top: 10px; margin-bottom: 10px;">
+                <input
+                  v-model="User.password"
+                  type="password"
+                  class="form-control font"
+                  id="Password"
+                  name="Password"
+                  placeholder="請輸入密碼"
+                  required
+                />
+                <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger font">
                     註冊
                   </button>
                 </div>
                 <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0 font">I have the account return to</a>
-                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0">Login</router-link>
+                  <a class="from-control mr-2 mb-1 mb-sm-0 font"
+                    >I have the account return to</a
+                  >
+                  <router-link to="/" class="from-control mr-2 mb-1 mb-sm-0"
+                    >Login</router-link
+                  >
                 </div>
               </form>
             </div>
@@ -44,22 +66,15 @@
 </style>
 
 <script>
-import {
-  getDatabase,
-  ref as firebaseRef,
-  onValue,
-  set,
-  child,
-  get,
-} from 'firebase/database';
-import { firebaseApp } from '@/main';
+import { getDatabase, ref as firebaseRef, set, get } from "firebase/database";
+import { firebaseApp } from "@/main";
 
 export default {
   data() {
     return {
       User: {
-        name: '',
-        password: ''
+        name: "",
+        password: "",
       },
     };
   },
@@ -78,12 +93,12 @@ export default {
         const userSnapshot = await get(userRef);
 
         if (userSnapshot.exists()) {
-          this.errorMessage = '用戶已存在，請使用其他用戶名稱。';
+          this.errorMessage = "用戶已存在，請使用其他用戶名稱。";
           return;
         }
 
         if (this.isInvalidPassword) {
-          this.errorMessage = '密碼不能小於六個字。';
+          this.errorMessage = "密碼不能小於六個字。";
           return;
         }
 
@@ -93,12 +108,12 @@ export default {
           password: password,
         });
 
-        this.$router.push({ name: 'Login' });
+        this.$router.push({ name: "LoginView" });
 
-        console.log('User registered successfully!');
+        console.log("User registered successfully!");
       } catch (error) {
         this.errorMessage = error.message;
-        console.error('Error registering user:', error);
+        console.error("Error registering user:", error);
       }
     },
   },
