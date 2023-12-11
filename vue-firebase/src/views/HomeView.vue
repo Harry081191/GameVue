@@ -435,5 +435,13 @@ export default {
       set(officialRef1, false);
     },
   },
+  unban() {
+    const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(
+        db,
+        `Users/${this.checkuserId}/UserAvailable`
+      );
+      set(officialRef1, true);
+  }
 };
 </script>
