@@ -189,12 +189,12 @@
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] && !UserManager }" @click="toggleDelete(index)"><i
+                                :class="{ deleted: !UserManager }" @click="toggleBan(index)"><i
                                   class="fas fa-exclamation-triangle"></i> 封鎖</button>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] && !UserManager }" @click="toggleDelete(index)"><i
+                                :class="{ deleted: !UserManager }" @click="toggleunBan(index)"><i
                                   class="far fa-trash-alt"></i> 解封</button>
                             </li>
                             <li><button type="button"
@@ -1199,6 +1199,20 @@ export default {
       setTimeout(() => {
         this.menuStates[index] = !this.menuStates[index];
       }, 500);
+    },
+    toggleBan(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/forumavailable`);
+      set(officialRef1, false);
+    },
+    toggleunBan(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/forumavailable`);
+      set(officialRef1, true);
     },
     toggleDelete(index) {
       const postKeys = Object.keys(this.data);
