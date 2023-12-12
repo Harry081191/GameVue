@@ -62,7 +62,7 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container" style="border-radius:50px;">
+              <div v-if="item.forumavailable" class="post-container" style="border-radius:50px;">
                 <div class="button-content">
                   <div class="button-content-right" style="margin-right: 15px;">
                     <div id="menu">
@@ -411,7 +411,7 @@
                   </div>
                 </div>
               </div>
-              <div style="text-align: right;">
+              <div v-if="item.forumavailable" style="text-align: right;">
                 <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
                 <span class="font" style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
               </div>
@@ -872,6 +872,7 @@ export default {
       userId: null,
       username: '',
       userimage: '',
+      available: '',
       messageimage: '',
       showForm: false,
       editForm: false,
@@ -891,7 +892,7 @@ export default {
     this.userId = this.$route.params.userId;
     get(firebaseRef(db, `Users/${this.userId}/Manager`)).then((snapshot) => {
       this.UserManager = snapshot.val();
-      if(this.UserManager === null) {
+      if (this.UserManager === null) {
         this.UserManager = false;
       }
     })
@@ -904,12 +905,12 @@ export default {
         this.dataindex = Object.values(data); // Convert object to array
         this.dataLength = this.dataindex.length; // Store the length
         this.data = data;
-
         for (let i = 0; i < this.dataLength; i++) {
           const post = this.dataindex[i];
           const postId = Object.keys(this.data)[i];
           const MessageeRef = firebaseRef(db, `Playerforum/${postId}/message`);
           const talkimage = firebaseRef(db, `Playerforum/${postId}/createname`);
+          console.log(this.dataindex[i].forumavailable);
           get(talkimage).then((snapshot) => {
             this.userimage = Object.keys(snapshot.val());
             get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
@@ -1035,11 +1036,11 @@ export default {
 
           get(officialRef7).then((snapshot) => {
             const available = snapshot.val();
-            const userNames = Object.values(available);//要改
-            if (available && this.username === userNames[0]) {//要改
-              this.availablePosts[i] = false;
-            } else {
+            const availablecheck = Object.values(available);
+            if (available && availablecheck) {
               this.availablePosts[i] = true;
+            } else {
+              this.availablePosts[i] = false;
             }
           });
 
