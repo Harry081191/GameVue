@@ -837,6 +837,7 @@ export default {
       likedPosts: {},
       unlikedPosts: {},
       deletePosts: {},
+      availablePosts: {},
       mlikedPosts: {},
       munlikedPosts: {},
       mdeletePosts: {},
@@ -999,12 +1000,13 @@ export default {
           const officialRef4 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/total`);
           const officialRef5 = firebaseRef(db, `Playerforum/${postId}/createname`);
           const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/total`);
-          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
+          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/forumavailable`);
+          const officialRef8 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
 
           get(officialRef1).then((snapshot) => {
-            const likePeople = snapshot.val();
-            const userNames = Object.values(likePeople);
-            if (likePeople && this.username === userNames[0]) {
+            const upvotePeople = snapshot.val();
+            const userNames = Object.values(upvotePeople);
+            if (upvotePeople && this.username === userNames[0]) {
               this.likedPosts[i] = true;
             } else {
               this.likedPosts[i] = false;
@@ -1031,10 +1033,20 @@ export default {
             }
           });
 
+          get(officialRef7).then((snapshot) => {
+            const available = snapshot.val();
+            const userNames = Object.values(available);
+            if (available && this.username === userNames[0]) {
+              this.availablePosts[i] = false;
+            } else {
+              this.availablePosts[i] = true;
+            }
+          });
+
           set(officialRef2, likePeopleCount);
           set(officialRef4, unlikePeopleCount);
           set(officialRef6, messageCount);
-          set(officialRef7, reportCount);
+          set(officialRef8, reportCount);
         }
       });
     });
@@ -1389,6 +1401,7 @@ export default {
       const officialRef7 = firebaseRef(db, `Playerforum/${uniqueCode}/message/total`);
       const officialRef8 = firebaseRef(db, `Playerforum/${uniqueCode}/createtime`);
       const officialRef9 = firebaseRef(db, `Playerforum/${uniqueCode}/createname/${this.userId}`);
+      const officialRef10 = firebaseRef(db, `Playerforum/${uniqueCode}/forumavailable`);
 
       set(officialRef1, this.newPost.title);
       set(officialRef2, this.newPost.subject);
@@ -1399,6 +1412,7 @@ export default {
       set(officialRef7, 0);
       set(officialRef8, currentDateTime);
       set(officialRef9, this.username);
+      set(officialRef10, true);
 
       this.showForm = !this.showForm;
     }
