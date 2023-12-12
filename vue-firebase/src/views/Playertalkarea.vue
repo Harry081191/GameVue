@@ -411,7 +411,7 @@
                   </div>
                 </div>
               </div>
-              <div v-if="item.forumavailable" style="text-align: right;">
+              <div v-if="item.forumavailable || UserManager" style="text-align: right;">
                 <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
                 <span class="font" style="font-size: 20px;">創建人：{{ Object.values(item.createname)[0] }}</span>
               </div>
