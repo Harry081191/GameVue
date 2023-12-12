@@ -68,7 +68,7 @@
                     <div id="menu">
                       <ul>
                         <li> <a @click="toggleMenu(index)">MENU</a>
-                          <ul v-if="menuStates[index]">
+                          <ul v-if="menuStates[index] && !UserManager">
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
@@ -870,6 +870,7 @@ export default {
       mreportForm: false,
       showMessage: false,
       openFormIndex: null,
+      UserManager: false,
     };
   },
   mounted() {
@@ -877,6 +878,12 @@ export default {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Playerforum/');
     this.userId = this.$route.params.userId;
+    get(firebaseRef(db, `Users/${this.userId}/Manager`)).then((snapshot) => {
+      this.UserManager = snapshot.val();
+      if(this.UserManager === null) {
+        this.UserManager = false;
+      }
+    })
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
 
