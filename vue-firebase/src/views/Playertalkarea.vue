@@ -68,7 +68,7 @@
                     <div id="menu">
                       <ul>
                         <li> <a @click="toggleMenu(index)">MENU</a>
-                          <ul v-if="menuStates[index] && !UserManager">
+                          <ul v-if="menuStates[index]">
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
@@ -186,6 +186,16 @@
                                 </div>
                               </Transition>
                               <div v-if="editForm" class="overlay" @click="toggleEdit(index)"></div>
+                            </li>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                  class="fas fa-exclamation-triangle"></i> 封鎖</button>
+                            </li>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                  class="far fa-trash-alt"></i> 解封</button>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
@@ -433,7 +443,7 @@
 
 #menu {
   width: 150px;
-  height: 30px;
+  height: 100px;
 }
 
 #menu ul {
