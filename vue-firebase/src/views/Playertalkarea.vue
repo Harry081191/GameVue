@@ -1035,8 +1035,8 @@ export default {
 
           get(officialRef7).then((snapshot) => {
             const available = snapshot.val();
-            const userNames = Object.values(available);
-            if (available && this.username === userNames[0]) {
+            const userNames = Object.values(available);//要改
+            if (available && this.username === userNames[0]) {//要改
               this.availablePosts[i] = false;
             } else {
               this.availablePosts[i] = true;
