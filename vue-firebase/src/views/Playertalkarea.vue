@@ -393,7 +393,7 @@
                         </div>
                       </div>
                     </Transition>
-                    <a class="like-count font">{{ item.likepeople.total }}</a>
+                    <a class="like-count font">{{ item.upvotepeople.total }}</a>
                     <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                         class="far fa-thumbs-up"></i></button>
                     <button style="margin-right: 15px;" type="button" :class="{ unliked: unlikedPosts[index] }"
@@ -971,13 +971,13 @@ export default {
             }
           }
 
-          const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+          const likePeopleCount = (Object.keys(post.upvotepeople || {}).length) - 1;
           const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
           const messageCount = (Object.keys(post.message || {}).length) - 1;
           const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
 
-          const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
-          const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople/total`);
+          const officialRef1 = firebaseRef(db, `Playerforum/${postId}/upvotepeople`);
+          const officialRef2 = firebaseRef(db, `Playerforum/${postId}/upvotepeople/total`);
           const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
           const officialRef4 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/total`);
           const officialRef5 = firebaseRef(db, `Playerforum/${postId}/createname`);
@@ -1039,7 +1039,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/likepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Playerforum/${postId}/upvotepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
         remove(officialRef1);
@@ -1173,7 +1173,7 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Playerforum/${postId}`);
-      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/likepeople`);
+      const officialRef2 = firebaseRef(db, `Playerforum/${postId}/upvotepeople`);
       const officialRef3 = firebaseRef(db, `Playerforum/${postId}/downvotepeople`);
       remove(officialRef1);
       remove(officialRef2);
@@ -1366,7 +1366,7 @@ export default {
       const officialRef1 = firebaseRef(db, `Playerforum/${uniqueCode}/title`);
       const officialRef2 = firebaseRef(db, `Playerforum/${uniqueCode}/subject`);
       const officialRef3 = firebaseRef(db, `Playerforum/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(db, `Playerforum/${uniqueCode}/likepeople/total`);
+      const officialRef4 = firebaseRef(db, `Playerforum/${uniqueCode}/upvotepeople/total`);
       const officialRef5 = firebaseRef(db, `Playerforum/${uniqueCode}/downvotepeople/total`);
       const officialRef6 = firebaseRef(db, `Playerforum/${uniqueCode}/reportpeople/total`);
       const officialRef7 = firebaseRef(db, `Playerforum/${uniqueCode}/message/total`);

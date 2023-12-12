@@ -28,7 +28,8 @@
         </div>
         <div class="col-10">
           <div style="text-align: right">
-            <button class="table font" @click="toggleForm" style="margin-bottom: 10px">發表文章</button>
+            <button class="table font" @click="toggleForm"
+              style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
           </div>
           <Transition>
             <div v-if="showForm" class="form-container">
@@ -394,7 +395,7 @@
                         </div>
                       </div>
                     </Transition>
-                    <a class="like-count font">{{ item.likepeople.total }}</a>
+                    <a class="like-count font">{{ item.upvotepeople.total }}</a>
                     <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
                         class="far fa-thumbs-up"></i></button>
                     <button class="font" style="margin-right: 15px;" type="button"
@@ -964,13 +965,13 @@ export default {
           }
         }
 
-        const likePeopleCount = (Object.keys(post.likepeople || {}).length) - 1;
+        const likePeopleCount = (Object.keys(post.upvotepeople || {}).length) - 1;
         const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
         const messageCount = (Object.keys(post.message || {}).length) - 1;
         const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
 
-        const officialRef1 = firebaseRef(db, `Official/${postId}/likepeople`);
-        const officialRef2 = firebaseRef(db, `Official/${postId}/likepeople/total`);
+        const officialRef1 = firebaseRef(db, `Official/${postId}/upvotepeople`);
+        const officialRef2 = firebaseRef(db, `Official/${postId}/upvotepeople/total`);
         const officialRef3 = firebaseRef(db, `Official/${postId}/downvotepeople`);
         const officialRef4 = firebaseRef(db, `Official/${postId}/downvotepeople/total`);
         const officialRef5 = firebaseRef(db, `Official/${postId}/createname`);
@@ -1031,7 +1032,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Official/${postId}/likepeople/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Official/${postId}/upvotepeople/${this.userId}`);
       if (this.likedPosts[index]) {
         this.likedPosts[index] = false;
         remove(officialRef1);
@@ -1159,7 +1160,7 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Official/${postId}`);
-      const officialRef2 = firebaseRef(db, `Official/${postId}/likepeople`);
+      const officialRef2 = firebaseRef(db, `Official/${postId}/upvotepeople`);
       const officialRef3 = firebaseRef(db, `Official/${postId}/downvotepeople`);
       remove(officialRef1);
       remove(officialRef2);
@@ -1348,7 +1349,7 @@ export default {
       const officialRef1 = firebaseRef(db, `Official/${uniqueCode}/title`);
       const officialRef2 = firebaseRef(db, `Official/${uniqueCode}/subject`);
       const officialRef3 = firebaseRef(db, `Official/${uniqueCode}/content`);
-      const officialRef4 = firebaseRef(db, `Official/${uniqueCode}/likepeople/total`);
+      const officialRef4 = firebaseRef(db, `Official/${uniqueCode}/upvotepeople/total`);
       const officialRef5 = firebaseRef(db, `Official/${uniqueCode}/downvotepeople/total`);
       const officialRef6 = firebaseRef(db, `Official/${uniqueCode}/reportpeople/total`);
       const officialRef7 = firebaseRef(db, `Official/${uniqueCode}/message/total`);

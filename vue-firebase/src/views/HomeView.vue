@@ -238,6 +238,7 @@ export default {
       onValue(RecordRef, (snapshot) => {
         const Recorddata = snapshot.val();
         if (Recorddata === null || Recorddata === undefined) {
+          this.Recorddata = Recorddata;
           return;
         }
         this.Recordindex = Object.values(Recorddata);
