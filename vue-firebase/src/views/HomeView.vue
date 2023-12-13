@@ -229,9 +229,11 @@ export default {
     return {
       data: {},
       Recorddata: {},
+      Recorddatat: {},
       Serchdata: {},
       dataindex: [],
       Recordindex: [],
+      Recordindext: [],
       Serchdataindex: [],
       options: [],
       newSerch: {
@@ -248,6 +250,7 @@ export default {
       myselfidentity: false,
       showDetail: false,
       RecordLength: 0,
+      RecordLengtht: 0,
     };
   },
   mounted() {
@@ -264,6 +267,7 @@ export default {
       this.Serchdata = Serchdata;
       this.listenToDataRef(dataRef);
       this.listenToRecord(RecordRef);
+      this.listenToRecordt(RecordRef);
     });
   },
   methods: {
@@ -297,13 +301,25 @@ export default {
           return;
         }
         this.Recordindex = Object.values(Recorddata);
-        console.log(this.Recordindex);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
-        this.options = Object.keys(Recorddata).map((postId) => ({
-          label: postId,
-          value: Recorddata[postId],
-        }));
+      });
+    },
+    listenToRecordt(RecordRef) {
+      onValue(RecordRef, (snapshot) => {
+        const Recorddatat = snapshot.val();
+        if (Recorddatat === null || Recorddatat === undefined) {
+          this.Recorddatat = Recorddatat;
+          return;
+        }
+        this.Recordindext = Object.values(Recorddatat);
+        this.RecordLengtht = this.Recordindext.length;
+        const RecordKeys = Object.keys(Recorddatat);
+        for (let j = 0; j < this.RecordLengtht; j++) {
+          const RecordId = RecordKeys[j];
+          if (RecordId === 'TotalRecord') continue;
+        }
+        this.Recorddatat = Recorddatat;
       });
     },
     submitSerch() {
