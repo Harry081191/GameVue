@@ -394,7 +394,7 @@
                                       <button type="button" style="text-align: left;"
                                         :class="{ munliked: munlikedPosts[messageIndex] }"
                                         @click="mtoggleUnLike(index, messageIndex)"><i
-                                          class="fas fa-thumbs-down font"></i></button>
+                                          class="fas fa-thumbs-down"></i></button>
                                       <a style="text-align: right;">時間：{{ messageItem.messagetime }}</a>
                                     </div>
                                   </div>
