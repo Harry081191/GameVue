@@ -69,6 +69,11 @@
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
+                    <Transition>
+                      <div v-if="showDetail" class="form-container">
+                        <a>1234</a>
+                      </div>
+                    </Transition>
                   </template>
                 </li>
               </ul>
@@ -84,6 +89,11 @@
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
+                    <Transition>
+                      <div v-if="showDetail" class="form-container">
+                        <a>123</a>
+                      </div>
+                    </Transition>
                   </template>
                 </li>
               </ul>
@@ -109,6 +119,17 @@
   </div>
 </template>
 <style>
+.form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(112, 231, 120);
+  padding: 20px;
+  z-index: 9999;
+  width: 450px;
+}
+
 .resizable-image {
   max-width: 500px;
   height: auto;
@@ -174,6 +195,7 @@ export default {
       dataindex: [],
       Recordindex: [],
       Serchdataindex: [],
+      options: [],
       newSerch: {
         userId: "",
       },
@@ -185,7 +207,7 @@ export default {
       Serchstatus: false,
       accountexist: false,
       myselfidentity: false,
-      options: [],
+      showDetail: false,
       RecordLength: 0,
     };
   },
@@ -260,17 +282,12 @@ export default {
         if (this.checkuserId !== SerchpostId) {
           this.accountexist = false;
           this.errorMessage = "This UID does not exist";
-        } else if (
-          this.checkuserId === this.userId ||
-          this.checkuserIdc === this.checkuserId
-        ) {
+        } else if (this.checkuserId === this.userId || this.checkuserIdc === this.checkuserId) {
           this.accountexist = false;
           this.errorMessage = "Duplicate UID cannot be used";
           break;
         } else if (this.checkuserId === SerchpostId) {
-          this.accountexist = true;
-          this.errorMessage = "";
-          break;
+          this.accountexist = true; this.errorMessage = ""; break;
         }
       }
       if (this.checkuserId != "" && this.accountexist) {
@@ -283,14 +300,14 @@ export default {
         this.listenToDataRef(newDataRef);
       }
       if (this.errorMessage !== "") {
-        this.$toast.error(this.errorMessage, {
-          position: "top",
-          duration: 3000,
-          dismissible: true,
-        });
+        this.$toast.error(this.errorMessage, { position: "top", duration: 3000, dismissible: true, });
         this.errorMessage = "";
       }
       this.newSerch.userId = "";
+    },
+    toggleDetail() {
+      this.showDetail = !this.showDetail;
+      console.log(this.showDetail);
     },
     toggleLogin() {
       const db = getDatabase(firebaseApp);
@@ -306,19 +323,13 @@ export default {
     },
     ban() {
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Users/${this.checkuserId}/UserAvailable`
-      );
+      const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
       set(officialRef1, false);
       this.toggleLogin();
     },
     unban() {
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(
-        db,
-        `Users/${this.checkuserId}/UserAvailable`
-      );
+      const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
       set(officialRef1, true);
       this.toggleLogin();
     }
