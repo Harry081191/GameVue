@@ -65,15 +65,23 @@
                 <p style="color:white; margin-bottom: 15px">最近遊玩(抓五個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
-                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail">
+                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
                     <Transition>
                       <div v-if="showDetail" class="form-container">
-                        <a>1234</a>
+                        <ul class="custom-list">
+                          <li v-for="(item, key1, index) in Recorddata" :key="key1">
+                            <template v-if="key1 === keycheck">
+                              <a>遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
+                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                            </template>
+                          </li>
+                        </ul>
                       </div>
                     </Transition>
+                    <div v-if="showDetail" class="overlay" @click="toggleDetail"></div>
                   </template>
                 </li>
               </ul>
@@ -85,15 +93,23 @@
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長(抓三個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord'">
-                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail">
+                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
                     <Transition>
                       <div v-if="showDetail" class="form-container">
-                        <a>123</a>
+                        <ul class="custom-list">
+                          <li v-for="(item, key1, index) in Recorddata" :key="key1">
+                            <template v-if="key1 === keycheck">
+                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
+                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                            </template>
+                          </li>
+                        </ul>
                       </div>
                     </Transition>
+                    <div v-if="showDetail" class="overlay" @click="toggleDetail"></div>
                   </template>
                 </li>
               </ul>
@@ -128,6 +144,16 @@
   padding: 20px;
   z-index: 9999;
   width: 450px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
 .resizable-image {
@@ -201,6 +227,7 @@ export default {
       },
       userId: null,
       errorMessage: null,
+      keycheck: null,
       selectedOption: "",
       checkuserId: "",
       checkuserIdc: "",
@@ -300,9 +327,9 @@ export default {
       }
       this.newSerch.userId = "";
     },
-    toggleDetail() {
+    toggleDetail(key) {
       this.showDetail = !this.showDetail;
-      console.log(this.showDetail);
+      this.keycheck = key;
     },
     toggleLogin() {
       const db = getDatabase(firebaseApp);
