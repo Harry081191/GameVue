@@ -1178,6 +1178,20 @@ export default {
 
       this.editForm = !this.editForm;
     },
+    toggleBan(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Official/${postId}/forumavailable`);
+      set(officialRef1, false);
+    },
+    toggleunBan(index) {
+      const postKeys = Object.keys(this.data);
+      const postId = postKeys[index];
+      const db = getDatabase(firebaseApp);
+      const officialRef1 = firebaseRef(db, `Official/${postId}/forumavailable`);
+      set(officialRef1, true);
+    },
     toggleDelete(index) {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
