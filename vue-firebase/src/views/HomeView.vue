@@ -62,7 +62,7 @@
           <div v-if="Recorddata !== null" class="col-10 bg-secondary" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-bottom: 15px">最近遊玩(抓五個)</p>
+                <p style="color:white; margin-bottom: 15px">最近遊玩</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
@@ -89,7 +89,7 @@
           <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長(抓三個)</p>
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord'">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
@@ -318,6 +318,7 @@ export default {
         for (let j = 0; j < this.RecordLengtht; j++) {
           const RecordId = RecordKeys[j];
           if (RecordId === 'TotalRecord') continue;
+          console.log(RecordId)
         }
         this.Recorddatat = Recorddatat;
       });
