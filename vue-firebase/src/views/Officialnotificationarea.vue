@@ -380,7 +380,7 @@
                                         :class="{ mliked: mlikedPosts[messageIndex] }"
                                         @click="mtoggleLike(index, messageIndex)"><i
                                           class="fas fa-thumbs-up"></i></button>
-                                      <a class="like-count font">{{ messageItem.messagelike.total }}</a>
+                                      <a class="like-count font">{{ messageItem.messageupvote.total }}</a>
                                       <button type="button" style="text-align: left;"
                                         :class="{ munliked: munlikedPosts[messageIndex] }"
                                         @click="mtoggleUnLike(index, messageIndex)"><i
@@ -918,20 +918,20 @@ export default {
               continue;
             }
 
-            const mlikePeopleCount = (Object.keys(mpost.messagelike || {}).length) - 1;
+            const mlikePeopleCount = (Object.keys(mpost.messageupvote || {}).length) - 1;
             const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
             const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
 
-            const officialRef1 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagelike`);
-            const officialRef2 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagelike/total`);
+            const officialRef1 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote`);
+            const officialRef2 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote/total`);
             const officialRef3 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote`);
             const officialRef4 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote/total`);
             const officialRef5 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagename`);
             const officialRef6 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagereport/total`);
 
             get(officialRef1).then((snapshot) => {
-              const messagelike = snapshot.val();
-              if (messagelike && messagelike[this.userId]) {
+              const messageupvote = snapshot.val();
+              if (messageupvote && messageupvote[this.userId]) {
                 this.mlikedPosts[mpostId] = true;
               } else {
                 this.mlikedPosts[mpostId] = false;
@@ -1177,7 +1177,7 @@ export default {
       const postKeys = Object.keys(this.data);
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
-      const officialRef1 = firebaseRef(db, `Official/${postId}/message/${messageIndex}/messagelike/${this.userId}`);
+      const officialRef1 = firebaseRef(db, `Official/${postId}/message/${messageIndex}/messageupvote/${this.userId}`);
       if (this.mlikedPosts[messageIndex]) {
         this.mlikedPosts[messageIndex] = false;
         remove(officialRef1);
@@ -1290,7 +1290,7 @@ export default {
       const postId = postKeys[index];
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Official/${postId}/message/${messageIndex}`);
-      const officialRef2 = firebaseRef(db, `Official/${postId}/message/${messageIndex}/messagelike`);
+      const officialRef2 = firebaseRef(db, `Official/${postId}/message/${messageIndex}/messageupvote`);
       const officialRef3 = firebaseRef(db, `Official/${postId}/message/${messageIndex}/messagedownvote`);
       remove(officialRef1);
       remove(officialRef2);
@@ -1318,7 +1318,7 @@ export default {
       const officialRef1 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
       const officialRef2 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagecontent`);
       const officialRef3 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagetime`);
-      const officialRef4 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagelike/total`);
+      const officialRef4 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messageupvote/total`);
       const officialRef5 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagedownvote/total`);
       const officialRef6 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagereport/total`);
 
