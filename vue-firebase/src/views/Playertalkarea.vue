@@ -156,7 +156,7 @@
                             </li>
                             <li v-if="true"><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] && !UserManager }" @click="toggleEdit(index)"><i
+                                :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
                                   class="far fa-edit"></i> 編輯</button>
                               <Transition>
                                 <div v-if="editForm" class="form-container">
