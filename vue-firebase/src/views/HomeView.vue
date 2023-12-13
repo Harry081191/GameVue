@@ -38,7 +38,8 @@
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
             <i class="fas fa-exclamation-triangle"></i>
           </button>
-          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && !data.UserAvailable" @click="unban">
+          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && !data.UserAvailable"
+            @click="unban">
             <i class="far fa-edit"></i>
           </button>
           <div class="col-10 bg-secondary text-white"
@@ -64,12 +65,8 @@
                 <p style="margin-bottom: 15px">最近遊玩(抓五個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
-                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{
-                      item.time }}<br />技能升級： FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
-  }}／getBloodExplode：{{ item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
-  item.SkillUpgradeRecord.getFireBall }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
-  }}／getLightningBlast：{{ item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
-  item.SkillUpgradeRecord.getMagicWeapon }}
+                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money
+                    }}／遊玩時長：{{ item.time }}
                   </template>
                 </li>
               </ul>
@@ -82,14 +79,9 @@
                   存活時間最長(抓三個)
                 </p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
-                  <template v-if="key !== 'TotalRecord'"><a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
-                  }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br />技能升級：
-                    FireBallChain：{{ item.SkillUpgradeRecord.FireBallChain }}／FireBallDamage：{{
-                      item.SkillUpgradeRecord.FireBallDamage }}／FireBallProject：{{ item.SkillUpgradeRecord.FireBallProject
-  }}／getBloodExplode：{{ item.SkillUpgradeRecord.getBloodExplode }}／getFireBall：{{
-  item.SkillUpgradeRecord.getFireBall }}／getFlameJet：{{ item.SkillUpgradeRecord.getFlameJet
-  }}／getLightningBlast：{{ item.SkillUpgradeRecord.getLightningBlast }}／getMagicWeapon：{{
-  item.SkillUpgradeRecord.getMagicWeapon }}
+                  <template v-if="key !== 'TotalRecord'">
+                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money
+                    }}／遊玩時長：{{ item.time }}
                   </template>
                 </li>
               </ul>
