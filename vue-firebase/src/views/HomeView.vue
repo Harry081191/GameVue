@@ -264,12 +264,7 @@ export default {
         this.options = Object.keys(Recorddata).map((postId) => ({
           label: postId,
           value: Recorddata[postId],
-        })); /*
-        if (this.getSharedUid != this.userId) {
-          this.$router.push({
-            name: 'Login',
-          });
-        }*/
+        }));
       });
     },
     submitSerch() {
