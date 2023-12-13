@@ -215,6 +215,7 @@ a.ban {
 <script>
 import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
 import { firebaseApp } from "@/main";
+import Vue from 'vue';
 //import { mapGetters } from "vuex";
 
 export default {
@@ -236,6 +237,8 @@ export default {
       Recordindext: [],
       Serchdataindex: [],
       options: [],
+      RecordindextimeArray: [],
+      RecordindextimeArrayFinal: [],
       newSerch: {
         userId: "",
       },
@@ -315,13 +318,39 @@ export default {
         this.Recordindext = Object.values(Recorddatat);
         this.RecordLengtht = this.Recordindext.length;
         const RecordKeys = Object.keys(Recorddatat);
-        for (let j = 0; j < this.RecordLengtht; j++) {
-          const RecordId = RecordKeys[j];
+        for (let i = 0; i < this.RecordLengtht; i++) {
+          const db = getDatabase(firebaseApp);
+          const RecordId = RecordKeys[i];
           if (RecordId === 'TotalRecord') continue;
-          console.log(RecordId)
+          get(firebaseRef(db, `Record/${this.checkuserId}/${RecordId}`)).then((snapshot) => {
+            const Recordindextime = snapshot.val();
+            const seconds = this.timeStringToSeconds(Recordindextime.time);
+            this.RecordindextimeArray[RecordId] = seconds;
+            const entries = Object.entries(this.RecordindextimeArray);
+            for (let j = i - 1; j >= 0; j--) {
+              if (entries[i][1] > entries[j][1]) {
+                const tempValue = entries[i][1];
+                entries[i][1] = entries[j][1];
+                entries[j][1] = tempValue;
+
+                const tempKey = entries[i][0];
+                entries[i][0] = entries[j][0];
+                entries[j][0] = tempKey;
+                for(let k = 0; k < this.RecordLengtht - 1; k++){
+                  this.RecordindextimeArrayFinal[entries[k][0]] = entries[k][1];
+                  console.log(this.RecordindextimeArrayFinal);
+                }
+              }
+            }
+          });
         }
         this.Recorddatat = Recorddatat;
       });
+    },
+    timeStringToSeconds(timeString) {
+      const [minutes, seconds] = timeString.split(":").map(Number);
+      const totalSeconds = minutes * 60 + seconds;
+      return totalSeconds;
     },
     submitSerch() {
       const db = getDatabase(firebaseApp);
