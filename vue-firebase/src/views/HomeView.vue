@@ -81,7 +81,6 @@
                         </ul>
                       </div>
                     </Transition>
-                    <div v-if="showDetail" class="overlay" @click="toggleDetail"></div>
                   </template>
                 </li>
               </ul>
@@ -109,10 +108,10 @@
                         </ul>
                       </div>
                     </Transition>
-                    <div v-if="showDetail" class="overlay" @click="toggleDetail"></div>
                   </template>
                 </li>
               </ul>
+              <div v-if="showDetail" class="overlay" @click="toggleDetail"></div>
             </a>
           </div>
           <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white"
@@ -198,6 +197,19 @@ button.ban {
 
 a.ban {
   visibility: hidden;
+}
+
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.v-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>
 <script>
