@@ -71,7 +71,7 @@
                           <ul v-if="menuStates[index]">
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !deletePosts[index] }" @click="toggleReport()"><i
+                                :class="{ deleted: UserManager }" @click="toggleReport()"><i
                                   class="fas fa-exclamation-triangle"></i> 舉報</button>
                               <Transition>
                                 <div v-if="reportForm" class="form-container">
@@ -156,7 +156,7 @@
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
+                                :class="{ deleted: !UserManager }" @click="toggleEdit(index)"><i
                                   class="far fa-edit"></i> 編輯</button>
                               <Transition>
                                 <div v-if="editForm" class="form-container">
@@ -189,7 +189,17 @@
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: deletePosts[index] }" @click="toggleDelete(index)"><i
+                                :class="{ deleted: !UserManager }" @click="toggleBan(index)"><i
+                                  class="fas fa-exclamation-triangle"></i> 封鎖</button>
+                            </li>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: !UserManager }" @click="toggleunBan(index)"><i
+                                  class="far fa-trash-alt"></i> 解封</button>
+                            </li>
+                            <li><button type="button"
+                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                :class="{ deleted: !UserManager }" @click="toggleDelete(index)"><i
                                   class="far fa-trash-alt"></i> 刪除</button>
                             </li>
                           </ul>
@@ -436,7 +446,7 @@
 
 #menu {
   width: 150px;
-  height: 30px;
+  height: 100px;
 }
 
 #menu ul {
