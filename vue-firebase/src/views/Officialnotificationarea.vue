@@ -62,7 +62,7 @@
         <div class="col-10 bg-white text-dark" style="text-align: center;">
           <ul class="custom-list">
             <li v-for="(item, index) in dataindex" :key="index">
-              <div class="post-container font" style="border-radius:50px;">
+              <div v-if="item.forumavailable || UserManager" class="post-container font" style="border-radius:50px;">
                 <div class="button-content font">
                   <div class="button-content-right font" style="margin-right: 15px;">
                     <div id="menu">
@@ -404,7 +404,7 @@
                   </div>
                 </div>
               </div>
-              <div style="text-align: right;">
+              <div v-if="item.forumavailable || UserManager" style="text-align: right;">
                 <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
                 <span class="font" style="font-size: 20px;">創建人：官方</span>
               </div>
@@ -834,7 +834,6 @@ export default {
       likedPosts: {},
       unlikedPosts: {},
       deletePosts: {},
-      availablePosts: {},
       mlikedPosts: {},
       munlikedPosts: {},
       mdeletePosts: {},
@@ -989,8 +988,7 @@ export default {
           const officialRef4 = firebaseRef(db, `Official/${postId}/downvotepeople/total`);
           const officialRef5 = firebaseRef(db, `Official/${postId}/createname`);
           const officialRef6 = firebaseRef(db, `Official/${postId}/message/total`);
-          const officialRef7 = firebaseRef(db, `Official/${postId}/forumavailable`);
-          const officialRef8 = firebaseRef(db, `Official/${postId}/reportpeople/total`);
+          const officialRef7 = firebaseRef(db, `Official/${postId}/reportpeople/total`);
 
           get(officialRef1).then((snapshot) => {
             const upvotePeople = snapshot.val();
@@ -1022,19 +1020,10 @@ export default {
             }
           });
 
-          get(officialRef7).then((snapshot) => {
-            const available = snapshot.val();
-            if (available) {
-              this.availablePosts[i] = true;
-            } else {
-              this.availablePosts[i] = false;
-            }
-          });
-
           set(officialRef2, likePeopleCount);
           set(officialRef4, unlikePeopleCount);
           set(officialRef6, messageCount);
-          set(officialRef8, reportCount);
+          set(officialRef7, reportCount);
         }
       });
     });

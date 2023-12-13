@@ -837,7 +837,6 @@ export default {
       likedPosts: {},
       unlikedPosts: {},
       deletePosts: {},
-      availablePosts: {},
       mlikedPosts: {},
       munlikedPosts: {},
       mdeletePosts: {},
@@ -1002,8 +1001,7 @@ export default {
           const officialRef4 = firebaseRef(db, `Playerforum/${postId}/downvotepeople/total`);
           const officialRef5 = firebaseRef(db, `Playerforum/${postId}/createname`);
           const officialRef6 = firebaseRef(db, `Playerforum/${postId}/message/total`);
-          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/forumavailable`);
-          const officialRef8 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
+          const officialRef7 = firebaseRef(db, `Playerforum/${postId}/reportpeople/total`);
 
           get(officialRef1).then((snapshot) => {
             const upvotePeople = snapshot.val();
@@ -1035,19 +1033,10 @@ export default {
             }
           });
 
-          get(officialRef7).then((snapshot) => {
-            const available = snapshot.val();
-            if (available) {
-              this.availablePosts[i] = true;
-            } else {
-              this.availablePosts[i] = false;
-            }
-          });
-
           set(officialRef2, likePeopleCount);
           set(officialRef4, unlikePeopleCount);
           set(officialRef6, messageCount);
-          set(officialRef8, reportCount);
+          set(officialRef7, reportCount);
         }
       });
     });
