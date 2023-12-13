@@ -975,7 +975,6 @@ export default {
                 get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
                   this.messageimage = snapshot.val();
                   this.messageimagelist[mpostId] = this.messageimage;
-                  console.log(this.messageimagelist);
                 });
                 const messagedeleted = snapshot.val();
                 const userNames = Object.values(messagedeleted);
@@ -1038,8 +1037,7 @@ export default {
 
           get(officialRef7).then((snapshot) => {
             const available = snapshot.val();
-            const availablecheck = Object.values(available);
-            if (available && availablecheck) {
+            if (available) {
               this.availablePosts[i] = true;
             } else {
               this.availablePosts[i] = false;

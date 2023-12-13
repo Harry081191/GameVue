@@ -834,6 +834,7 @@ export default {
       likedPosts: {},
       unlikedPosts: {},
       deletePosts: {},
+      availablePosts: {},
       mlikedPosts: {},
       munlikedPosts: {},
       mdeletePosts: {},
@@ -875,6 +876,7 @@ export default {
       mreportForm: false,
       showMessage: false,
       openFormIndex: null,
+      UserManager: false,
     };
   },
   mounted() {
@@ -882,137 +884,159 @@ export default {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Official/');
     this.userId = this.$route.params.userId;
-    this.username = firebaseRef(db, `Users/${this.userId}/name`);
-
-    // Listen for changes in the 'data' node
-    onValue(dataRef, async (snapshot) => {
-      const data = snapshot.val();
-      this.dataindex = Object.values(data); // Convert object to array
-      this.dataLength = this.dataindex.length; // Store the length
-      this.data = data;
-
-      for (let i = 0; i < this.dataLength; i++) {
-        const post = this.dataindex[i];
-        const postId = Object.keys(this.data)[i];
-        const MessageeRef = firebaseRef(db, `Official/${postId}/message`);
-        this.postData.push({
-          post: post, // 儲存論壇帖子資料
-          messages: this.mdataindex, // 儲存對應的留言資料
-        });
-        const messageSnapshot = await get(MessageeRef);
-        const message = messageSnapshot.val();
-        this.mdataindex = Object.values(message); // Convert object to array
-        this.mdataLength = this.mdataindex.length; // Store the length
-        this.message = message;
-
-        if (message) {
-          const messageKeys = Object.keys(message);
-          this.messageLength = messageKeys.length;
-
-          for (let j = 0; j < this.messageLength; j++) {
-            const mpostId = messageKeys[j];
-            if (mpostId === 'total') continue;
-            const mpost = message[mpostId];
-            console.log(`Official/${postId}/message/${mpostId}/messagename`);
-            if (!mpost) {
-              continue;
-            }
-
-            const mlikePeopleCount = (Object.keys(mpost.messageupvote || {}).length) - 1;
-            const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
-            const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
-
-            const officialRef1 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote`);
-            const officialRef2 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote/total`);
-            const officialRef3 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote`);
-            const officialRef4 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote/total`);
-            const officialRef5 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagename`);
-            const officialRef6 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagereport/total`);
-
-            get(officialRef1).then((snapshot) => {
-              const messageupvote = snapshot.val();
-              if (messageupvote && messageupvote[this.userId]) {
-                this.mlikedPosts[mpostId] = true;
-              } else {
-                this.mlikedPosts[mpostId] = false;
-              }
-            });
-            get(officialRef3).then((snapshot) => {
-              const messageunlike = snapshot.val();
-              if (messageunlike && messageunlike[this.userId]) {
-                this.munlikedPosts[mpostId] = true;
-              } else {
-                this.munlikedPosts[mpostId] = false;
-              }
-            });
-            get(officialRef5).then((snapshot) => {
-              this.messageimage = Object.keys(snapshot.val());
-              get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
-                this.messageimage = snapshot.val();
-                this.messageimagelist[mpostId] = this.messageimage;
-              });
-              const messagedeleted = snapshot.val();
-              if (messagedeleted && messagedeleted[this.userId]) {
-                this.mdeletePosts[mpostId] = false;
-              } else {
-                this.mdeletePosts[mpostId] = true;
-              }
-            });
-
-            set(officialRef2, mlikePeopleCount);
-            set(officialRef4, munlikePeopleCount);
-            set(officialRef6, mreportPeopleCount);
-          }
-        }
-
-        const likePeopleCount = (Object.keys(post.upvotepeople || {}).length) - 1;
-        const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
-        const messageCount = (Object.keys(post.message || {}).length) - 1;
-        const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
-
-        const officialRef1 = firebaseRef(db, `Official/${postId}/upvotepeople`);
-        const officialRef2 = firebaseRef(db, `Official/${postId}/upvotepeople/total`);
-        const officialRef3 = firebaseRef(db, `Official/${postId}/downvotepeople`);
-        const officialRef4 = firebaseRef(db, `Official/${postId}/downvotepeople/total`);
-        const officialRef5 = firebaseRef(db, `Official/${postId}/createname`);
-        const officialRef6 = firebaseRef(db, `Official/${postId}/message/total`);
-        const officialRef7 = firebaseRef(db, `Official/${postId}/reportpeople/total`);
-
-        get(officialRef1).then((snapshot) => {
-          const likePeople = snapshot.val();
-          if (likePeople && likePeople[this.userId]) {
-            this.likedPosts[i] = true;
-          } else {
-            this.likedPosts[i] = false;
-          }
-        });
-
-        get(officialRef3).then((snapshot) => {
-          const unlikePeople = snapshot.val();
-          if (unlikePeople && unlikePeople[this.userId]) {
-            this.unlikedPosts[i] = true;
-          } else {
-            this.unlikedPosts[i] = false;
-          }
-        });
-
-        get(officialRef5).then((snapshot) => {
-          const deleted = snapshot.val();
-          if (deleted && deleted[this.userId]) {
-            this.deletePosts[i] = false;
-          } else {
-            this.deletePosts[i] = true;
-          }
-        });
-
-        set(officialRef2, likePeopleCount);
-        set(officialRef4, unlikePeopleCount);
-        set(officialRef6, messageCount);
-        set(officialRef7, reportCount);
+    get(firebaseRef(db, `Users/${this.userId}/Manager`)).then((snapshot) => {
+      this.UserManager = snapshot.val();
+      if (this.UserManager === null) {
+        this.UserManager = false;
+      } else if (this.UserManager === true) {
+        this.UserManager = true;
       }
-    });
+    })
     get(firebaseRef(db, `Users/${this.userId}/name`)).then((snapshot) => {
       this.username = snapshot.val();
+
+      // Listen for changes in the 'data' node
+      onValue(dataRef, async (snapshot) => {
+        const data = snapshot.val();
+        this.dataindex = Object.values(data); // Convert object to array
+        this.dataLength = this.dataindex.length; // Store the length
+        this.data = data;
+
+        for (let i = 0; i < this.dataLength; i++) {
+          const post = this.dataindex[i];
+          const postId = Object.keys(this.data)[i];
+          const MessageeRef = firebaseRef(db, `Official/${postId}/message`);
+          this.postData.push({
+            post: post, // 儲存論壇帖子資料
+            messages: this.mdataindex, // 儲存對應的留言資料
+          });
+          const messageSnapshot = await get(MessageeRef);
+          const message = messageSnapshot.val();
+          this.mdataindex = Object.values(message); // Convert object to array
+          this.mdataLength = this.mdataindex.length; // Store the length
+          this.message = message;
+
+          if (message) {
+            const messageKeys = Object.keys(message);
+            this.messageLength = messageKeys.length;
+
+            for (let j = 0; j < this.messageLength; j++) {
+              const mpostId = messageKeys[j];
+              if (mpostId === 'total') continue;
+              const mpost = message[mpostId];
+              if (!mpost) {
+                continue;
+              }
+
+              const mlikePeopleCount = (Object.keys(mpost.messageupvote || {}).length) - 1;
+              const munlikePeopleCount = (Object.keys(mpost.messagedownvote || {}).length) - 1;
+              const mreportPeopleCount = (Object.keys(mpost.messagereport || {}).length) - 1;
+
+              const officialRef1 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote`);
+              const officialRef2 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messageupvote/total`);
+              const officialRef3 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote`);
+              const officialRef4 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagedownvote/total`);
+              const officialRef5 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagename`);
+              const officialRef6 = firebaseRef(db, `Official/${postId}/message/${mpostId}/messagereport/total`);
+
+              get(officialRef1).then((snapshot) => {
+                const messageupvote = snapshot.val();
+                const userNames = Object.values(messageupvote);
+                if (messageupvote && this.username === userNames[0]) {
+                  this.mlikedPosts[mpostId] = true;
+                } else {
+                  this.mlikedPosts[mpostId] = false;
+                }
+              });
+              get(officialRef3).then((snapshot) => {
+                const messageunlike = snapshot.val();
+                const userNames = Object.values(messageunlike);
+                if (messageunlike && this.username === userNames[0]) {
+                  this.munlikedPosts[mpostId] = true;
+                } else {
+                  this.munlikedPosts[mpostId] = false;
+                }
+              });
+              get(officialRef5).then((snapshot) => {
+                this.messageimage = Object.keys(snapshot.val());
+                get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
+                  this.messageimage = snapshot.val();
+                  this.messageimagelist[mpostId] = this.messageimage;
+                });
+                const messagedeleted = snapshot.val();
+                const userNames = Object.values(messagedeleted);
+                if (messagedeleted && this.username === userNames[0]) {
+                  this.mdeletePosts[mpostId] = false;
+                } else {
+                  this.mdeletePosts[mpostId] = true;
+                }
+              });
+
+              set(officialRef2, mlikePeopleCount);
+              set(officialRef4, munlikePeopleCount);
+              set(officialRef6, mreportPeopleCount);
+            }
+          }
+
+          const likePeopleCount = (Object.keys(post.upvotepeople || {}).length) - 1;
+          const unlikePeopleCount = (Object.keys(post.downvotepeople || {}).length) - 1;
+          const messageCount = (Object.keys(post.message || {}).length) - 1;
+          const reportCount = (Object.keys(post.reportpeople || {}).length) - 1;
+
+          const officialRef1 = firebaseRef(db, `Official/${postId}/upvotepeople`);
+          const officialRef2 = firebaseRef(db, `Official/${postId}/upvotepeople/total`);
+          const officialRef3 = firebaseRef(db, `Official/${postId}/downvotepeople`);
+          const officialRef4 = firebaseRef(db, `Official/${postId}/downvotepeople/total`);
+          const officialRef5 = firebaseRef(db, `Official/${postId}/createname`);
+          const officialRef6 = firebaseRef(db, `Official/${postId}/message/total`);
+          const officialRef7 = firebaseRef(db, `Official/${postId}/forumavailable`);
+          const officialRef8 = firebaseRef(db, `Official/${postId}/reportpeople/total`);
+
+          get(officialRef1).then((snapshot) => {
+            const upvotePeople = snapshot.val();
+            const userNames = Object.values(upvotePeople);
+            if (upvotePeople && this.username === userNames[0]) {
+              this.likedPosts[i] = true;
+            } else {
+              this.likedPosts[i] = false;
+            }
+          });
+
+          get(officialRef3).then((snapshot) => {
+            const unlikePeople = snapshot.val();
+            const userNames = Object.values(unlikePeople);
+            if (unlikePeople && this.username === userNames[0]) {
+              this.unlikedPosts[i] = true;
+            } else {
+              this.unlikedPosts[i] = false;
+            }
+          });
+
+          get(officialRef5).then((snapshot) => {
+            const deleted = snapshot.val();
+            const userNames = Object.values(deleted);
+            if (deleted && this.username === userNames[0]) {
+              this.deletePosts[i] = false;
+            } else {
+              this.deletePosts[i] = true;
+            }
+          });
+
+          get(officialRef7).then((snapshot) => {
+            const available = snapshot.val();
+            if (available) {
+              this.availablePosts[i] = true;
+            } else {
+              this.availablePosts[i] = false;
+            }
+          });
+
+          set(officialRef2, likePeopleCount);
+          set(officialRef4, unlikePeopleCount);
+          set(officialRef6, messageCount);
+          set(officialRef8, reportCount);
+        }
+      });
     });
   },
   methods: {
@@ -1208,7 +1232,6 @@ export default {
     mtoggleMenu(messageIndex) {
       this.currentMessageIndex = messageIndex;
       this.mmenuStates[messageIndex] = !this.mmenuStates[messageIndex];
-      console.log(this.mmenuStates[messageIndex]);
     },
     mtoggleReport() {
       this.mreportPost.selectedContent = '';
