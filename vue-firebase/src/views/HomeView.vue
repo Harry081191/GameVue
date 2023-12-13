@@ -65,7 +65,7 @@
                 <p style="color:white; margin-bottom: 15px">最近遊玩(抓五個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
-                    <button style="background-color:transparent; border:0" type="button">
+                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
@@ -80,7 +80,7 @@
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長(抓三個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord'">
-                    <button style="background-color:transparent; border:0" type="button">
+                    <button style="background-color:transparent; border:0" type="button" @click="toggleDetail">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
                     </button>
