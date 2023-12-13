@@ -242,6 +242,7 @@ export default {
           return;
         }
         this.Recordindex = Object.values(Recorddata);
+        console.log(this.Recordindex);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
         this.options = Object.keys(Recorddata).map((postId) => ({

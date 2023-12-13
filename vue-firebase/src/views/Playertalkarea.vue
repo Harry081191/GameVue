@@ -912,7 +912,6 @@ export default {
           const postId = Object.keys(this.data)[i];
           const MessageeRef = firebaseRef(db, `Playerforum/${postId}/message`);
           const talkimage = firebaseRef(db, `Playerforum/${postId}/createname`);
-          console.log(this.dataindex[i].forumavailable);
           get(talkimage).then((snapshot) => {
             this.userimage = Object.keys(snapshot.val());
             get(firebaseRef(db, `Users/${this.userimage}/UserImage`)).then((snapshot) => {
@@ -976,6 +975,7 @@ export default {
                 get(firebaseRef(db, `Users/${this.messageimage}/UserImage`)).then((snapshot) => {
                   this.messageimage = snapshot.val();
                   this.messageimagelist[mpostId] = this.messageimage;
+                  console.log(this.messageimagelist);
                 });
                 const messagedeleted = snapshot.val();
                 const userNames = Object.values(messagedeleted);
