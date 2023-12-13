@@ -59,14 +59,16 @@
             style=" border-bottom-left-radius: 50px; border-bottom-right-radius: 50px; text-align: center;">
             <a style="font-size: 20px">此帳戶目前沒有任何紀錄</a>
           </div>
-          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center">
+          <div v-if="Recorddata !== null" class="col-10 bg-secondary" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="margin-bottom: 15px">最近遊玩(抓五個)</p>
+                <p style="color:white; margin-bottom: 15px">最近遊玩(抓五個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
-                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money
-                    }}／遊玩時長：{{ item.time }}
+                    <button style="background-color:transparent; border:0" type="button">
+                      <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
+                      }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                    </button>
                   </template>
                 </li>
               </ul>
@@ -75,13 +77,13 @@
           <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="margin-top: 15px; margin-bottom: 15px">
-                  存活時間最長(抓三個)
-                </p>
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長(抓三個)</p>
                 <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key !== 'TotalRecord'">
-                    <a>遊玩日期{{ key }}：</a> 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{ item.money
-                    }}／遊玩時長：{{ item.time }}
+                    <button style="background-color:transparent; border:0" type="button">
+                      <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
+                      }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                    </button>
                   </template>
                 </li>
               </ul>
