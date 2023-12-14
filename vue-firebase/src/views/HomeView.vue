@@ -90,8 +90,8 @@
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
-                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatat" :key="key">
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">最高等級</p>
+                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatal" :key="key">
                   <template v-if="key !== 'TotalRecord'">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
@@ -100,7 +100,7 @@
                     <Transition>
                       <div v-if="showDetail" class="form-container">
                         <ul class="custom-list">
-                          <li v-for="(item, key1, index) in Recorddatat" :key="key1">
+                          <li v-for="(item, key1) in Recorddatal" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
                                 item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -118,8 +118,8 @@
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
-                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatat" :key="key">
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">擊殺數數量最多</p>
+                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatak" :key="key">
                   <template v-if="key !== 'TotalRecord'">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
@@ -128,7 +128,7 @@
                     <Transition>
                       <div v-if="showDetail" class="form-container">
                         <ul class="custom-list">
-                          <li v-for="(item, key1, index) in Recorddatat" :key="key1">
+                          <li v-for="(item, key1) in Recorddatak" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
                                 item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -146,8 +146,8 @@
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
-                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatat" :key="key">
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">獲取金幣最多</p>
+                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatam" :key="key">
                   <template v-if="key !== 'TotalRecord'">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
@@ -156,7 +156,7 @@
                     <Transition>
                       <div v-if="showDetail" class="form-container">
                         <ul class="custom-list">
-                          <li v-for="(item, key1, index) in Recorddatat" :key="key1">
+                          <li v-for="(item, key1, index) in Recorddatam" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
                                 item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -315,6 +315,9 @@ export default {
     return {
       data: {},
       Recorddata: {},
+      Recorddatal: {},
+      Recorddatam: {},
+      Recorddatak: {},
       Recorddatat: {},
       Serchdata: {},
       dataindex: [],
@@ -355,7 +358,10 @@ export default {
       this.Serchdata = Serchdata;
       this.listenToDataRef(dataRef);
       this.listenToRecord(RecordRef);
-      this.listenToRecordt(RecordRef);
+      this.listenToRecordL(RecordRef);
+      this.listenToRecordM(RecordRef);
+      this.listenToRecordK(RecordRef);
+      this.listenToRecordT(RecordRef);
     });
   },
   methods: {
@@ -396,7 +402,82 @@ export default {
         this.Recorddata = Recorddata;
       });
     },
-    listenToRecordt(RecordRef) {
+    listenToRecordL(RecordRef) {
+      onValue(RecordRef, (snapshot) => {
+        const Recorddatal = snapshot.val();
+        if (Recorddatal === null || Recorddatal === undefined) {
+          this.Recorddatal = Recorddatal;
+          return;
+        }
+        const recordArray = Object.entries(Recorddatal).map(([key, value]) => {
+          if (key === 'TotalRecord') {
+            return null;
+          }
+          return { key, ...value };
+        }).filter(record => record !== null);
+        recordArray.sort((a, b) => {
+          const LevelA = a.Level;
+          const LevelB = b.Level;
+          return LevelB - LevelA;
+        });
+        const recordObject = recordArray.reduce((acc, record) => {
+          acc[record.key] = record;
+          return acc;
+        }, {});
+        this.Recorddatal = recordObject;
+      });
+    },
+    listenToRecordM(RecordRef) {
+      onValue(RecordRef, (snapshot) => {
+        const Recorddatam = snapshot.val();
+        if (Recorddatam === null || Recorddatam === undefined) {
+          this.Recorddatam = Recorddatam;
+          return;
+        }
+        const recordArray = Object.entries(Recorddatam).map(([key, value]) => {
+          if (key === 'TotalRecord') {
+            return null;
+          }
+          return { key, ...value };
+        }).filter(record => record !== null);
+        recordArray.sort((a, b) => {
+          const moneyA = a.money;
+          const moneyB = b.money;
+          return moneyB - moneyA;
+        });
+        const recordObject = recordArray.reduce((acc, record) => {
+          acc[record.key] = record;
+          return acc;
+        }, {});
+        this.Recorddatam = recordObject;
+      });
+    },
+    listenToRecordK(RecordRef) {
+      onValue(RecordRef, (snapshot) => {
+        const Recorddatak = snapshot.val();
+        if (Recorddatak === null || Recorddatak === undefined) {
+          this.Recorddatak = Recorddatak;
+          return;
+        }
+        const recordArray = Object.entries(Recorddatak).map(([key, value]) => {
+          if (key === 'TotalRecord') {
+            return null;
+          }
+          return { key, ...value };
+        }).filter(record => record !== null);
+        recordArray.sort((a, b) => {
+          const killnumberA = a.killnumber;
+          const killnumberB = b.killnumber;
+          return killnumberB - killnumberA;
+        });
+        const recordObject = recordArray.reduce((acc, record) => {
+          acc[record.key] = record;
+          return acc;
+        }, {});
+        this.Recorddatak = recordObject;
+      });
+    },
+    listenToRecordT(RecordRef) {
       onValue(RecordRef, (snapshot) => {
         const Recorddatat = snapshot.val();
         if (Recorddatat === null || Recorddatat === undefined) {
