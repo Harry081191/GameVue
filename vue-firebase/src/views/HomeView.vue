@@ -86,7 +86,7 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null && (selectedOption.value === '遊玩時間最長' || selectedOption.value !== null)" class="col-10 bg-secondary text-white"
+          <div v-if="Recorddata !== null && (selectedOption.value === '遊玩時間最長' || selectedOption.value === undefined)" class="col-10 bg-secondary text-white"
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
