@@ -90,7 +90,7 @@
             <a style="font-size: 20px">
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
-                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddata" :key="key">
+                <li style="margin-bottom: 20px" v-for="(item, key) in Recorddatat" :key="key">
                   <template v-if="key !== 'TotalRecord'">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
@@ -99,7 +99,7 @@
                     <Transition>
                       <div v-if="showDetail" class="form-container">
                         <ul class="custom-list">
-                          <li v-for="(item, key1, index) in Recorddata" :key="key1">
+                          <li v-for="(item, key1, index) in Recorddatat" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
                                 item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -306,6 +306,7 @@ export default {
         this.Recordindex = Object.values(Recorddata);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
+        console.log(Recorddata);
       });
     },
     listenToRecordt(RecordRef) {
@@ -315,36 +316,23 @@ export default {
           this.Recorddatat = Recorddatat;
           return;
         }
-        this.Recordindext = Object.values(Recorddatat);
-        this.RecordLengtht = this.Recordindext.length;
-        const RecordKeys = Object.keys(Recorddatat);
-        for (let i = 0; i < this.RecordLengtht; i++) {
-          const db = getDatabase(firebaseApp);
-          const RecordId = RecordKeys[i];
-          if (RecordId === 'TotalRecord') continue;
-          get(firebaseRef(db, `Record/${this.checkuserId}/${RecordId}`)).then((snapshot) => {
-            const Recordindextime = snapshot.val();
-            const seconds = this.timeStringToSeconds(Recordindextime.time);
-            this.RecordindextimeArray[RecordId] = seconds;
-            const entries = Object.entries(this.RecordindextimeArray);
-            for (let j = i - 1; j >= 0; j--) {
-              if (entries[i][1] > entries[j][1]) {
-                const tempValue = entries[i][1];
-                entries[i][1] = entries[j][1];
-                entries[j][1] = tempValue;
-
-                const tempKey = entries[i][0];
-                entries[i][0] = entries[j][0];
-                entries[j][0] = tempKey;
-                for(let k = 0; k < this.RecordLengtht - 1; k++){
-                  this.RecordindextimeArrayFinal[entries[k][0]] = entries[k][1];
-                  console.log(this.RecordindextimeArrayFinal);
-                }
-              }
-            }
-          });
-        }
-        this.Recorddatat = Recorddatat;
+        const recordArray = Object.entries(Recorddatat).map(([key, value]) => {
+          if (key === 'TotalRecord') {
+            return null;  // Skip TotalRecord
+          }
+          return { key, ...value, time: value.time || "00:00" };
+        }).filter(record => record !== null);
+        recordArray.sort((a, b) => {
+          const timeA = this.timeStringToSeconds(a.time);
+          const timeB = this.timeStringToSeconds(b.time);
+          return timeB - timeA;
+        });
+        const recordObject = recordArray.reduce((acc, record) => {
+          acc[record.key] = record;
+          return acc;
+        }, {});
+        console.log(recordObject);
+        this.Recorddatat = recordObject;
       });
     },
     timeStringToSeconds(timeString) {
