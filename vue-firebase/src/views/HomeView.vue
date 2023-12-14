@@ -44,10 +44,10 @@
           </button>
           <div class="col-10 bg-secondary text-white"
             style=" border-top-left-radius: 50px; border-top-right-radius: 50px; text-align: center;">
-            <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px">
+            <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
               <select v-model="selectedOption">
                 <option value="">請選擇</option>
-                <option v-for="option in options" :value="option.value" :key="option.value">
+                <option v-for="option in options" :value="option" :key="option.value">
                   {{ option.label }}
                 </option>
               </select>
@@ -86,7 +86,8 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null" class="col-10 bg-secondary text-white" style="text-align: center">
+          <div v-if="Recorddata !== null && (selectedOption.label === '遊玩時間最長' || selectedOption.label === '請選擇')" class="col-10 bg-secondary text-white"
+            style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
@@ -285,10 +286,13 @@ export default {
             this.myselfidentity = true;
           }
         }
-        this.options = Object.keys(data).map((postId) => ({
-          label: postId,
-          value: data[postId],
-        })); /*
+        this.options = [
+          { label: "等級最高", value: "level" },
+          { label: "殺敵最多", value: "kill" },
+          { label: "金幣最多", value: "money" },
+          { label: "遊玩時間最長", value: "time" },
+        ];
+        /*
         if (this.getSharedUid != this.userId) {
           this.$router.push({
             name: 'Login',
@@ -306,7 +310,6 @@ export default {
         this.Recordindex = Object.values(Recorddata);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
-        console.log(Recorddata);
       });
     },
     listenToRecordt(RecordRef) {
@@ -318,7 +321,7 @@ export default {
         }
         const recordArray = Object.entries(Recorddatat).map(([key, value]) => {
           if (key === 'TotalRecord') {
-            return null; 
+            return null;
           }
           return { key, ...value, time: value.time || "00 : 00" };
         }).filter(record => record !== null);
@@ -331,7 +334,6 @@ export default {
           acc[record.key] = record;
           return acc;
         }, {});
-        console.log(recordObject);
         this.Recorddatat = recordObject;
       });
     },
