@@ -33,7 +33,7 @@
       <div class="p-3 wrapper">
         <div class="row justify-content-center">
           <div class="col-6" style="text-align: center">
-            <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
+            <h2>角色資訊<a v-if="data.Manager">(管理者)</a>{{ selectedOption.value }}</h2>
           </div>
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
             <i class="fas fa-exclamation-triangle"></i>
@@ -47,8 +47,8 @@
             <div class="dropdown" style="text-align: right; margin-right: 15px; margin-top: 5px;">
               <select v-model="selectedOption">
                 <option value="">請選擇</option>
-                <option v-for="option in options" :value="option" :key="option.value">
-                  {{ option.label }}
+                <option v-for="option in options" :value="option" :key="option.key">
+                  {{ option.value }}
                 </option>
               </select>
             </div>
@@ -86,7 +86,7 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null && (selectedOption.label === '遊玩時間最長' || selectedOption.label === '請選擇')" class="col-10 bg-secondary text-white"
+          <div v-if="Recorddata !== null && (selectedOption.value === '遊玩時間最長' || selectedOption.value !== null)" class="col-10 bg-secondary text-white"
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
@@ -287,10 +287,10 @@ export default {
           }
         }
         this.options = [
-          { label: "等級最高", value: "level" },
-          { label: "殺敵最多", value: "kill" },
-          { label: "金幣最多", value: "money" },
-          { label: "遊玩時間最長", value: "time" },
+          { value: "等級最高", key: "level" },
+          { value: "殺敵最多", key: "kill" },
+          { value: "金幣最多", key: "money" },
+          { value: "遊玩時間最長", key: "time" },
         ];
         /*
         if (this.getSharedUid != this.userId) {
