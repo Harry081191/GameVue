@@ -318,7 +318,7 @@ export default {
         }
         const recordArray = Object.entries(Recorddatat).map(([key, value]) => {
           if (key === 'TotalRecord') {
-            return null;  // Skip TotalRecord
+            return null; 
           }
           return { key, ...value, time: value.time || "00:00" };
         }).filter(record => record !== null);
