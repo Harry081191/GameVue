@@ -154,7 +154,7 @@
                               </Transition>
                               <div v-if="reportForm" class="overlay" @click="toggleReport(index)"></div>
                             </li>
-                            <li v-if="true"><button type="button"
+                            <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
                                 :class="{ deleted: deletePosts[index] }" @click="toggleEdit(index)"><i
                                   class="far fa-edit"></i> 編輯</button>
@@ -189,13 +189,13 @@
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleBan(index)"><i
-                                  class="fas fa-exclamation-triangle"></i> 封鎖</button>
+                                :class="{ deleted: !UserManager || !item.forumavailable }" @click="toggleBan(index)"><i
+                                  class="fas fa-lock"></i> 封鎖</button>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleunBan(index)"><i
-                                  class="far fa-trash-alt"></i> 解封</button>
+                                :class="{ deleted: !UserManager || item.forumavailable }" @click="toggleunBan(index)"><i
+                                  class="fas fa-lock-open"></i> 解封</button>
                             </li>
                             <li><button type="button"
                                 style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"

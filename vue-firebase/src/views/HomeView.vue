@@ -36,11 +36,11 @@
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a>{{ selectedOption.value }}</h2>
           </div>
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-user-alt-slash"></i>
           </button>
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && !data.UserAvailable"
             @click="unban">
-            <i class="far fa-edit"></i>
+            <i class="fas fa-user-alt"></i>
           </button>
           <div class="col-10 bg-secondary text-white"
             style=" border-top-left-radius: 50px; border-top-right-radius: 50px; text-align: center;">
