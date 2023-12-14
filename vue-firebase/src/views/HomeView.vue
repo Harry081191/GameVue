@@ -320,7 +320,7 @@ export default {
           if (key === 'TotalRecord') {
             return null; 
           }
-          return { key, ...value, time: value.time || "00:00" };
+          return { key, ...value, time: value.time || "00 : 00" };
         }).filter(record => record !== null);
         recordArray.sort((a, b) => {
           const timeA = this.timeStringToSeconds(a.time);
