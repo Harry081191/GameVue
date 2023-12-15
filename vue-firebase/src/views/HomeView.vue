@@ -170,8 +170,8 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null && (selectedOption.value === '遊玩時間最長' || selectedOption.value === undefined)" class="col-10 bg-secondary text-white"
-            style="text-align: center">
+          <div v-if="Recorddata !== null && (selectedOption.value === '遊玩時間最長' || selectedOption.value === undefined)"
+            class="col-10 bg-secondary text-white" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
@@ -216,6 +216,10 @@
       </div>
     </div>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <div>
+      <input type="file" @change="uploadImage" />
+      <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image" />
+    </div>
   </div>
 </template>
 <style>
@@ -299,6 +303,7 @@ a.ban {
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebaseApp } from "@/main";
 import Vue from 'vue';
 //import { mapGetters } from "vuex";
@@ -333,6 +338,7 @@ export default {
       userId: null,
       errorMessage: null,
       keycheck: null,
+      imageUrl: null,
       selectedOption: "",
       checkuserId: "",
       checkuserIdc: "",
@@ -554,6 +560,21 @@ export default {
         const newDataRecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
         this.listenToRecord(newDataRecordRef);
         this.listenToDataRef(newDataRef);
+      }
+    },
+    async uploadImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const storage = getStorage();
+          const imageRef = storageRef(storage, `images/${file.name}`);
+          await uploadBytes(imageRef, file);
+          const downloadURL = await getDownloadURL(imageRef);
+          this.imageUrl = downloadURL;
+          console.log(this.imageUrl);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
       }
     },
     ban() {
