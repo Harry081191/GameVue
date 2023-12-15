@@ -120,7 +120,7 @@
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">擊殺數數量最多</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddatak" :key="key">
-                  <template v-if="key !== 'TotalRecord' && index <= 3">
+                  <template v-if="key !== 'TotalRecord' && index < 3">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -148,7 +148,7 @@
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">獲取金幣最多</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddatam" :key="key">
-                  <template v-if="key !== 'TotalRecord' && index <= 3">
+                  <template v-if="key !== 'TotalRecord' && index < 3">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -176,7 +176,7 @@
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddatat" :key="key">
-                  <template v-if="key !== 'TotalRecord' && index <= 3">
+                  <template v-if="key !== 'TotalRecord' && index < 3">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
