@@ -574,7 +574,7 @@ export default {
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;
           console.log(this.imageUrl);
-          set(officialRef1, this.imageUrl);
+          await set(officialRef1, this.imageUrl);
         } catch (error) {
           console.error('Error uploading image:', error);
         }
