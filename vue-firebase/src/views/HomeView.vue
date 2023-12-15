@@ -218,7 +218,6 @@
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
     <div>
       <input type="file" @change="uploadImage" />
-      <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image" />
     </div>
   </div>
 </template>
@@ -569,7 +568,7 @@ export default {
           const db = getDatabase(firebaseApp);
           const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
           const storage = getStorage();
-          const imageRef = storageRef(storage, `images/${file.name}`);
+          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
           await uploadBytes(imageRef, file);
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;
