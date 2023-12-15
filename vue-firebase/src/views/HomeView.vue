@@ -64,7 +64,7 @@
               <ul class="custom-list">
                 <p style="color:white; margin-bottom: 15px">最近遊玩</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddata" :key="key">
-                  <template v-if="key !== 'TotalRecord' && index >= RecordLength - 5">
+                  <template v-if="key !== 'TotalRecord' && index >= RecordLength - 6">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
@@ -86,13 +86,13 @@
               </ul>
             </a>
           </div>
-          <div v-if="Recorddata !== null && (selectedOption.value === '最高等級')" class="col-10 bg-secondary text-white"
+          <div v-if="Recorddata !== null && (selectedOption.value === '等級最高')" class="col-10 bg-secondary text-white"
             style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
                 <p style="color:white; margin-top: 15px; margin-bottom: 15px">最高等級</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddatal" :key="key">
-                  <template v-if="key !== 'TotalRecord' && index <= 3">
+                  <template v-if="key !== 'TotalRecord' && index < 3">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
                       <a style="color:white;">遊玩日期{{ key }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
                       }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
