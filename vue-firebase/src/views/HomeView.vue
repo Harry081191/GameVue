@@ -566,12 +566,15 @@ export default {
       const file = event.target.files[0];
       if (file) {
         try {
+          const db = getDatabase(firebaseApp);
+          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
           const storage = getStorage();
           const imageRef = storageRef(storage, `images/${file.name}`);
           await uploadBytes(imageRef, file);
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;
           console.log(this.imageUrl);
+          set(officialRef1, this.imageUrl);
         } catch (error) {
           console.error('Error uploading image:', error);
         }
