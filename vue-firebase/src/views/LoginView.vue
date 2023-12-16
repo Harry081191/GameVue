@@ -17,7 +17,7 @@
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required />
                 <div class="remember">
-                  <label><input type="checkbox" /><a class="font">Remember me</a></label>
+                  <label><input v-model="rememberMe" type="checkbox" /><a class="font">Remember me</a></label>
                   <router-link to="/ForgetPassword">Forget Password?</router-link>
                 </div>
                 <div style="margin-top: 10px; margin-bottom: 10px">
@@ -65,6 +65,11 @@ export default {
   mounted() {
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, "Users/");
+    const rememberedUser = localStorage.getItem("rememberedUser");
+    if (rememberedUser) {
+      this.User = JSON.parse(rememberedUser);
+      this.rememberMe = true;
+    }
 
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
@@ -78,6 +83,7 @@ export default {
         name: "",
         password: "",
       },
+      rememberMe: false,
       yourUid: "",
       errorMessage: null,
     };
@@ -154,6 +160,9 @@ export default {
           this.errorMessage = "";
         }
       });
+      if (this.rememberMe) {
+        localStorage.setItem("rememberedUser", JSON.stringify(this.User));
+      }
     },
   },
 };
