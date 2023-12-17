@@ -350,7 +350,12 @@ export default {
   },
   mounted() {
     const db = getDatabase(firebaseApp);
-    this.userId = this.$route.params.userId;
+    const storedUserData = localStorage.getItem("rememberedUser");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      this.userId = userData.name;
+      console.log(this.userId);
+    }
     this.checkuserId = this.userId;
     const SerchRef = firebaseRef(db, `Users/`);
     const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
@@ -367,12 +372,6 @@ export default {
       this.listenToRecordK(RecordRef);
       this.listenToRecordT(RecordRef);
     });
-    const storedUserData = localStorage.getItem("rememberedUser");
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      const username = userData.name;
-      console.log(username);
-    }
   },
   methods: {
     listenToDataRef(dataRef) {

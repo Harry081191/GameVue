@@ -125,9 +125,6 @@ export default {
                   if (UserAvailable || UserManager) {
                     this.$router.push({
                       name: "HomeView",
-                      params: {
-                        userId: userId,
-                      },
                     });
                   }
                 }
@@ -152,9 +149,7 @@ export default {
           this.errorMessage = "";
         }
       });
-      if (this.rememberMe) {
-        localStorage.setItem("rememberedUser", JSON.stringify(this.User));
-      }
+      localStorage.setItem("rememberedUser", JSON.stringify(this.User));
     },
   },
 };
