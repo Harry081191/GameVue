@@ -17,8 +17,7 @@
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required />
                 <div class="remember">
-                  <label><input v-model="rememberMe" type="checkbox" /><a class="font">Remember me</a></label>
-                  <router-link to="/ForgetPassword">Forget Password?</router-link>
+                  <router-link to="/ForgetPassword" style="margin-left: auto;">Forget Password?</router-link>
                 </div>
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <button type="submit" class="btn btn-outline-danger">
@@ -45,7 +44,6 @@
 <style>
 .remember {
   display: flex;
-  justify-content: space-between;
 }
 
 .font {
@@ -67,7 +65,6 @@ export default {
     const rememberedUser = localStorage.getItem("rememberedUser");
     if (rememberedUser) {
       this.User = JSON.parse(rememberedUser);
-      this.rememberMe = true;
       console.log(this.User);
       this.handleSubmit();
     }
@@ -83,7 +80,6 @@ export default {
         name: "",
         password: "",
       },
-      rememberMe: false,
       yourUid: "",
       errorMessage: null,
     };
