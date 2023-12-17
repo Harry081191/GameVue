@@ -893,7 +893,7 @@ export default {
       this.UserManager = snapshot.val();
       if (this.UserManager === null) {
         this.UserManager = false;
-      }else if(this.UserManager === true){
+      } else if (this.UserManager === true) {
         this.UserManager = true;
       }
     })
