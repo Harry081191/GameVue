@@ -598,7 +598,6 @@ export default {
     },
     downloadGame() {
       const gameDownloadLink = "https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e";
-
       const downloadLink = document.createElement('a');
       downloadLink.href = gameDownloadLink;
       downloadLink.target = '_blank';
