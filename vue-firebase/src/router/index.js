@@ -48,7 +48,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/ChangePassword.vue"),
   },
   {
-    path: "/Playertalkarea/:userId?",
+    path: "/Playertalkarea",
     name: "Playertalkarea",
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
