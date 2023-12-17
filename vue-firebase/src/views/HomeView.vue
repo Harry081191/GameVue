@@ -1,6 +1,11 @@
 <template>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <div class="Longing">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+      <div v-if="Serchstatus === false" class="button-container">
+        <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text" @click="Logout">登出</router-link>
+      </div>
       <div class="container-fluid">
         <div>
           <router-link to="/HomeView" style="color: #ffffff;">MageSurvivor</router-link>
