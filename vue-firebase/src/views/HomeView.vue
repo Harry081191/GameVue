@@ -6,7 +6,7 @@
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
-            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId },}"
+            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId }, }"
               class="custom-link" :class="{ Serch: Serchstatus }">討論版</router-link>
           </li>
         </ul>
@@ -367,8 +367,12 @@ export default {
       this.listenToRecordK(RecordRef);
       this.listenToRecordT(RecordRef);
     });
-    const username = localStorage.getItem("rememberedUser");
-    console.log(username);
+    const storedUserData = localStorage.getItem("rememberedUser");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      const username = userData.name;
+      console.log(username);
+    }
   },
   methods: {
     listenToDataRef(dataRef) {
@@ -604,7 +608,7 @@ export default {
       set(officialRef1, true);
       this.toggleLogin();
     },
-    Logout(){
+    Logout() {
       localStorage.removeItem("rememberedUser");
     }
   },
