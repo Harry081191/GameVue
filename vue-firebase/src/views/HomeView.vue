@@ -219,6 +219,9 @@
     <div>
       <input type="file" @change="uploadImage" />
     </div>
+    <div>
+      <button @click="downloadGame">下載遊戲</button>
+    </div>
   </div>
 </template>
 <style>
@@ -592,6 +595,17 @@ export default {
           console.error('Error uploading image:', error);
         }
       }
+    },
+    downloadGame() {
+      const gameDownloadLink = "https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e";
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = gameDownloadLink;
+      downloadLink.target = '_blank';
+      downloadLink.download = 'MageSurvivor-1205.rar';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     },
     ban() {
       const db = getDatabase(firebaseApp);
