@@ -1,41 +1,30 @@
 <template>
   <div class="Longing">
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-      <div class="container-fluid">
-        <div>
-          <router-link to="/HomeView" style="color: #ffffff;">MageSurvivor</router-link>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto"> <!-- 使用 ml-auto 使選項靠右對齊 -->
-            <li class="nav-item">
-              <router-link to="/HomeView" class="nav-link" style="color: #ffffff;">首頁</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/Officialnotificationarea" class="nav-link" style="color: #ffffff;">官方公告</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/Playertalkarea" class="nav-link" style="color: #ffffff;">討論區</router-link>
-            </li>
-            <li class="nav-item">
-              <a href="https://drive.google.com/file/d/1d7i2-ogLFM8aEOmYDkwpWE-QSg32K3gP/view?usp=sharing" target="_blank"
-                class="nav-link" style="color: #ffffff;" @click="downloadGame">下載遊戲</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" style="color: #ffffff;">
-                會員選單
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link to="/ChangePassword" class="nav-link" style="color: #ffffff;">更改密碼</router-link>
-                <router-link to="/EmailVerification" class="nav-link" style="color: #ffffff;">綁定電子郵件</router-link>
-              </div>
-            </li>
-          </ul>
-        </div>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+        aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId },}"
+              class="custom-link" :class="{ Serch: Serchstatus }">討論版</router-link>
+          </li>
+        </ul>
+      </div>
+      <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right">
+        <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0"
+          placeholder="Serch player's Name" />
+        <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">
+          Serch
+        </button>
+      </form>
+      <a class="custom-link from-control mr-3 mb-2 mb-sm-0"> | </a>
+      <div v-if="Serchstatus === false" class="button-container">
+        <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text">登出</router-link>
+      </div>
+      <div v-if="Serchstatus === true">
+        <router-link :to="{ name: 'HomeView', params: { userId: $route.params.userId } }" class="custom-link Font-color"
+          @click="toggleLogin">我的首頁</router-link>
       </div>
     </nav>
     <div class="container">
@@ -313,17 +302,12 @@ a.ban {
 import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebaseApp } from "@/main";
-import Vue from 'vue';
-//import { mapGetters } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
     document.title = "首頁";
     next();
-  } /*
-  computed: {
-    ...mapGetters(["getSharedUid"])
-  },*/,
+  },
   data() {
     return {
       data: {},
@@ -383,6 +367,8 @@ export default {
       this.listenToRecordK(RecordRef);
       this.listenToRecordT(RecordRef);
     });
+    const username = localStorage.getItem("rememberedUser");
+    console.log(username);
   },
   methods: {
     listenToDataRef(dataRef) {

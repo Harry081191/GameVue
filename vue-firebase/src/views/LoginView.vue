@@ -55,7 +55,6 @@
 <script>
 import { getDatabase, ref as firebaseRef, onValue, get, set, } from "firebase/database";
 import { firebaseApp } from "@/main";
-import { mapActions } from "vuex";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -69,8 +68,9 @@ export default {
     if (rememberedUser) {
       this.User = JSON.parse(rememberedUser);
       this.rememberMe = true;
+      console.log(this.User);
+      this.handleSubmit();
     }
-
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
       this.data = data; // Store the data in the component's data property
@@ -89,13 +89,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateSharedUid"]),
     handleSubmit() {
       const name = this.User.name;
       const password = this.User.password;
       const db = getDatabase(firebaseApp);
       const usersRef = firebaseRef(db, "Users/");
-
       onValue(usersRef, (snapshot) => {
         const users = snapshot.val();
         const userImage = "https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac.png?alt=media&token=b8785e2a-0017-4160-b015-4c6799b2adb2";
@@ -105,13 +103,11 @@ export default {
         );
         const officialRef1 = firebaseRef(db, `Users/${name}/UserImage`);
         const officialRef2 = firebaseRef(db, `Users/${name}/UserAvailable`);
-
         if (matchedUser) {
           const [, userData] = matchedUser;
 
           if (userData.password === password) {
             const userId = matchedUser[0];
-            this.updateSharedUid(userId);
             get(firebaseRef(db, `Users/${name}/UserImage`)).then((snapshot) => {
               const UserImage = snapshot.val();
               if (UserImage === null) {
@@ -139,24 +135,20 @@ export default {
             });
           } else {
             this.errorMessage = "Invalid password";
-
             this.$toast.error(this.errorMessage, {
               position: "top",
               duration: 3000,
               dismissible: true,
             });
-
             this.errorMessage = "";
           }
         } else {
           this.errorMessage = "Invalid account";
-
           this.$toast.error(this.errorMessage, {
             position: "top",
             duration: 3000,
             dismissible: true,
           });
-
           this.errorMessage = "";
         }
       });
