@@ -20,7 +20,7 @@
       </form>
       <a class="custom-link from-control mr-3 mb-2 mb-sm-0"> | </a>
       <div v-if="Serchstatus === false" class="button-container">
-        <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text">登出</router-link>
+        <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text" @click="Logout">登出</router-link>
       </div>
       <div v-if="Serchstatus === true">
         <router-link :to="{ name: 'HomeView', params: { userId: $route.params.userId } }" class="custom-link Font-color"
@@ -388,12 +388,6 @@ export default {
           { value: "金幣最多", key: "money" },
           { value: "遊玩時間最長", key: "time" },
         ];
-        /*
-        if (this.getSharedUid != this.userId) {
-          this.$router.push({
-            name: 'Login',
-          });
-        }*/
       });
     },
     listenToRecord(RecordRef) {
@@ -609,6 +603,9 @@ export default {
       const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
       set(officialRef1, true);
       this.toggleLogin();
+    },
+    Logout(){
+      localStorage.removeItem("rememberedUser");
     }
   },
 };
