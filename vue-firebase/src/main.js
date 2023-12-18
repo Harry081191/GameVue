@@ -6,8 +6,7 @@ import { initializeApp } from "firebase/app";
 import "vue-toast-notification/dist/theme-sugar.css";
 import VueToast from "vue-toast-notification";
 import 'popper.js';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
+import 'bootstrap';
 
 const app = createApp(App);
 
