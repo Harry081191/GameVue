@@ -30,10 +30,6 @@
                   <a class="from-control mr-2 mb-1 mb-sm-0">Don't have an account?</a>
                   <router-link to="/CreateAccount" class="from-control mr-2 mb-1 mb-sm-0">Register</router-link>
                 </div>
-                <div>
-                  <a class="from-control mr-2 mb-1 mb-sm-0">Haven’t bound your email yet?</a>
-                  <router-link to="/EmailVerification" class="from-control mr-2 mb-1 mb-sm-0">Binding</router-link>
-                </div>
               </form>
             </div>
           </div>
