@@ -23,8 +23,8 @@
               <router-link to="/Playertalkarea" class="nav-link" style="color: #ffffff;">討論區</router-link>
             </li>
             <li class="nav-item">
-              <a href="https://drive.google.com/file/d/1d7i2-ogLFM8aEOmYDkwpWE-QSg32K3gP/view?usp=sharing" target="_blank"
-                class="nav-link" style="color: #ffffff;">下載遊戲</a>
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+                target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
