@@ -47,7 +47,7 @@
       <div class="p-3 wrapper">
         <div class="row justify-content-center">
           <div class="col-6" style="text-align: center">
-            <h2>角色資訊<a v-if="data.Manager">(管理者)</a>{{ selectedOption.value }}</h2>
+            <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
             <i class="fas fa-user-alt-slash"></i>
@@ -202,7 +202,7 @@
                           <li v-for="(item, key1) in Recorddatat" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
-                                item.money }}／遊玩時長：{{ item.time }}<br/>升級：習得技能：<br/><a
+                                item.money }}／遊玩時長：{{ item.time }}<br/>習得技能：<br/><a
                                   v-if="item.SkillUpgradeRecord.getFireBall">火球<br/></a><a
                                   v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br/></a><a
                                   v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br/></a><a
