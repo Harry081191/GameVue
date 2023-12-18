@@ -1,5 +1,5 @@
 <template>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <div class="Longing">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -88,8 +88,9 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddata" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a>遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                              <a style="font-size: 20px;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
+                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord
+  }}</a>
                             </template>
                           </li>
                         </ul>
@@ -116,8 +117,8 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddatal" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
+                                item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord }}</a>
                             </template>
                           </li>
                         </ul>
@@ -144,8 +145,8 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddatak" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
+                                item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord }}</a>
                             </template>
                           </li>
                         </ul>
@@ -172,8 +173,8 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddatam" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
+                                item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord }}</a>
                             </template>
                           </li>
                         </ul>
@@ -200,8 +201,15 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddatat" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}</a>
+                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
+                                item.money }}／遊玩時長：{{ item.time }}<br/>升級：習得技能：<br/><a
+                                  v-if="item.SkillUpgradeRecord.getFireBall">火球<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br/></a><a
+                                  v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br/></a></a>
                             </template>
                           </li>
                         </ul>
@@ -220,7 +228,7 @@
                 <p style="margin-top: 15px; margin-bottom: 15px">遊玩總計</p>
                 <li v-for="(item, key) in Recorddata" :key="key">
                   <template v-if="key === 'TotalRecord'"><a>總紀錄：</a> 總擊殺數：{{ item.totalkillnumber }}／總獲取金幣：{{
-                    item.totalmoney }}／總遊玩時長：{{ item.totaltime }}秒
+                    item.totalmoney }}／總遊玩時長：{{ item.totaltime }}秒／總死亡次數：{{ item.totalDiedTimes }}次
                   </template>
                 </li>
               </ul>
@@ -418,6 +426,7 @@ export default {
         this.Recordindex = Object.values(Recorddata);
         this.RecordLength = this.Recordindex.length;
         this.Recorddata = Recorddata;
+        console.log(this.Recorddata);
       });
     },
     listenToRecordL(RecordRef) {
@@ -569,6 +578,7 @@ export default {
     toggleDetail(key) {
       this.showDetail = !this.showDetail;
       this.keycheck = key;
+      console.log(this.keycheck);
     },
     toggleLogin() {
       const db = getDatabase(firebaseApp);
