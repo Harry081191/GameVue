@@ -205,28 +205,6 @@
                                 item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br />
                                 <div class="skills-container">
                                   <div class="column">
-                                    <div style="text-align: left;">習得技能：<br /><a
-                                        v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
-                                  </div>
-                                  <div class="column">
-                                    <div style="text-align: left;">升級詳細：<br /><a
-                                        v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
-                                        v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
-                                  </div>
-                                </div>
-                                <div class="skills-container">
-                                  <div class="column">
                                     <div style="text-align: left;">習得技能：</div>
                                   </div>
                                   <div class="column">
