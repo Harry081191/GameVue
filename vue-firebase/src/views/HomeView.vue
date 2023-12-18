@@ -202,14 +202,16 @@
                           <li v-for="(item, key1) in Recorddatat" :key="key1">
                             <template v-if="key1 === keycheck">
                               <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
-                                item.money }}／遊玩時長：{{ item.time }}<br/>習得技能：<br/><a
-                                  v-if="item.SkillUpgradeRecord.getFireBall">火球<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br/></a><a
-                                  v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br/></a></a>
+                                item.money }}／遊玩時長：{{ item.time }}<br />
+                                <div style="text-align: left;">習得技能：<br /><a
+                                    v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
+                                    v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
+                              </a>
                             </template>
                           </li>
                         </ul>
