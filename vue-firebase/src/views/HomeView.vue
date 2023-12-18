@@ -201,16 +201,96 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddatat" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="color:black;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber }}／金幣：{{
-                                item.money }}／遊玩時長：{{ item.time }}<br />
-                                <div style="text-align: left;">習得技能：<br /><a
-                                    v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
-                                    v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
+                              <a style="color:black; font-size: 18px;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
+                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}<br />
+                                <div class="skills-container">
+                                  <div class="column">
+                                    <div style="text-align: left;">習得技能：<br /><a
+                                        v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
+                                  </div>
+                                  <div class="column">
+                                    <div style="text-align: left;">升級詳細：<br /><a
+                                        v-if="item.SkillUpgradeRecord.getFireBall">火球<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getFlameJet">噴射火焰<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getWaterSplash">水花濺射<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getBloodExplode">血液爆發<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.getLightningStrike">閃電打擊<br /></a></div>
+                                  </div>
+                                </div>
+                                <div class="skills-container">
+                                  <div class="column">
+                                    <div style="text-align: left;">習得技能：</div>
+                                  </div>
+                                  <div class="column">
+                                    <div style="text-align: left;">升級詳細：</div>
+                                  </div>
+                                </div>
+                                <div v-if="item.SkillUpgradeRecord.getFireBall" class="skills-container">
+                                  <div class="column">
+                                    <div style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.getFireBall">火球：<br /></a></div>
+                                  </div>
+                                  <div class="column">
+                                    <div
+                                      v-if="!item.SkillUpgradeRecord.FireBallDamage && !item.SkillUpgradeRecord.FireballPierce && !item.SkillUpgradeRecord.FireBallProject && !item.SkillUpgradeRecord.FireBallChain"
+                                      style="text-align: left;"><a>沒有強化過此武器</a></div>
+                                    <div v-else style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.FireBallDamage">傷害提升：{{
+                                          item.SkillUpgradeRecord.FireBallDamage * 20 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.FireballPierce">穿透敵人：{{
+                                          item.SkillUpgradeRecord.FireballPierce * 1 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.FireBallProject">發射數量：{{
+                                          item.SkillUpgradeRecord.FireBallProject * 2 + 1 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.FireBallChain">自動追蹤：{{
+                                          item.SkillUpgradeRecord.FireBallChain }}<br /></a></div>
+                                  </div>
+                                </div>
+                                <div v-if="item.SkillUpgradeRecord.getLightningBlast" class="skills-container">
+                                  <div class="column">
+                                    <div style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.getLightningBlast">閃電爆破：<br /></a></div>
+                                  </div>
+                                  <div class="column">
+                                    <div
+                                      v-if="!item.SkillUpgradeRecord.LightningBlastDamage && !item.SkillUpgradeRecord.LightningBlastHit && !item.SkillUpgradeRecord.LightningBlastHitRange && !item.SkillUpgradeRecord.LightningBlastAttackRange"
+                                      style="text-align: left;"><a>沒有強化過此武器</a></div>
+                                    <div v-else style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.LightningBlastDamage">傷害提升：{{
+                                          item.SkillUpgradeRecord.LightningBlastDamage * 15 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
+                                          item.SkillUpgradeRecord.LightningBlastHit * 1 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
+                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
+                                          item.SkillUpgradeRecord.LightningBlastAttackRange }}<br /></a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div v-if="item.SkillUpgradeRecord.getMagicWeapon" class="skills-container">
+                                  <div class="column">
+                                    <div style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.getMagicWeapon">魔法武器：<br /></a></div>
+                                  </div>
+                                  <div class="column">
+                                    <div
+                                      v-if="!item.SkillUpgradeRecord.MagicWeaponDamage && !item.SkillUpgradeRecord.MagicWeaponNum"
+                                      style="text-align: left;"><a>沒有強化過此武器</a></div>
+                                    <div v-else style="text-align: left;"><a
+                                        v-if="item.SkillUpgradeRecord.MagicWeaponDamage">傷害提升：{{
+                                          item.SkillUpgradeRecord.MagicWeaponDamage * 15 }}<br /></a><a
+                                        v-if="item.SkillUpgradeRecord.MagicWeaponNum">數量提升：{{
+                                          item.SkillUpgradeRecord.MagicWeaponNum * 1 }}<br /></a>
+                                    </div>
+                                  </div>
+                                </div>
                               </a>
                             </template>
                           </li>
@@ -309,6 +389,14 @@ button.ban {
 
 a.ban {
   visibility: hidden;
+}
+
+.skills-container {
+  display: flex;
+}
+
+.column {
+  flex: 1;
 }
 
 .v-enter-active {
