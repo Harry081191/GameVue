@@ -894,7 +894,11 @@ export default {
     // Access the Firebase Realtime Database
     const db = getDatabase(firebaseApp);
     const dataRef = firebaseRef(db, 'Official/');
-    this.userId = this.$route.params.userId;
+    const storedUserData = localStorage.getItem("rememberedUser");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      this.userId = userData.name;
+    }
     get(firebaseRef(db, `Users/${this.userId}/Manager`)).then((snapshot) => {
       this.UserManager = snapshot.val();
       if (this.UserManager === null) {
