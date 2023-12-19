@@ -88,9 +88,8 @@
                         <ul class="custom-list">
                           <li v-for="(item, key1) in Recorddata" :key="key1">
                             <template v-if="key1 === keycheck">
-                              <a style="font-size: 20px;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{
-                                item.killnumber }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord
-  }}</a>
+                              <a style="font-size: 20px;">遊玩日期{{ key1 }}： 等級：{{ item.Level }}／擊殺數：{{ item.killnumber
+                              }}／金幣：{{ item.money }}／遊玩時長：{{ item.time }}{{ item.SkillUpgradeRecord }}</a>
                             </template>
                           </li>
                         </ul>
@@ -192,7 +191,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.FlameJetDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.FlameJetDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.FlameJetDamage * 10 }}<br /></a>
@@ -206,7 +206,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.WaterSplashDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.WaterSplashDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.WaterSplashDamage * 20 }}<br /></a>
@@ -220,7 +221,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.BloodExplodeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.BloodExplodeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.BloodExplodeDamage * 10 }}<br /></a>
@@ -234,7 +236,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.LightningStrikeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.LightningStrikeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.LightningStrikeDamage * 10 }}<br /></a>
@@ -344,7 +347,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.FlameJetDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.FlameJetDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.FlameJetDamage * 10 }}<br /></a>
@@ -358,7 +362,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.WaterSplashDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.WaterSplashDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.WaterSplashDamage * 20 }}<br /></a>
@@ -372,7 +377,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.BloodExplodeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.BloodExplodeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.BloodExplodeDamage * 10 }}<br /></a>
@@ -386,7 +392,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.LightningStrikeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.LightningStrikeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.LightningStrikeDamage * 10 }}<br /></a>
@@ -496,7 +503,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.FlameJetDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.FlameJetDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.FlameJetDamage * 10 }}<br /></a>
@@ -510,7 +518,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.WaterSplashDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.WaterSplashDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.WaterSplashDamage * 20 }}<br /></a>
@@ -524,7 +533,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.BloodExplodeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.BloodExplodeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.BloodExplodeDamage * 10 }}<br /></a>
@@ -538,7 +548,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.LightningStrikeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.LightningStrikeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.LightningStrikeDamage * 10 }}<br /></a>
@@ -648,7 +659,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.FlameJetDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.FlameJetDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.FlameJetDamage * 10 }}<br /></a>
@@ -662,7 +674,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.WaterSplashDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.WaterSplashDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.WaterSplashDamage * 20 }}<br /></a>
@@ -676,7 +689,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.BloodExplodeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.BloodExplodeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.BloodExplodeDamage * 10 }}<br /></a>
@@ -690,7 +704,8 @@
                                   </div>
                                   <div class="column">
                                     <div v-if="!item.SkillUpgradeRecord.LightningStrikeDamage" style="text-align: left;">
-                                      <a>沒有強化過此武器</a></div>
+                                      <a>沒有強化過此武器</a>
+                                    </div>
                                     <div v-else style="text-align: left;"><a
                                         v-if="item.SkillUpgradeRecord.LightningStrikeDamage">傷害提升：{{
                                           item.SkillUpgradeRecord.LightningStrikeDamage * 10 }}<br /></a>
