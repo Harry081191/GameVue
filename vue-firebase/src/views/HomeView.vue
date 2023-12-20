@@ -1,11 +1,9 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <div class="Longing">
+    
+  <div class="Longing font">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-      <div v-if="Serchstatus === false" class="button-container">
-        <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text" @click="Logout">登出</router-link>
-      </div>
       <div class="container-fluid">
         <div>
           <router-link to="/HomeView" style="color: #ffffff;">MageSurvivor</router-link>
@@ -15,34 +13,49 @@
           </button>
         </div>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto"> <!-- 使用 ml-auto 使選項靠右對齊 -->
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <router-link to="/HomeView" class="nav-link" style="color: #ffffff;">首頁</router-link>
             </li>
+
             <li class="nav-item">
               <router-link to="/Officialnotificationarea" class="nav-link" style="color: #ffffff;">官方公告</router-link>
             </li>
+
             <li class="nav-item">
               <router-link to="/Playertalkarea" class="nav-link" style="color: #ffffff;">討論區</router-link>
             </li>
+
             <li class="nav-item">
-              <a href="https://drive.google.com/file/d/1d7i2-ogLFM8aEOmYDkwpWE-QSg32K3gP/view?usp=sharing" target="_blank"
-                class="nav-link" style="color: #ffffff;">下載遊戲</a>
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+                target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" style="color: #ffffff;">
-                會員選單
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link to="/ChangePassword" class="nav-link" style="color: #ffffff;">更改密碼</router-link>
-                <router-link to="/EmailVerification" class="nav-link" style="color: #ffffff;">綁定電子郵件</router-link>
-              </div>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link" @click="showAccountOptions = !showAccountOptions"
+                style="color: #ffffff; position: relative;">帳號選項</a>
+              <ul v-if="showAccountOptions" class="account-options">
+                <li>
+                  <input type="file" @change="uploadImage" />
+                </li>
+                <li>
+                  <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
+                </li>
+                <li>
+                  <router-link to="/EmailVerification" class="nav-link" style="color: #000000;">綁定電子郵件</router-link>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text"
+                    @click="Logout">登出</router-link>
+                </li>
+              </ul>
             </li>
+
           </ul>
         </div>
       </div>
     </nav>
+
     <div class="container">
       <div class="p-3 wrapper">
         <div class="row justify-content-center">
@@ -958,6 +971,48 @@ a.ban {
 .v-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+
+.menu-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li {
+  margin-right: 15px;
+}
+
+.account-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #888;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  margin-top: 0;
+  width: max-content;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.account-options li a {
+  color: #000;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.account-options li:hover {
+  background-color: #ddd;
+}
+
+.account-options li:active {
+  background-color: #aaa;
 }
 </style>
 <script>

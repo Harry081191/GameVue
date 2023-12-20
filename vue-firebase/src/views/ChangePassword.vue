@@ -10,7 +10,7 @@
           </button>
         </div>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto"> <!-- 使用 ml-auto 使選項靠右對齊 -->
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <router-link to="/HomeView" class="nav-link" style="color: #ffffff;">首頁</router-link>
             </li>
@@ -28,56 +28,25 @@
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
-            <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown link
-              </a>
-
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </div>
-
-            <div id="menu">
-              <ul>
-                <li> <a href="#">Fruits</a>
-                  <ul>
-                    <li><a href="#">Apple</a></li>
-                    <li><a href="#">Banana</a></li>
-                    <li><a href="#">Cherry</a></li>
-                    <li><a href="#">Orange</a></li>
-                  </ul>
+            <li class="nav-item">
+              <a href="#" class="nav-link" @click="showAccountOptions = !showAccountOptions"
+                style="color: #ffffff; position: relative;">帳號選項</a>
+              <ul v-if="showAccountOptions" class="account-options">
+                <li>
+                  <input type="file" @change="uploadImage" />
                 </li>
-                <li> <a href="#">Vegetables</a>
-                  <ul>
-                    <li><a href="#Broccoli">Broccoli</a></li>
-                    <li><a href="#Cabbage">Cabbage</a></li>
-                    <li><a href="#Peas">Peas</a></li>
-                    <li><a href="#Onion">Onion</a></li>
-                  </ul>
+                <li>
+                  <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
                 </li>
-                <li> <a href="#Meats">Meats</a>
-                  <ul>
-                    <li> <a href="#White_Meat">White Meat</a>
-                      <ul>
-                        <li><a href="#Chicken">Chicken</a></li>
-                        <li><a href="#Duck">Duck</a></li>
-                        <li><a href="#Fish">Fish</a></li>
-                      </ul>
-                    </li>
-                    <li> <a href="#Red_Meat">Red Meat</a>
-                      <ul>
-                        <li><a href="#Beef">Beef</a></li>
-                        <li><a href="#Pork">Pork</a></li>
-                      </ul>
-                    </li>
-                  </ul>
+                <li>
+                  <router-link to="/EmailVerification" class="nav-link" style="color: #000000;">綁定電子郵件</router-link>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text"
+                    @click="Logout">登出</router-link>
                 </li>
               </ul>
-            </div>
+            </li>
 
           </ul>
         </div>
@@ -130,6 +99,7 @@ export default {
       selectedItem: null,
       userExists: false,
       errorMessage: "",
+      showAccountOptions: false,
     };
   },
   methods: {
@@ -175,6 +145,27 @@ export default {
         this.errorMessage = "Error changing password. Please try again.";
       }
     },
+    async uploadImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const db = getDatabase(firebaseApp);
+          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
+          const storage = getStorage();
+          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
+          await uploadBytes(imageRef, file);
+          const downloadURL = await getDownloadURL(imageRef);
+          this.imageUrl = downloadURL;
+          console.log(this.imageUrl);
+          await set(officialRef1, this.imageUrl);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      }
+    },
+    Logout() {
+      localStorage.removeItem("rememberedUser");
+    }
   },
 };
 </script>
@@ -184,164 +175,45 @@ export default {
   font-family: 微軟正黑體;
 }
 
-#menu {
-  /* 選單大小 */
-  width: 600px;
-  height: 30px;
-}
-
-#menu ul {
-  /* 取消ul樣式符號 */
-  list-style-type: none;
-  /* 重設ul邊界與留白為零 */
+.menu-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
   margin: 0;
   padding: 0;
-  /* 內有浮動元件時，需設overflow才會自動調整大小 */
-  overflow: auto;
 }
 
-* html #menu ul {
-  /* 解決IE6不理overflow問題，直接指定高度 */
-  height: 30px;
+.menu-list li {
+  margin-right: 15px;
 }
 
-#menu ul li {
-  /* 利用float讓第一層li水平排列 */
-  float: left;
-}
-
-/* 解決IE6條列式餘白問題*/
-* html #menu ul li {
-  display: inline;
-}
-
-#menu ul li a {
-  /* 將a改為區塊元件，以便指定寬高 */
-  display: block;
-  /* 這邊也要設float，否則IE6會以100%寬度顯示 */
-  float: left;
-  /* 固定高度 */
-  height: 30px;
-  width: 100px;
-  text-align: center;
-}
-
-#menu ul li ul {
-  /* 讓第二層ul跳脫文件流以利定位 */
+.account-options {
   position: absolute;
-  /* 固定寬度 */
-  width: 100px;
-  /* 避免出現捲軸 */
-  overflow: visible;
-  /* 讓ul與母階層li相同位置 */
-  clear: left;
-  margin-top: 30px;
-  margin-right: 0;
-  margin-bottom: 0;
-  margin-left: 0;
-}
-
-/* 修正IE7絕對定位差異 */
-*:first-child+html #menu ul li ul {
+  top: 100%;
+  right: 0;
+  background-color: #888;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
   margin-top: 0;
+  width: max-content;
+  line-height: 30px;
+  font-size: 14px;
 }
 
-/* 修正IE6絕對定位差異 */
-* html #menu ul li ul {
-  margin-top: 0;
+.account-options li a {
+  color: #000;
+  font-size: 18px;
+  line-height: 25px;
 }
 
-#menu ul li ul li {
-  /* 覆寫繼承自第一層的浮動設定 */
-  float: none;
-  text-align: center;
+.account-options li:hover {
+  background-color: #ddd;
 }
 
-#menu ul li ul li a {
-  /* 覆寫繼承自第一層的浮動設定 */
-  float: none;
-  width: 100%;
-  /* 註：display、height、padding繼承第一層的設定 */
+.account-options li:active {
+  background-color: #aaa;
 }
-
-#menu ul li ul li ul {
-  margin-top: -30px;
-  margin-right: 0;
-  margin-bottom: 0;
-  margin-left: 100px;
-  width: 100%;
-}
-
-/* 修正IE7絕對定位差異 */
-*:first-child+html #menu ul li ul li ul {
-  margin-top: -30px;
-}
-
-#menu ul li ul li ul li {
-  /* width、float繼承第二層，免設定 */
-}
-
-#menu ul li ul li ul li a {
-  /* width、float繼承第二層，免設定 */
-}
-
-/* ---------- 隱藏與顯示階層 ---------- */
-#menu ul li ul {
-  /* 預先隱藏第二層 */
-  visibility: hidden;
-}
-
-#menu ul li:hover ul {
-  /* 觸動第一層時，顯示第二層 */
-  visibility: visible;
-}
-
-#menu ul li:hover ul li ul {
-  /* 顯示第二層時，隱藏第三層，避免同時彈出 */
-  visibility: hidden;
-}
-
-#menu ul li ul li:hover ul {
-  /* 觸動第二層時，顯示第三層 */
-  visibility: visible;
-}
-
-#menu ul li ul li:hover ul li ul {
-  /* 顯示第三層時，隱藏第四層，避免同時彈出 */
-  visibility: hidden;
-}
-
-#menu ul li ul li ul li:hover ul {
-  /* 觸動第三層時，顯示第四層 */
-  visibility: visible;
-}
-
-/* ---------- 以下為美化用，非必需 ---------- */
-
-
-/* 預設字體 */
-#menu {
-  color: #ffffff;;
-}
-
-
-/*第二層ul背景色彩與邊框  */
-#menu ul li ul {
-  background: #efefef;
-}
-
-/* 觸動第一層li時，改變背景色 */
-#menu ul li:hover,
-#menu ul li a:hover {
-  background: #efefef;
-}
-
-#menu ul li:hover a {
-  color: #333333;
-}
-
-/* 觸動第二層以上li時改變背景色 */
-#menu ul li ul li:hover,
-#menu ul li ul li a:hover {
-  background: #dfdfdf;
-}</style>
+</style>
