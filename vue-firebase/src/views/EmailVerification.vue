@@ -35,7 +35,11 @@
                 style="color: #ffffff; position: relative;">帳號選項</a>
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
-                  <input type="file" @change="uploadImage" />
+                  <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
+
+                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                    更換頭像
+                  </strong>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -158,6 +162,24 @@ export default {
       } catch (error) {
         this.errorMessage = error.message;
         console.error("Error:", error);
+      }
+    },
+    async uploadImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const db = getDatabase(firebaseApp);
+          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
+          const storage = getStorage();
+          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
+          await uploadBytes(imageRef, file);
+          const downloadURL = await getDownloadURL(imageRef);
+          this.imageUrl = downloadURL;
+          console.log(this.imageUrl);
+          await set(officialRef1, this.imageUrl);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
       }
     },
     Logout() {
