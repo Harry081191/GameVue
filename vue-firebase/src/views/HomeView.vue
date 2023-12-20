@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 
-  <div class="Longing font">
+  <div class="Longing">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <div>
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <router-link to="/HomeView" class="nav-link" style="color: #ffffff;">首頁</router-link>
+              <router-link to="/HomeView" class="nav-link" @click="toggleLogin" style="color: #ffffff;">首頁</router-link>
             </li>
 
             <li class="nav-item">
@@ -36,7 +36,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
@@ -46,10 +46,9 @@
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
                   <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
-
-                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
                     更換頭像
-                  </strong>
+                  </label>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -897,6 +896,10 @@
   </div>
 </template>
 <style>
+.font {
+  font-family: 微軟正黑體;
+}
+
 .form-container {
   position: fixed;
   top: 50%;
@@ -1014,7 +1017,7 @@ a.ban {
 .account-options li a {
   color: #000;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 30px;
 }
 
 .account-options li:hover {
@@ -1026,7 +1029,7 @@ a.ban {
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
+import { getDatabase, ref as firebaseRef, onValue, set } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebaseApp } from "@/main";
 
@@ -1073,6 +1076,7 @@ export default {
       RecordLengthk: 0,
       RecordLengthm: 0,
       RecordLengtht: 0,
+      showAccountOptions: false,
     };
   },
   mounted() {

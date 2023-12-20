@@ -1,7 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <div class="EmailVerification">
+  <div class="EmailVerification font">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <div>
@@ -26,7 +26,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
@@ -36,10 +36,9 @@
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
                   <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
-
-                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
                     更換頭像
-                  </strong>
+                  </label>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -104,7 +103,9 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as firebaseRef, ref, get } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firebaseApp } from "@/main";
 
 export default {
   data() {
@@ -116,6 +117,7 @@ export default {
       },
       errorMessage: null,
       verificationSent: false,
+      showAccountOptions: false,
     };
   },
   methods: {
@@ -165,13 +167,19 @@ export default {
       }
     },
     async uploadImage(event) {
+      const storedUserData = localStorage.getItem("rememberedUser");
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        this.name = userData.name;
+      }
+      console.error(this.name);
       const file = event.target.files[0];
       if (file) {
         try {
           const db = getDatabase(firebaseApp);
-          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
+          const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
           const storage = getStorage();
-          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
+          const imageRef = storageRef(storage, `${this.name}/${file.name}`);
           await uploadBytes(imageRef, file);
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;
@@ -192,6 +200,48 @@ export default {
 <style>
 .font {
   font-family: 微軟正黑體;
+}
+
+.menu-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li {
+  margin-right: 15px;
+}
+
+.account-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #888;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  margin-top: 0;
+  width: max-content;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.account-options li a {
+  color: #000;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.account-options li:hover {
+  background-color: #ddd;
+}
+
+.account-options li:active {
+  background-color: #aaa;
 }
 
 .menu-list {

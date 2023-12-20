@@ -24,7 +24,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
@@ -34,10 +34,9 @@
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
                   <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
-
-                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
                     更換頭像
-                  </strong>
+                  </label>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -71,7 +70,7 @@
                 <strong>密碼</strong>
                 <input v-model="User.password" type="password" class="form-control font" id="Password" name="Password"
                   placeholder="請輸入密碼" required />
-                <strong>新密碼:</strong>
+                <strong>新密碼</strong>
                 <input v-model="User.newPassword" type="password" class="form-control font" id="newPassword"
                   placeholder="請輸入新密碼" required />
                 <div style="margin-top: 10px; margin-bottom: 10px">
@@ -85,12 +84,15 @@
         </div>
       </div>
     </div>
+
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div>
 </template>
 
 <script>
-import { getDatabase, ref, update, get } from "firebase/database";
+import { getDatabase, ref as firebaseRef, ref, get, update, set } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firebaseApp } from "@/main";
 
 export default {
   data() {
@@ -104,6 +106,7 @@ export default {
       userExists: false,
       errorMessage: "",
       showAccountOptions: false,
+      checkuserId: "",
     };
   },
   methods: {
@@ -127,6 +130,7 @@ export default {
         }
       } catch (error) {
         console.error("Error fetching user:", error.message);
+        this.errorMessage = "發生錯誤，請重試。"; // Update the error message
       }
     },
     async changePassword() {
@@ -143,38 +147,25 @@ export default {
         } else {
           this.errorMessage = "密碼字數需大於六個字";
         }
-
       } catch (error) {
         console.error("Error changing password:", error.message);
-        this.errorMessage = "Error changing password. Please try again.";
+        this.errorMessage = "變更密碼時發生錯誤，請重試。"; // Update the error message
       }
     },
     async uploadImage(event) {
+      const storedUserData = localStorage.getItem("rememberedUser");
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        this.name = userData.name;
+      }
+      console.error(this.name);
       const file = event.target.files[0];
       if (file) {
         try {
           const db = getDatabase(firebaseApp);
-          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
+          const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
           const storage = getStorage();
-          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
-          await uploadBytes(imageRef, file);
-          const downloadURL = await getDownloadURL(imageRef);
-          this.imageUrl = downloadURL;
-          console.log(this.imageUrl);
-          await set(officialRef1, this.imageUrl);
-        } catch (error) {
-          console.error('Error uploading image:', error);
-        }
-      }
-    },
-    async uploadImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        try {
-          const db = getDatabase(firebaseApp);
-          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
-          const storage = getStorage();
-          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
+          const imageRef = storageRef(storage, `${this.name}/${file.name}`);
           await uploadBytes(imageRef, file);
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;

@@ -1,429 +1,465 @@
 <template>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <div class="Officialnotificationarea">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
-        aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-      <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
-            <router-link :to="{ name: 'Playertalkarea', params: { userId: $route.params.userId } }"
-              class="custom-link font">玩家討論版</router-link>
-            <a class="custom-link">
-              |
-            </a>
-            <router-link :to="{ name: 'Officialnotificationarea', params: { userId: $route.params.userId } }"
-              class="custom-link font">官方通知區</router-link>
-          </li>
-        </ul>
-      </div>
-      <router-link :to="{ name: 'HomeView', params: { userId: $route.params.userId } }"
-        class="custom-link font">我的首頁</router-link>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="p-3 wrapper" style="margin-bottom: -1px;">
-      <div class="row justify-content-center">
-        <div class="col-8" style="text-align: center">
-          <strong class="font" style="font-size: 36px;">討論區</strong>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+      <div class="container-fluid">
+        <div>
+          <router-link to="/HomeView" style="color: #ffffff;">MageSurvivor</router-link>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
         </div>
-        <div class="col-10">
-          <div style="text-align: right">
-            <button class="table font" @click="toggleForm"
-              style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
-          </div>
-          <Transition>
-            <div v-if="showForm" class="form-container">
-              <form @submit.prevent="submitPost">
-                <div class="button-content">
-                  <div class="button-content-right">
-                    <button type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
-                  </div>
-                </div>
-                <div>
-                  <input class="font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題"
-                    required>
-                </div>
-                <div>
-                  <textarea class="font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨"
-                    required></textarea>
-                </div>
-                <div>
-                  <textarea class="font" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
-                    required></textarea>
-                </div>
-                <div style="text-align: right">
-                  <button class="font" type="submit">提交</button>
-                </div>
-              </form>
-            </div>
-          </Transition>
-          <div v-if="showForm" class="overlay" @click="toggleForm"></div>
-        </div>
-        <div class="col-10 bg-white text-dark" style="text-align: center;">
-          <ul class="custom-list">
-            <li v-for="(item, index) in dataindex" :key="index">
-              <div v-if="item.forumavailable || UserManager" class="post-container font" style="border-radius:50px;">
-                <div class="button-content font">
-                  <div class="button-content-right font" style="margin-right: 15px;">
-                    <div id="menu">
-                      <ul>
-                        <li> <a @click="toggleMenu(index)">MENU</a>
-                          <ul v-if="menuStates[index]">
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: UserManager }" @click="toggleReport()"><i
-                                  class="fas fa-exclamation-triangle"></i> 舉報</button>
-                              <Transition>
-                                <div v-if="reportForm" class="form-container">
-                                  <form @submit.prevent="submitReport(index)">
-                                    <div class="button-content">
-                                      <div class="button-content-right">
-                                        <button type="button" @click="toggleReport(index)"><i
-                                            class="fas fa-times"></i></button>
-                                      </div>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="色情內容"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        色情內容
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="暴力或反感內容"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        暴力或反感內容
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="仇恨或惡意內容"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        仇恨或惡意內容
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="騷擾跟霸凌內容"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        騷擾跟霸凌內容
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="錯誤資訊"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        錯誤資訊
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="宣傳恐怖主義"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        宣傳恐怖主義
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="垃圾內容或誤導內容"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        垃圾內容或誤導內容
-                                      </label>
-                                    </div>
-                                    <div class="remember font" style="text-align: left">
-                                      <label class="remember-label font" style="font-size: 18px;">
-                                        <input type="radio" v-model="reportPost.selectedContent" value="法律問題"
-                                          class="remember-radio font">
-                                        <span class="radio-custom font"></span>
-                                        法律問題
-                                      </label>
-                                    </div>
-                                    <div style="text-align: right;">
-                                      <button class="font" type="submit" style="width: 60px; height: 25px;">提交</button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </Transition>
-                              <div v-if="reportForm" class="overlay" @click="toggleReport(index)"></div>
-                            </li>
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleEdit(index)"><i
-                                  class="far fa-edit"></i> 編輯</button>
-                              <Transition>
-                                <div v-if="editForm" class="form-container">
-                                  <form @submit.prevent="submitEdit(index)">
-                                    <div class="button-content">
-                                      <div class="button-content-right">
-                                        <button type="button" @click="toggleEdit(index)"><i
-                                            class="fas fa-times"></i></button>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <input class="font" style="text-align: center" v-model="editPost.title" type="text"
-                                        placeholder="帖子標題" required>
-                                    </div>
-                                    <div>
-                                      <textarea class="font" style="text-align: center" v-model="editPost.subject"
-                                        placeholder="帖子主旨" required></textarea>
-                                    </div>
-                                    <div>
-                                      <textarea class="font" style="text-align: center" v-model="editPost.content"
-                                        placeholder="帖子內容" required></textarea>
-                                    </div>
-                                    <div style="text-align: right">
-                                      <button class="font" type="submit">提交</button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </Transition>
-                              <div v-if="editForm" class="overlay" @click="toggleEdit(index)"></div>
-                            </li>
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleBan(index)"><i
-                                  class="fas fa-exclamation-triangle"></i> 封鎖</button>
-                            </li>
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleunBan(index)"><i
-                                  class="far fa-trash-alt"></i> 解封</button>
-                            </li>
-                            <li><button type="button"
-                                style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
-                                :class="{ deleted: !UserManager }" @click="toggleDelete(index)"><i
-                                  class="far fa-trash-alt"></i> 刪除</button>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <p style="font-size:40px;">{{ item.title }}</p>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-3 bg-white text-dark" style="text-align: center;">
-                      <a style="font-size: 40px;">
-                        <p><img class="resizable-image"
-                            src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c">
-                        </p>
-                      </a>
-                    </div>
-                    <div class="col-9 bg-white text-dark" style="text-align: center;">
-                      <a style="font-size: 32px;">
-                        <p>{{ item.subject }}</p>
-                      </a>
-                      <a style="font-size: 16px;">
-                        <p>內容：{{ item.content }}</p>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="button-content">
-                  <div class="button-content-right">
-                    <a class="like-count">{{ item.message.total }}</a>
-                    <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
-                    <Transition>
-                      <div v-if="showMessage && index === openFormIndex" class="message-container">
-                        <div class="form-scroll">
-                          <form @submit.prevent="submitMessage(index)">
-                            <div class="button-content">
-                              <div class="button-content-right">
-                                <button type="button" @click="toggleMessage()"><i class="fas fa-times"></i></button>
-                              </div>
-                            </div>
-                            <div>
-                              <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
-                            </div>
-                            <div class="button-content">
-                              <div class="button-content-right">
-                                <button class="font" type="submit" style="margin-bottom: 10px">提交回復</button>
-                              </div>
-                            </div>
-                            <ul class="custom-list">
-                              <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
-                                <template v-if="messageIndex !== 'total'">
-                                  <div class="button-content"
-                                    style="margin-bottom:0px; font-size:15px; text-align: left;">
-                                    <div>
-                                      <img class="resizable-image-message" :src="messageimagelist[messageIndex]" />
-                                      留言人：{{ Object.values(messageItem.messagename)[0] }}
-                                    </div>
-                                    <div class="button-content-right">
-                                      <div id="messagemenu">
-                                        <ul>
-                                          <li> <a @click="mtoggleMenu(messageIndex)"><i class="fas fa-list-ul"></i></a>
-                                            <ul v-if="mmenuStates[messageIndex]">
-                                              <li><button type="button"
-                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
-                                                  :class="{ mdeleted: !mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleReport()"><i
-                                                    class="fas fa-exclamation-triangle"></i></button>
-                                                <Transition>
-                                                  <div v-if="mreportForm" class="form-container">
-                                                    <form @submit.prevent="msubmitReport(index, messageIndex)">
-                                                      <div class="button-content">
-                                                        <div class="button-content-right">
-                                                          <button type="button" @click="mtoggleReport()"><i
-                                                              class="fas fa-times"></i></button>
-                                                        </div>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="色情內容" class="remember-radio font">
-                                                          <span class="radio-custom"></span>
-                                                          色情內容
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="暴力或反感內容" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          暴力或反感內容
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="仇恨或惡意內容" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          仇恨或惡意內容
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="騷擾跟霸凌內容" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          騷擾跟霸凌內容
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="錯誤資訊" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          錯誤資訊
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="宣傳恐怖主義" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          宣傳恐怖主義
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="垃圾內容或誤導內容" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          垃圾內容或誤導內容
-                                                        </label>
-                                                      </div>
-                                                      <div class="remember" style="text-align: left">
-                                                        <label class="remember-label" style="font-size: 18px;">
-                                                          <input type="radio" v-model="mreportPost.selectedContent"
-                                                            value="法律問題" class="remember-radio">
-                                                          <span class="radio-custom font"></span>
-                                                          法律問題
-                                                        </label>
-                                                      </div>
-                                                      <div style="text-align: right;">
-                                                        <button class="font" type="submit"
-                                                          style="width: 60px; height: 25px;">提交</button>
-                                                      </div>
-                                                    </form>
-                                                  </div>
-                                                </Transition>
-                                                <div v-if="mreportForm" class="messageoverlay"
-                                                  @click="closeWindows(messageIndex)">
-                                                </div>
-                                              </li>
-                                              <li><button type="button"
-                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
-                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleEdit(index, messageIndex)"><i
-                                                    class="far fa-edit"></i></button>
-                                              </li>
-                                              <li><button type="button"
-                                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
-                                                  :class="{ mdeleted: mdeletePosts[messageIndex] }"
-                                                  @click="mtoggleDelete(index, messageIndex)"><i
-                                                    class="far fa-trash-alt"></i></button>
-                                              </li>
-                                            </ul>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div v-if="editingMessageIndex === messageIndex">
-                                    <p class="font" style="margin-bottom:0px"><textarea v-model="editedMessageContent"
-                                        placeholder="回復內容" required></textarea>
-                                    </p>
-                                    <div style="margin-bottom:10px;" class="button-content">
-                                      <div class="button-content-right font">
-                                        <button class="font" @click="cancelEditedMessage(messageIndex)">取消</button>
-                                        <button class="font" @click="saveEditedMessage(index, messageIndex)">保存</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div v-else>
-                                    <p style="margin-bottom:0px; font-size:15px; text-align: left;">
-                                      {{ messageItem.messagecontent }}
-                                    </p>
-                                    <div style="margin-bottom:30px;" class="button-content font">
-                                      <button type="button" style="text-align: left;"
-                                        :class="{ mliked: mlikedPosts[messageIndex] }"
-                                        @click="mtoggleLike(index, messageIndex)"><i
-                                          class="fas fa-thumbs-up"></i></button>
-                                      <a class="like-count font">{{ messageItem.messageupvote.total }}</a>
-                                      <button type="button" style="text-align: left;"
-                                        :class="{ munliked: munlikedPosts[messageIndex] }"
-                                        @click="mtoggleUnLike(index, messageIndex)"><i
-                                          class="fas fa-thumbs-down"></i></button>
-                                      <a style="text-align: right;">時間：{{ messageItem.messagetime }}</a>
-                                    </div>
-                                  </div>
-                                </template>
-                              </li>
-                            </ul>
-                          </form>
-                        </div>
-                      </div>
-                    </Transition>
-                    <a class="like-count font">{{ item.upvotepeople.total }}</a>
-                    <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
-                        class="far fa-thumbs-up"></i></button>
-                    <button class="font" style="margin-right: 15px;" type="button"
-                      :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
-                        class="far fa-thumbs-down"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div v-if="item.forumavailable || UserManager" style="text-align: right;">
-                <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
-                <span class="font" style="font-size: 20px;">創建人：官方</span>
-              </div>
-              <p style="margin-bottom:20px"></p>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link to="/HomeView" class="nav-link" style="color: #ffffff;">首頁</router-link>
+            </li>
+
+            <li class="nav-item">
+              <router-link to="/Officialnotificationarea" class="nav-link" style="color: #ffffff;">官方公告</router-link>
+            </li>
+
+            <li class="nav-item">
+              <router-link to="/Playertalkarea" class="nav-link" style="color: #ffffff;">討論區</router-link>
+            </li>
+
+            <li class="nav-item">
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
+                target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link" @click="showAccountOptions = !showAccountOptions"
+                style="color: #ffffff; position: relative;">帳號選項</a>
+              <ul v-if="showAccountOptions" class="account-options">
+                <li>
+                  <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
+                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
+                    更換頭像
+                  </label>
+                </li>
+                <li>
+                  <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
+                </li>
+                <li>
+                  <router-link to="/EmailVerification" class="nav-link" style="color: #000000;">綁定電子郵件</router-link>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'LoginView' }" class="custom-link evenly-spaced-text"
+                    @click="Logout">登出</router-link>
+                </li>
+              </ul>
             </li>
           </ul>
-          <div v-if="showMessage" class="overlay" @click="closeWindows"></div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="p-3 wrapper" style="margin-bottom: -1px;">
+        <div class="row justify-content-center">
+          <div class="col-8" style="text-align: center">
+            <strong class="font" style="font-size: 36px;">官方公告</strong>
+          </div>
+          <div class="col-10">
+            <div style="text-align: right">
+              <button v-if="UserManager" class="font" @click="toggleForm"
+                style="margin-bottom: 20px; padding: 15px; font-size: 24px;">發表文章</button>
+            </div>
+            <Transition>
+              <div v-if="showForm" class="form-container">
+                <form @submit.prevent="submitPost">
+                  <div class="button-content">
+                    <div class="button-content-right">
+                      <button type="button" @click="toggleForm()"><i class="fas fa-times"></i></button>
+                    </div>
+                  </div>
+                  <div>
+                    <input class="font" style="text-align: center" v-model="newPost.title" type="text" placeholder="帖子標題"
+                      required>
+                  </div>
+                  <div>
+                    <textarea class="font" style="text-align: center" v-model="newPost.subject" placeholder="帖子主旨"
+                      required></textarea>
+                  </div>
+                  <div>
+                    <textarea class="font" style="text-align: center" v-model="newPost.content" placeholder="帖子內容"
+                      required></textarea>
+                  </div>
+                  <div style="text-align: right">
+                    <button class="font" type="submit">提交</button>
+                  </div>
+                </form>
+              </div>
+            </Transition>
+            <div v-if="showForm" class="overlay" @click="toggleForm"></div>
+          </div>
+          <div class="col-10 bg-white text-dark" style="text-align: center;">
+            <ul class="custom-list">
+              <li v-for="(item, index) in dataindex" :key="index">
+                <div v-if="item.forumavailable || UserManager" class="post-container" style="border-radius:50px;">
+                  <div class="button-content">
+                    <div class="button-content-right" style="margin-right: 15px;">
+                      <div id="menu">
+                        <ul>
+                          <li> <a @click="toggleMenu(index)">MENU</a>
+                            <ul v-if="menuStates[index]">
+                              <li><button type="button"
+                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                  :class="{ deleted: UserManager }" @click="toggleReport()"><i
+                                    class="fas fa-exclamation-triangle"></i> 舉報</button>
+                                <Transition>
+                                  <div v-if="reportForm" class="form-container">
+                                    <form @submit.prevent="submitReport(index)">
+                                      <div class="button-content">
+                                        <div class="button-content-right">
+                                          <button type="button" @click="toggleReport(index)"><i
+                                              class="fas fa-times"></i></button>
+                                        </div>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="色情內容"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          色情內容
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="暴力或反感內容"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          暴力或反感內容
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="仇恨或惡意內容"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          仇恨或惡意內容
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="騷擾跟霸凌內容"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          騷擾跟霸凌內容
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="錯誤資訊"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          錯誤資訊
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="宣傳恐怖主義"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          宣傳恐怖主義
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="垃圾內容或誤導內容"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          垃圾內容或誤導內容
+                                        </label>
+                                      </div>
+                                      <div class="remember font" style="text-align: left">
+                                        <label class="remember-label font" style="font-size: 18px;">
+                                          <input type="radio" v-model="reportPost.selectedContent" value="法律問題"
+                                            class="remember-radio font">
+                                          <span class="radio-custom font"></span>
+                                          法律問題
+                                        </label>
+                                      </div>
+                                      <div style="text-align: right;">
+                                        <button class="font" type="submit" style="width: 60px; height: 25px;">提交</button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </Transition>
+                                <div v-if="reportForm" class="overlay" @click="toggleReport(index)"></div>
+                              </li>
+                              <li><button type="button"
+                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                  :class="{ deleted: !UserManager }" @click="toggleEdit(index)"><i
+                                    class="far fa-edit"></i>
+                                  編輯</button>
+                                <Transition>
+                                  <div v-if="editForm" class="form-container">
+                                    <form @submit.prevent="submitEdit(index)">
+                                      <div class="button-content">
+                                        <div class="button-content-right">
+                                          <button type="button" @click="toggleEdit(index)"><i
+                                              class="fas fa-times"></i></button>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <input class="font" style="text-align: center" v-model="editPost.title"
+                                          type="text" placeholder="帖子標題" required>
+                                      </div>
+                                      <div>
+                                        <textarea class="font" style="text-align: center" v-model="editPost.subject"
+                                          placeholder="帖子主旨" required></textarea>
+                                      </div>
+                                      <div>
+                                        <textarea class="font" style="text-align: center" v-model="editPost.content"
+                                          placeholder="帖子內容" required></textarea>
+                                      </div>
+                                      <div style="text-align: right">
+                                        <button class="font" type="submit">提交</button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </Transition>
+                                <div v-if="editForm" class="overlay" @click="toggleEdit(index)"></div>
+                              </li>
+                              <li><button type="button"
+                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                  :class="{ deleted: !UserManager || !item.forumavailable }" @click="toggleBan(index)"><i
+                                    class="fas fa-lock"></i> 封鎖</button>
+                              </li>
+                              <li><button type="button"
+                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                  :class="{ deleted: !UserManager || item.forumavailable }" @click="toggleunBan(index)"><i
+                                    class="fas fa-lock-open"></i> 解封</button>
+                              </li>
+                              <li><button type="button"
+                                  style="margin-bottom:2.5px; margin-top:2.5px; width: 60px; height: 25px;"
+                                  :class="{ deleted: !UserManager }" @click="toggleDelete(index)"><i
+                                    class="far fa-trash-alt"></i> 刪除</button>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <p style="font-size:40px;">{{ item.title }}</p>
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-3 bg-white text-dark" style="text-align: center;">
+                        <a style="font-size: 40px;">
+                          <p><img class="resizable-image"
+                              src="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/93cec08278a893ac%20(1).png?alt=media&token=41d96a9c-fed8-414c-95f0-abf7d47b4d3c">
+                          </p>
+                        </a>
+                      </div>
+                      <div class="col-9 bg-white text-dark" style="text-align: center;">
+                        <a style="font-size: 32px;">
+                          <p>{{ item.subject }}</p>
+                        </a>
+                        <a style="font-size: 16px;">
+                          <p>內容：{{ item.content }}</p>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="button-content">
+                    <div class="button-content-right">
+                      <a class="like-count">{{ item.message.total }}</a>
+                      <button type="button" @click="toggleMessage(index)"><i class="far fa-comment"></i></button>
+                      <Transition>
+                        <div v-if="showMessage && index === openFormIndex" class="message-container">
+                          <div class="form-scroll">
+                            <form @submit.prevent="submitMessage(index)">
+                              <div class="button-content">
+                                <div class="button-content-right">
+                                  <button type="button" @click="toggleMessage()"><i class="fas fa-times"></i></button>
+                                </div>
+                              </div>
+                              <div>
+                                <textarea v-model="newMessage.content" placeholder="回復內容" required></textarea>
+                              </div>
+                              <div class="button-content">
+                                <div class="button-content-right">
+                                  <button class="font" type="submit" style="margin-bottom: 10px">提交回復</button>
+                                </div>
+                              </div>
+                              <ul class="custom-list">
+                                <li v-for="(messageItem, messageIndex) in item.message" :key="messageIndex">
+                                  <template v-if="messageIndex !== 'total'">
+                                    <div class="button-content"
+                                      style="margin-bottom:0px; font-size:15px; text-align: left;">
+                                      <div>
+                                        <img class="resizable-image-message" :src="messageimagelist[messageIndex]" />
+                                        留言人：{{ Object.values(messageItem.messagename)[0] }}
+                                      </div>
+                                      <div class="button-content-right">
+                                        <div id="messagemenu">
+                                          <ul>
+                                            <li> <a @click="mtoggleMenu(messageIndex)"><i class="fas fa-list-ul"></i></a>
+                                              <ul v-if="mmenuStates[messageIndex]">
+                                                <li><button type="button"
+                                                    style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                    :class="{ mdeleted: !mdeletePosts[messageIndex] }"
+                                                    @click="mtoggleReport()"><i
+                                                      class="fas fa-exclamation-triangle"></i></button>
+                                                  <Transition>
+                                                    <div v-if="mreportForm" class="form-container">
+                                                      <form @submit.prevent="msubmitReport(index, messageIndex)">
+                                                        <div class="button-content">
+                                                          <div class="button-content-right">
+                                                            <button type="button" @click="mtoggleReport()"><i
+                                                                class="fas fa-times"></i></button>
+                                                          </div>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="色情內容" class="remember-radio font">
+                                                            <span class="radio-custom"></span>
+                                                            色情內容
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="暴力或反感內容" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            暴力或反感內容
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="仇恨或惡意內容" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            仇恨或惡意內容
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="騷擾跟霸凌內容" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            騷擾跟霸凌內容
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="錯誤資訊" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            錯誤資訊
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="宣傳恐怖主義" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            宣傳恐怖主義
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="垃圾內容或誤導內容" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            垃圾內容或誤導內容
+                                                          </label>
+                                                        </div>
+                                                        <div class="remember" style="text-align: left">
+                                                          <label class="remember-label" style="font-size: 18px;">
+                                                            <input type="radio" v-model="mreportPost.selectedContent"
+                                                              value="法律問題" class="remember-radio">
+                                                            <span class="radio-custom font"></span>
+                                                            法律問題
+                                                          </label>
+                                                        </div>
+                                                        <div style="text-align: right;">
+                                                          <button class="font" type="submit"
+                                                            style="width: 60px; height: 25px;">提交</button>
+                                                        </div>
+                                                      </form>
+                                                    </div>
+                                                  </Transition>
+                                                  <div v-if="mreportForm" class="messageoverlay"
+                                                    @click="closeWindows(messageIndex)">
+                                                  </div>
+                                                </li>
+                                                <li><button type="button"
+                                                    style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                    :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                    @click="mtoggleEdit(index, messageIndex)"><i
+                                                      class="far fa-edit"></i></button>
+                                                </li>
+                                                <li><button type="button"
+                                                    style="margin-bottom:2.5px; margin-top:2.5px; width: 50px; height: 25px;"
+                                                    :class="{ mdeleted: mdeletePosts[messageIndex] }"
+                                                    @click="mtoggleDelete(index, messageIndex)"><i
+                                                      class="far fa-trash-alt"></i></button>
+                                                </li>
+                                              </ul>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div v-if="editingMessageIndex === messageIndex">
+                                      <p class="font" style="margin-bottom:0px"><textarea v-model="editedMessageContent"
+                                          placeholder="回復內容" required></textarea>
+                                      </p>
+                                      <div style="margin-bottom:10px;" class="button-content">
+                                        <div class="button-content-right font">
+                                          <button class="font" @click="cancelEditedMessage(messageIndex)">取消</button>
+                                          <button class="font" @click="saveEditedMessage(index, messageIndex)">保存</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div v-else>
+                                      <p style="margin-bottom:0px; font-size:15px; text-align: left;">
+                                        {{ messageItem.messagecontent }}
+                                      </p>
+                                      <div style="margin-bottom:30px;" class="button-content font">
+                                        <button type="button" style="text-align: left;"
+                                          :class="{ mliked: mlikedPosts[messageIndex] }"
+                                          @click="mtoggleLike(index, messageIndex)"><i
+                                            class="fas fa-thumbs-up"></i></button>
+                                        <a class="like-count font">{{ messageItem.messageupvote.total }}</a>
+                                        <button type="button" style="text-align: left;"
+                                          :class="{ munliked: munlikedPosts[messageIndex] }"
+                                          @click="mtoggleUnLike(index, messageIndex)"><i
+                                            class="fas fa-thumbs-down"></i></button>
+                                        <a style="text-align: right;">時間：{{ messageItem.messagetime }}</a>
+                                      </div>
+                                    </div>
+                                  </template>
+                                </li>
+                              </ul>
+                            </form>
+                          </div>
+                        </div>
+                      </Transition>
+                      <a class="like-count font">{{ item.upvotepeople.total }}</a>
+                      <button type="button" :class="{ liked: likedPosts[index] }" @click="toggleLike(index)"><i
+                          class="far fa-thumbs-up"></i></button>
+                      <button class="font" style="margin-right: 15px;" type="button"
+                        :class="{ unliked: unlikedPosts[index] }" @click="toggleUnLike(index)"><i
+                          class="far fa-thumbs-down"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="item.forumavailable || UserManager" style="text-align: right;">
+                  <span class="font" style="font-size: 20px; margin-right:20px;">創建時間：{{ item.createtime }}</span>
+                  <span class="font" style="font-size: 20px;">創建人：官方</span>
+                </div>
+                <p style="margin-bottom:20px"></p>
+              </li>
+            </ul>
+            <div v-if="showMessage" class="overlay" @click="closeWindows"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -743,10 +779,6 @@ button.munliked {
   color: black;
 }
 
-button.table {
-  visibility: hidden;
-}
-
 button.deleted {
   display: none;
 }
@@ -832,10 +864,54 @@ button.mdeleted {
   max-height: 650px;
   overflow-y: auto;
 }
+
+.menu-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li {
+  margin-right: 15px;
+}
+
+.account-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #888;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  margin-top: 0;
+  width: max-content;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.account-options li a {
+  color: #000;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.account-options li:hover {
+  background-color: #ddd;
+}
+
+.account-options li:active {
+  background-color: #aaa;
+}
 </style>
 <script>
 import { getDatabase, ref as firebaseRef, onValue, set, get, remove } from 'firebase/database';
-import { firebaseApp } from '@/main';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firebaseApp } from "@/main";
+
 export default {
   beforeRouteEnter(to, from, next) {
     document.title = '官方通知區';
@@ -888,6 +964,7 @@ export default {
       showMessage: false,
       openFormIndex: null,
       UserManager: false,
+      showAccountOptions: false,
     };
   },
   mounted() {
@@ -1416,5 +1493,32 @@ export default {
       this.showForm = !this.showForm;
     }
   },
+  async uploadImage(event) {
+    const storedUserData = localStorage.getItem("rememberedUser");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      this.name = userData.name;
+    }
+    console.error(this.name);
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const db = getDatabase(firebaseApp);
+        const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
+        const storage = getStorage();
+        const imageRef = storageRef(storage, `${this.name}/${file.name}`);
+        await uploadBytes(imageRef, file);
+        const downloadURL = await getDownloadURL(imageRef);
+        this.imageUrl = downloadURL;
+        console.log(this.imageUrl);
+        await set(officialRef1, this.imageUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  },
+  Logout() {
+    localStorage.removeItem("rememberedUser");
+  }
 }
 </script>
