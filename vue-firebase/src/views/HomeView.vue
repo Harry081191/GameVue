@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 
-  <div class="Longing">
+  <div class="Longing font">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <div>
@@ -36,7 +36,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
@@ -46,9 +46,10 @@
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
                   <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
-                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
+
+                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
                     更換頭像
-                  </label>
+                  </strong>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -896,10 +897,6 @@
   </div>
 </template>
 <style>
-.font {
-  font-family: 微軟正黑體;
-}
-
 .form-container {
   position: fixed;
   top: 50%;
@@ -1017,7 +1014,7 @@ a.ban {
 .account-options li a {
   color: #000;
   font-size: 18px;
-  line-height: 30px;
+  line-height: 25px;
 }
 
 .account-options li:hover {
@@ -1029,7 +1026,7 @@ a.ban {
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue, set } from "firebase/database";
+import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebaseApp } from "@/main";
 
@@ -1067,6 +1064,7 @@ export default {
       selectedOption: "",
       checkuserId: "",
       checkuserIdc: "",
+      checkuserIdmyself: "",
       Serchstatus: false,
       accountexist: false,
       myselfidentity: false,
@@ -1076,7 +1074,6 @@ export default {
       RecordLengthk: 0,
       RecordLengthm: 0,
       RecordLengtht: 0,
-      showAccountOptions: false,
     };
   },
   mounted() {
@@ -1087,25 +1084,29 @@ export default {
       this.userId = userData.name;
     }
     this.checkuserId = this.userId;
+    this.checkuserIdmyself = this.userId;
     const SerchRef = firebaseRef(db, `Users/`);
-    const dataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+    const DataRef = firebaseRef(db, `Users/${this.checkuserId}`);
+    const DataMyselfRef = firebaseRef(db, `Users/${this.checkuserIdmyself}`);
     const RecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
-    onValue(SerchRef, (snapshot) => {
-      const Serchdata = snapshot.val();
-      this.Serchdataindex = Object.values(Serchdata);
-      this.SerchdataLength = this.Serchdataindex.length;
-      this.Serchdata = Serchdata;
-      this.listenToDataRef(dataRef);
-      this.listenToRecord(RecordRef);
-      this.listenToRecordL(RecordRef);
-      this.listenToRecordM(RecordRef);
-      this.listenToRecordK(RecordRef);
-      this.listenToRecordT(RecordRef);
+    onValue(DataMyselfRef, (snapshot) => {
+      get(SerchRef).then((snapshot) => {
+        const Serchdata = snapshot.val();
+        this.Serchdataindex = Object.values(Serchdata);
+        this.SerchdataLength = this.Serchdataindex.length;
+        this.Serchdata = Serchdata;
+        this.listenToDataRef(DataRef);
+        this.listenToRecord(RecordRef);
+        this.listenToRecordL(RecordRef);
+        this.listenToRecordM(RecordRef);
+        this.listenToRecordK(RecordRef);
+        this.listenToRecordT(RecordRef);
+      });
     });
   },
   methods: {
-    listenToDataRef(dataRef) {
-      onValue(dataRef, (snapshot) => {
+    listenToDataRef(DataRef) {
+      onValue(DataRef, (snapshot) => {
         const data = snapshot.val();
         this.dataindex = Object.values(data);
         this.dataLength = this.dataindex.length;
@@ -1339,13 +1340,11 @@ export default {
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
       set(officialRef1, false);
-      this.toggleLogin();
     },
     unban() {
       const db = getDatabase(firebaseApp);
       const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserAvailable`);
       set(officialRef1, true);
-      this.toggleLogin();
     },
     Logout() {
       localStorage.removeItem("rememberedUser");
