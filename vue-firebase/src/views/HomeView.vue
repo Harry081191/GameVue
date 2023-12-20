@@ -75,12 +75,13 @@
           <div class="col-6" style="text-align: center">
             <h2>角色資訊<a v-if="data.Manager">(管理者)</a></h2>
           </div>
-          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban">
-            <i class="fas fa-user-alt-slash"></i>
+          <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && data.UserAvailable" @click="ban"
+            style="width: 100px; height: 40px;">
+            <i class="fas fa-user-alt-slash"></i>封禁
           </button>
           <button type="button" v-if="myselfidentity && Serchstatus && !data.Manager && !data.UserAvailable"
-            @click="unban">
-            <i class="fas fa-user-alt"></i>
+            @click="unban" style="width: 100px; height: 40px;">
+            <i class="fas fa-user-alt"></i>解封
           </button>
           <div class="col-10 bg-secondary text-white"
             style=" border-top-left-radius: 50px; border-top-right-radius: 50px; text-align: center;">
