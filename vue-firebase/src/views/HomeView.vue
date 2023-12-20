@@ -93,7 +93,7 @@
                 </option>
               </select>
             </div>
-            <p style="font-size: 20px">名稱：{{ data.name }}</p>
+            <p :class="{ 'red-text': !data.UserAvailable && !data.Manager }" style="font-size: 20px">名稱：{{ data.name }}</p>
             <img class="resizable-image" :src="data.UserImage" />
           </div>
           <div v-if="Recorddata === null" class="col-10 bg-secondary text-white"
@@ -969,6 +969,11 @@ a.ban {
 
 .column {
   flex: 1;
+}
+
+.red-text {
+  color: red;
+  /* 設定文字顏色為紅色 */
 }
 
 .v-enter-active {
