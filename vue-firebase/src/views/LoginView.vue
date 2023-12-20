@@ -1,5 +1,5 @@
 <template>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <nav>
     <router-link to="/" style="font-size: 50px">MageSurvivor</router-link>
@@ -116,10 +116,18 @@ export default {
                   if (UserAvailable === null && UserManager === null) {
                     set(officialRef2, userAvailable);
                   }
-                  if (UserAvailable || UserManager) {
+                  if (UserAvailable || UserManager || UserAvailable === null) {
                     this.$router.push({
                       name: "HomeView",
                     });
+                  } else {
+                    this.errorMessage = "Account blocked";
+                    this.$toast.error(this.errorMessage, {
+                      position: "top",
+                      duration: 3000,
+                      dismissible: true,
+                    });
+                    this.errorMessage = "";
                   }
                 }
               );
