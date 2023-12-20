@@ -104,7 +104,16 @@ export default {
       userExists: false,
       errorMessage: "",
       showAccountOptions: false,
+      checkuserId: "",
     };
+  },
+  mounted() {
+    const storedUserData = localStorage.getItem("rememberedUser");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      this.userId = userData.name;
+    }
+    this.checkuserId = this.userId;
   },
   methods: {
     async handleSubmit() {

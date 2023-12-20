@@ -961,6 +961,7 @@ export default {
       showMessage: false,
       openFormIndex: null,
       UserManager: false,
+      showAccountOptions: false,
     };
   },
   mounted() {

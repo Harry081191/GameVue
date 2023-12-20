@@ -115,6 +115,7 @@ export default {
       },
       errorMessage: null,
       verificationSent: false,
+      showAccountOptions: false,
     };
   },
   methods: {

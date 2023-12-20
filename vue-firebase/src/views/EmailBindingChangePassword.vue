@@ -105,6 +105,7 @@ export default {
       newPassword: "",
       errorMessage: "",
       userExists: false,
+      showAccountOptions: false,
     };
   },
   async created() {

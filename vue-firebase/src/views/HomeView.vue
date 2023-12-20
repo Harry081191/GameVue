@@ -1076,6 +1076,7 @@ export default {
       RecordLengthk: 0,
       RecordLengthm: 0,
       RecordLengtht: 0,
+      showAccountOptions: false,
     };
   },
   mounted() {
