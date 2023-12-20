@@ -1029,7 +1029,7 @@ a.ban {
 }
 </style>
 <script>
-import { getDatabase, ref as firebaseRef, onValue, get, set } from "firebase/database";
+import { getDatabase, ref as firebaseRef, onValue, set } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebaseApp } from "@/main";
 

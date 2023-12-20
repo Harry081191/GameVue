@@ -90,7 +90,9 @@
 </template>
 
 <script>
-import { getDatabase, ref, update, get } from "firebase/database";
+import { getDatabase, ref as firebaseRef, ref, get, update, set } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firebaseApp } from "@/main";
 
 export default {
   data() {
@@ -106,14 +108,6 @@ export default {
       showAccountOptions: false,
       checkuserId: "",
     };
-  },
-  mounted() {
-    const storedUserData = localStorage.getItem("rememberedUser");
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      this.userId = userData.name;
-    }
-    this.checkuserId = this.userId;
   },
   methods: {
     async handleSubmit() {
@@ -159,13 +153,19 @@ export default {
       }
     },
     async uploadImage(event) {
+      const storedUserData = localStorage.getItem("rememberedUser");
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        this.name = userData.name;
+      }
+      console.error(this.name);
       const file = event.target.files[0];
       if (file) {
         try {
           const db = getDatabase(firebaseApp);
-          const officialRef1 = firebaseRef(db, `Users/${this.checkuserId}/UserImage`);
+          const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
           const storage = getStorage();
-          const imageRef = storageRef(storage, `${this.checkuserId}/${file.name}`);
+          const imageRef = storageRef(storage, `${this.name}/${file.name}`);
           await uploadBytes(imageRef, file);
           const downloadURL = await getDownloadURL(imageRef);
           this.imageUrl = downloadURL;
