@@ -1040,19 +1040,31 @@ export default {
               get(officialRef1).then((snapshot) => {
                 const messageupvote = snapshot.val();
                 const userNames = Object.values(messageupvote);
-                if (messageupvote && this.username === userNames[0]) {
-                  this.mlikedPosts[mpostId] = true;
-                } else {
-                  this.mlikedPosts[mpostId] = false;
+                const userLength = userNames.length;
+                for (let j = 0; j < userLength; j++) {
+                  if (userNames[j] !== "total") {
+                    if (messageupvote && this.username === userNames[j]) {
+                      this.mlikedPosts[mpostId] = true;
+                      break;
+                    } else {
+                      this.mlikedPosts[mpostId] = false;
+                    }
+                  }
                 }
               });
               get(officialRef3).then((snapshot) => {
                 const messageunlike = snapshot.val();
                 const userNames = Object.values(messageunlike);
-                if (messageunlike && this.username === userNames[0]) {
-                  this.munlikedPosts[mpostId] = true;
-                } else {
-                  this.munlikedPosts[mpostId] = false;
+                const userLength = userNames.length;
+                for (let j = 0; j < userLength; j++) {
+                  if (userNames[j] !== "total") {
+                    if (messageunlike && this.username === userNames[j]) {
+                      this.munlikedPosts[mpostId] = true;
+                      break;
+                    } else {
+                      this.munlikedPosts[mpostId] = false;
+                    }
+                  }
                 }
               });
               get(officialRef5).then((snapshot) => {
@@ -1092,20 +1104,32 @@ export default {
           get(officialRef1).then((snapshot) => {
             const upvotePeople = snapshot.val();
             const userNames = Object.values(upvotePeople);
-            if (upvotePeople && this.username === userNames[0]) {
-              this.likedPosts[i] = true;
-            } else {
-              this.likedPosts[i] = false;
+            const userLength = userNames.length;
+            for (let j = 0; j < userLength; j++) {
+              if (userNames[j] !== "total") {
+                if (upvotePeople && this.username === userNames[j]) {
+                  this.likedPosts[i] = true;
+                  break;
+                } else {
+                  this.likedPosts[i] = false;
+                }
+              }
             }
           });
 
           get(officialRef3).then((snapshot) => {
             const unlikePeople = snapshot.val();
             const userNames = Object.values(unlikePeople);
-            if (unlikePeople && this.username === userNames[0]) {
-              this.unlikedPosts[i] = true;
-            } else {
-              this.unlikedPosts[i] = false;
+            const userLength = userNames.length;
+            for (let j = 0; j < userLength; j++) {
+              if (userNames[j] !== "total") {
+                if (unlikePeople && this.username === userNames[j]) {
+                  this.unlikedPosts[i] = true;
+                  break;
+                } else {
+                  this.unlikedPosts[i] = false;
+                }
+              }
             }
           });
 
