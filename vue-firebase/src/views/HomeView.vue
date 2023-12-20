@@ -1,7 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    
+
   <div class="Longing font">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
@@ -12,6 +12,15 @@
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
+
+        <form @submit.prevent="submitSerch" class="from-inline" style="text-align: right; margin-left: 25px;">
+          <input v-model="newSerch.userId" type="text" class="from-control mr-3 mb-2 mb-sm-0"
+            placeholder="Search player's Name" />
+          <button type="submit" class="btn btn-dark from-control mr-3 mb-2 mb-sm-0">
+            Search
+          </button>
+        </form>
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">

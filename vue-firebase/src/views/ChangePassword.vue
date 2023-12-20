@@ -33,7 +33,11 @@
                 style="color: #ffffff; position: relative;">帳號選項</a>
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
-                  <input type="file" @change="uploadImage" />
+                  <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
+
+                  <div for="fileInput" style="color: #000000;">
+                    更換頭像
+                  </div>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
