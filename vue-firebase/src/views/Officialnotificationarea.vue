@@ -60,7 +60,7 @@
     <div class="p-3 wrapper" style="margin-bottom: -1px;">
       <div class="row justify-content-center">
         <div class="col-8" style="text-align: center">
-          <strong class="font" style="font-size: 36px;">討論區</strong>
+          <strong class="font" style="font-size: 36px;">官方公告</strong>
         </div>
         <div class="col-10">
           <div style="text-align: right">
