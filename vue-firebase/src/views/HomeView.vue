@@ -1270,6 +1270,10 @@ export default {
         const newDataRef = firebaseRef(db, `Users/${this.checkuserId}`);
         const newDataRecordRef = firebaseRef(db, `Record/${this.checkuserId}`);
         this.listenToRecord(newDataRecordRef);
+        this.listenToRecordL(newDataRecordRef);
+        this.listenToRecordM(newDataRecordRef);
+        this.listenToRecordK(newDataRecordRef);
+        this.listenToRecordT(newDataRecordRef);
         this.listenToDataRef(newDataRef);
       }
       if (this.errorMessage !== "") {
