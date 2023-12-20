@@ -1354,8 +1354,13 @@ export default {
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
 
-      const currentDateTimeID = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}-${this.userId}`;
-      const currentDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+      const secondsPadded = String(seconds).padStart(2, '0');
+      const minutesPadded = String(minutes).padStart(2, '0');
+      const hoursPadded = String(hours).padStart(2, '0');
+      const datePadded = String(date).padStart(2, '0');
+      const monthPadded = String(month).padStart(2, '0');
+      const currentDateTimeID = `${year}-${monthPadded}-${datePadded} ${hoursPadded}:${minutesPadded}:${secondsPadded}-${this.userId}`;
+      const currentDateTime = `${year}-${monthPadded}-${datePadded} ${hoursPadded}:${minutesPadded}:${secondsPadded}`;
 
       const officialRef1 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagename/${this.userId}`);
       const officialRef2 = firebaseRef(db, `Official/${postId}/message/${currentDateTimeID}/messagecontent`);
