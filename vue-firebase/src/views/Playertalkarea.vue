@@ -1503,9 +1503,8 @@ export default {
       set(officialRef10, true);
 
       this.showForm = !this.showForm;
-    }
-  },
-  async uploadImage(event) {
+    },
+    async uploadImage(event) {
       const file = event.target.files[0];
       if (file) {
         try {
@@ -1523,8 +1522,9 @@ export default {
         }
       }
     },
-  Logout() {
-    localStorage.removeItem("rememberedUser");
-  }
+    Logout() {
+      localStorage.removeItem("rememberedUser");
+    }
+  },
 }
 </script>
