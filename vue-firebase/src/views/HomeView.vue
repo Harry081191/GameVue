@@ -45,7 +45,11 @@
                 style="color: #ffffff; position: relative;">帳號選項</a>
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
-                  <input type="file" @change="uploadImage" />
+                  <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
+
+                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                    更換頭像
+                  </strong>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
@@ -890,9 +894,6 @@
       </div>
     </div>
     <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-    <div>
-      <input type="file" @change="uploadImage" />
-    </div>
   </div>
 </template>
 <style>
