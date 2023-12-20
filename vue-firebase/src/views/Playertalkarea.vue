@@ -26,7 +26,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1205.rar?alt=media&token=7f1b51d9-8eeb-4d62-93bf-126b8c71992e"
+              <a href="https://firebasestorage.googleapis.com/v0/b/game-ab172.appspot.com/o/MageSurvivor-1220.rar?alt=media&token=a466dfa0-1c9a-4522-b807-13dd8814e1b3"
                 target="_blank" class="nav-link" style="color: #ffffff;">下載遊戲</a>
             </li>
 
@@ -36,10 +36,9 @@
               <ul v-if="showAccountOptions" class="account-options">
                 <li>
                   <input type="file" id="fileInput" ref="fileInput" style="display: none" @change="uploadImage" />
-
-                  <strong for="fileInput" style="color: #000000; font-size: 18px;">
+                  <label for="fileInput" style="color: #000000; font-size: 18px; font-weight: bold;">
                     更換頭像
-                  </strong>
+                  </label>
                 </li>
                 <li>
                   <router-link to="/ChangePassword" class="nav-link" style="color: #000000;">更換密碼</router-link>
