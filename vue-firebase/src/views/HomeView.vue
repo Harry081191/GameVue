@@ -160,9 +160,9 @@
                                         v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
                                           item.SkillUpgradeRecord.LightningBlastHit * 2 + 1 }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                          (item.SkillUpgradeRecord.LightningBlastHitRange * 0.2).toFixed(1) }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1 }}<br /></a>
+                                          (item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1).toFixed(1) }}<br /></a>
                                     </div>
                                   </div>
                                 </div>
@@ -315,9 +315,9 @@
                                         v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
                                           item.SkillUpgradeRecord.LightningBlastHit * 2 + 1 }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                          (item.SkillUpgradeRecord.LightningBlastHitRange * 0.2).toFixed(1) }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1 }}<br /></a>
+                                          (item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1).toFixed(1) }}<br /></a>
                                     </div>
                                   </div>
                                 </div>
@@ -471,9 +471,9 @@
                                         v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
                                           item.SkillUpgradeRecord.LightningBlastHit * 2 + 1 }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                          (item.SkillUpgradeRecord.LightningBlastHitRange * 0.2).toFixed(1) }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1 }}<br /></a>
+                                          (item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1).toFixed(1) }}<br /></a>
                                     </div>
                                   </div>
                                 </div>
@@ -627,9 +627,9 @@
                                         v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
                                           item.SkillUpgradeRecord.LightningBlastHit * 2 + 1 }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                          (item.SkillUpgradeRecord.LightningBlastHitRange * 0.2).toFixed(1) }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1 }}<br /></a>
+                                          (item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1).toFixed(1) }}<br /></a>
                                     </div>
                                   </div>
                                 </div>
@@ -783,9 +783,9 @@
                                         v-if="item.SkillUpgradeRecord.LightningBlastHit">擊中數量：{{
                                           item.SkillUpgradeRecord.LightningBlastHit * 2 + 1 }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastHitRange">連鎖距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastHitRange * 0.2 }}<br /></a><a
+                                          (item.SkillUpgradeRecord.LightningBlastHitRange * 0.2).toFixed(1) }}<br /></a><a
                                         v-if="item.SkillUpgradeRecord.LightningBlastAttackRange">鎖敵距離提升：{{
-                                          item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1 }}<br /></a>
+                                          (item.SkillUpgradeRecord.LightningBlastAttackRange * 0.1).toFixed(1) }}<br /></a>
                                     </div>
                                   </div>
                                 </div>
