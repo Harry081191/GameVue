@@ -726,7 +726,7 @@
             class="col-10 bg-secondary text-white" style="text-align: center">
             <a style="font-size: 20px">
               <ul class="custom-list">
-                <p style="color:white; margin-top: 15px; margin-bottom: 15px">存活時間最長</p>
+                <p style="color:white; margin-top: 15px; margin-bottom: 15px">遊玩時間最長</p>
                 <li style="margin-bottom: 20px" v-for="(item, key, index) in Recorddatat" :key="key">
                   <template v-if="key !== 'TotalRecord' && index < 3">
                     <button style="background-color:transparent; border:0" type="button" @click="toggleDetail(key)">
