@@ -1522,34 +1522,34 @@ export default {
       set(officialRef9, this.username);
 
       this.showForm = !this.showForm;
-    }
-  },
-  async uploadImage(event) {
-    const storedUserData = localStorage.getItem("rememberedUser");
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      this.name = userData.name;
-    }
-    console.error(this.name);
-    const file = event.target.files[0];
-    if (file) {
-      try {
-        const db = getDatabase(firebaseApp);
-        const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
-        const storage = getStorage();
-        const imageRef = storageRef(storage, `${this.name}/${file.name}`);
-        await uploadBytes(imageRef, file);
-        const downloadURL = await getDownloadURL(imageRef);
-        this.imageUrl = downloadURL;
-        console.log(this.imageUrl);
-        await set(officialRef1, this.imageUrl);
-      } catch (error) {
-        console.error('Error uploading image:', error);
+    },
+    async uploadImage(event) {
+      const storedUserData = localStorage.getItem("rememberedUser");
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        this.name = userData.name;
       }
+      console.error(this.name);
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const db = getDatabase(firebaseApp);
+          const officialRef1 = firebaseRef(db, `Users/${this.name}/UserImage`);
+          const storage = getStorage();
+          const imageRef = storageRef(storage, `${this.name}/${file.name}`);
+          await uploadBytes(imageRef, file);
+          const downloadURL = await getDownloadURL(imageRef);
+          this.imageUrl = downloadURL;
+          console.log(this.imageUrl);
+          await set(officialRef1, this.imageUrl);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      }
+    },
+    Logout() {
+      localStorage.removeItem("rememberedUser");
     }
   },
-  Logout() {
-    localStorage.removeItem("rememberedUser");
-  }
 }
 </script>
